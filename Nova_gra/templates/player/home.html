@@ -26,7 +26,7 @@ Home Page
   <div class="col-sm-4">
       <div class = 'jumbotron' name="menu" id ="menu">
           <h3>Create Game</h3>
-<form method ="POST" action = ''>
+<form method ="POST" action = '{% url 'new_room' %}'>
     {% csrf_token %}
 {{form}}
     <button type = 'submit' name="create" value = 'ok'>Create Room</button>

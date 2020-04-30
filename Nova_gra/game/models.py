@@ -6,6 +6,7 @@ class Game(models.Model):
     host = models.ForeignKey(User,on_delete=models.CASCADE)
     is_played = models.BooleanField(default = False)
     players_ready = models.IntegerField(default =0)
+    max_players = models.IntegerField(default=4)
 
     def __str__(self):
         return self.name
