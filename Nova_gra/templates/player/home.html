@@ -1,9 +1,36 @@
 {% extends 'base.html' %}
+<style>
 
+</style>
 {% block title %}
 Home Page
 {% endblock %}
 
 {% block content %}
 <h1>Welcome, {{usr}}</h1>
+<hr>
+
+<div class="row">
+  <div class="col-sm-8">
+      <div class = 'jumbotron'>
+          <h3>List of games: </h3>
+    {% for g in games %}
+
+        <li><a href="{% url 'detail' g.id %}">{{g.name}}</a> </li>
+
+    {% endfor %}
+    </ul>
+      </div></div>
+  <div class="col-sm-4"></div>
+
+  <div class="col-sm-4">
+      <div class = 'jumbotron' name="menu" id ="menu">
+          <h3>Create Game</h3>
+<form method ="POST" action = ''>
+    {% csrf_token %}
+{{form}}
+    <button type = 'submit' name="create" value = 'ok'>Create Room</button>
+</form>
+      </div></div>
+</div>
 {% endblock %}

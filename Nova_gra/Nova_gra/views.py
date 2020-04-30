@@ -5,4 +5,4 @@ def welcome(request):
     if request.user.is_authenticated:
         return redirect('home')
     else:
-        return render(request, 'player/welcome.html')
+        return render(request, 'game/welcome.html')

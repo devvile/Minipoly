@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Welcome to Mini Game!
+{% endblock %}
+
+{% block content %}
+<h1>{{game.name}}</h1>
+<hr>
+<h4>Hosted by {{game.host}}/
+ {% if game.is_played %}
+    Game is played!
+    {% else %}
+    Game haven't started yet.
+    {% endif %}
+</h4>
+<hr>
+<div class = 'container'>
+    <div class = 'jumbotron'>
+    <p>
+        DASDSASDLAKSD SPAM SPAM SDASMDSAMDSAM  MSADMASMD MDASMDSAMDSA
+    </p>
+
+    </div>
+</div>
+<a href ="{% url 'home' %}"><strong>Home</strong></a>
+{% endblock %}
