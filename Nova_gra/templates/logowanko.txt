@@ -1,0 +1,9 @@
+ </div>
+        <ul class ='nav navbar-nav navbar-right'>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'player_logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'player_login' %}"> Login </a> </li>
+            {% endif %}
+        </ul>
+      </div>
