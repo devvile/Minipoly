@@ -13,7 +13,7 @@ class Game(models.Model):
 
 class Notification(models.Model):
     name = models.CharField(max_length=150)
-    note = models.TextField()
+    note = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name

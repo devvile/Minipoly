@@ -10,11 +10,13 @@ def detail(request, id):
     game = Game.objects.get(pk=id)
     return render( request, 'game/detail.html', {'game' : game})
 
+
 @login_required
 def game_join(request, id):
     game = Game.objects.get(pk=id)
     if game.players_ready == game.max_players:
-        return redirect('home')
+        note ="full"
+        return redirect('home',name=note)
     else:
         return redirect('detail', game.id)
 
@@ -25,7 +27,7 @@ def new(request):
         form = CreateGame(instance = hosted,data=request.POST)
         if form.is_valid():
                 form.save()
-                return redirect("home")
+                return redirect("home", name="new_room")
 
 
 @login_required
@@ -35,7 +37,7 @@ def delete_room(request, id):
     if usr == game.host and game.players_ready == 0:
         if not game.is_played:
             game.delete()
-            return redirect("home")
+            return redirect("home",name="game_deleted")
         else:
             return redirect('detail', id=game.id)
     else:

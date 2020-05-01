@@ -9,6 +9,8 @@ Home Page
 {% block content %}
 <h1>Welcome, {{usr}}</h1>
 <hr>
+{{message}}
+<hr>
 
 <div class="row">
   <div class="col-sm-8">
@@ -31,7 +33,7 @@ Home Page
 {{form}}
     <button type = 'submit' name="create" value = 'ok'>Create Room</button>
 </form>
-{{message}}
+
       </div></div>
 </div>
 {% endblock %}
