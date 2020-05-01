@@ -16,7 +16,7 @@ Home Page
           <h3>List of games: </h3>
     {% for g in games %}
 
-        <li><a href="{% url 'detail' g.id %}">{{g.name}}</a> </li>
+        <li><a href="{% url 'game_join' g.id %}">{{g.name}}</a> </li>
 
     {% endfor %}
     </ul>
@@ -31,6 +31,7 @@ Home Page
 {{form}}
     <button type = 'submit' name="create" value = 'ok'>Create Room</button>
 </form>
+{{message}}
       </div></div>
 </div>
 {% endblock %}

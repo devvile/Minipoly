@@ -11,3 +11,9 @@ class Game(models.Model):
     def __str__(self):
         return self.name
 
+class Notification(models.Model):
+    name = models.CharField(max_length=150)
+    note = models.TextField()
+
+    def __str__(self):
+        return self.name

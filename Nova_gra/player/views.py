@@ -8,4 +8,4 @@ def home(request):
     usr = request.user.username
     games = Game.objects.all()
     form = CreateGame
-    return render(request,'player/home.html', {'usr': usr, 'games': games, 'form' : form})
+    return render(request,'player/home.html', {'usr': usr, 'games': games, 'form' : form, })
