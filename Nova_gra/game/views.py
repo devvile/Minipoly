@@ -15,8 +15,7 @@ def detail(request, id):
 def game_join(request, id):
     game = Game.objects.get(pk=id)
     if game.players_ready == game.max_players:
-        note ="full"
-        return redirect('home',name=note)
+        return redirect('home',name="full")
     else:
         return redirect('detail', game.id)
 
@@ -83,3 +82,4 @@ def game_end(request, id):
         return redirect('detail',id = game.id)
     else:
         return redirect('detail',id = game.id)
+

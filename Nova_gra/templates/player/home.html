@@ -18,7 +18,18 @@ Home Page
           <h3>List of games: </h3>
     {% for g in games %}
 
-        <li><a href="{% url 'game_join' g.id %}">{{g.name}}</a> </li>
+        <li><a href="{% url 'game_join' g.id %}">{{g.name}}</a>
+        {% if g.players_ready == 4 %}
+            <span style ="color:red"><strong>Full</strong></span>
+            {% else %}
+            {{g.players_ready}} Players
+            {% endif %}
+              {% if g.is_played %}
+            <span style ="color:red"><strong>Game Started</strong></span>
+            {% else %}
+            <span style="color:gray">Game hasn't started yet.</span>
+            {% endif %}
+        </li>
 
     {% endfor %}
     </ul>

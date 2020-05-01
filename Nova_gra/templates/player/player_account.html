@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Account Settings
+{% endblock %}
+
+{% block content %}
+<h1>Account Settings</h1>
+<hr>
+
+<hr>
+<div class = 'jumbotron'>
+    <ul>
+        <li>Account name:<strong> {{user.username}}</strong></li>
+        <li>Nick: {{player}}
+        </li>
+    </ul>
+</div>
+
+
+
+{% endblock %}

@@ -1,6 +1,9 @@
 from django.contrib import admin
-from .models import Game, Notification
+from .models import Game, Notification, Player
 
+@admin.register(Player)
+class PlayerAdmin(admin.ModelAdmin):
+    list_display = ( 'id','name','nick')
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
@@ -10,3 +13,4 @@ class GameAdmin(admin.ModelAdmin):
 @admin.register(Notification)
 class NoteAdmin(admin.ModelAdmin):
     list_display = ( 'id','name', 'note')
+
