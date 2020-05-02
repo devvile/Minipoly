@@ -10,3 +10,6 @@ def welcome(request):
         return redirect('home', name='welcome')
     else:
         return render(request, 'game/welcome.html')
+
+def home_first(request):
+    return redirect('home', name='welcome')

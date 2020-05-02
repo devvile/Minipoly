@@ -7,5 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('player/', include('player.urls')),
     path('game/',include('game.urls')),
-    path('', welcome)
+    path('', welcome, name='welcome')
 ]

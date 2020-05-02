@@ -16,6 +16,7 @@ Home Page
   <div class="col-sm-8">
       <div class = 'jumbotron'>
           <h3>List of games: </h3>
+          <hr>
     {% for g in games %}
 
         <li><a href="{% url 'game_join' g.id %}">{{g.name}}</a>

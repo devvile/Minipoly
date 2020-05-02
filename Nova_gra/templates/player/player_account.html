@@ -12,8 +12,12 @@ Account Settings
 <div class = 'jumbotron'>
     <ul>
         <li>Account name:<strong> {{user.username}}</strong></li>
-        <li>Nick: {{player}}
-        </li>
+        <li>Nick: <strong>{{player}}</strong></li>
+        <form method ="POST" action = '{% url 'change_nick' %}'>
+    {% csrf_token %}
+{{form}}
+    <button type = 'submit' name="create" value = 'ok'>Change Nick</button>
+       </form>
     </ul>
 </div>
 
