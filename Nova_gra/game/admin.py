@@ -1,5 +1,9 @@
 from django.contrib import admin
-from .models import Game, Notification, Player
+
+from .models import Game, Notification
+
+from player.models import Player
+
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):

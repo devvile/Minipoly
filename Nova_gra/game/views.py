@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from .models import Game
+from player.models import Player
 from .forms import CreateGame
 from django.contrib.auth.decorators import login_required
 
 
-#bug
 @login_required
 def detail(request, id):
     game = Game.objects.get(pk=id)
@@ -22,7 +22,8 @@ def game_join(request, id):
 @login_required
 def new(request):
     if request.method == "POST":
-        hosted = Game(host=request.user)
+        player= Player.objects.get(name=request.user)
+        hosted = Game(host=player.nick)
         form = CreateGame(instance = hosted,data=request.POST)
         if form.is_valid():
                 form.save()
@@ -32,7 +33,8 @@ def new(request):
 @login_required
 def delete_room(request, id):
     game = Game.objects.get(id=id)
-    usr = request.user
+    player = Player.objects.get(name=request.user)
+    usr = player.nick
     if usr == game.host and game.players_ready == 0:
         if not game.is_played:
             game.delete()
@@ -60,7 +62,8 @@ def ready(request, id):
 def game_start(request, id):
     game = Game.objects.get(id=id)
     w_pokoju = game.players_ready
-    usr = request.user
+    player= Player.objects.get(name=request.user)
+    usr = player.nick
     if w_pokoju > 1 and game.host == usr:
         if not game.is_played:
             game.is_played = True

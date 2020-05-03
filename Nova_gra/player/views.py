@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from game.models import Game, Notification, Player
+from game.models import Game, Notification
+from .models import Player
 from .forms import ChangeNick
 from game.forms import CreateGame
 
@@ -15,20 +16,29 @@ def home(request, name):
 
 @login_required
 def account(request, acc):
-    usr =request.user.username
-    player = Player.objects.get(parent=usr)
+    usr =request.user
+    player = Player.objects.get(parent=usr.username)
     form = ChangeNick
-    return render(request, 'player/player_account.html',{'player':player,'form':form})
+    hs = Game.objects.filter(host=player.nick)
+    hs_nr = hs.count()
+    noti = Notification.objects.get(name=note)
+    args = {'player':player,'form':form, 'games':hs, 'games_nr':hs_nr,'notification':noti}
+    return render(request, 'player/player_account.html', args)
 
 @login_required
 def new_nick(request):
     usr = request.user.username
     player = Player.objects.get(parent=usr)
-    if request.method == "POST":
-        acc = player
-        form = ChangeNick(instance = acc,data=request.POST)
-        if form.is_valid():
+    hs = Game.objects.filter(host=player.nick)
+    hs_nr = hs.count()
+    if hs_nr == 0:
+        if request.method == "POST":
+            acc = player
+            form = ChangeNick(instance = acc,data=request.POST)
+            if form.is_valid():
                 form.save()
                 return redirect("player_account",{'player':player})
         else:
             return redirect("player_account",{'player':player})
+    else:
+        return redirect("player_account", {'player': player})

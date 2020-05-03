@@ -7,18 +7,28 @@ Account Settings
 {% block content %}
 <h1>Account Settings</h1>
 <hr>
-
+{{notification}}
 <hr>
 <div class = 'jumbotron'>
     <ul>
         <li>Account name:<strong> {{user.username}}</strong></li>
         <li>Nick: <strong>{{player}}</strong></li>
+        <li>
+            Games you're hosting: {{games_nr}}: {% for g in games %}
+            <strong>{{g.name}}</strong>,
+
+            {% endfor %}
+
+        </li>
+
         <form method ="POST" action = '{% url 'change_nick' %}'>
     {% csrf_token %}
 {{form}}
     <button type = 'submit' name="create" value = 'ok'>Change Nick</button>
        </form>
     </ul>
+    <hr>
+</div>
 </div>
 
 
