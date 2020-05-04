@@ -2,27 +2,30 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from game.models import Game, Notification
 from .models import Player
-from .forms import ChangeNick
+from .forms import ChangeNick, ChangeDescription
 from game.forms import CreateGame
 
 @login_required
 def home(request, name):
     usr = request.user.username
+    player = Player.objects.get(parent=usr)
     games = Game.objects.all()
     noti =  Notification.objects.get(name=name)
     text = noti.note
     form = CreateGame
-    return render(request,'player/home.html', {'usr': usr, 'games': games, 'form' : form, 'message': text})
+    args = {'usr': usr, 'games': games, 'form' : form, 'message': text,'player':player}
+    return render(request,'player/home.html', args)
 
 @login_required
-def account(request, acc):
+def account(request, acc, notif):
     usr =request.user
     player = Player.objects.get(parent=usr.username)
     form = ChangeNick
     hs = Game.objects.filter(host=player.nick)
     hs_nr = hs.count()
-    noti = Notification.objects.get(name=note)
-    args = {'player':player,'form':form, 'games':hs, 'games_nr':hs_nr,'notification':noti}
+    noti = Notification.objects.get(name=notif)
+    desc = player.description
+    args = {'player':player,'form':form, 'games':hs, 'games_nr':hs_nr,'notification':noti.note, 'description':desc}
     return render(request, 'player/player_account.html', args)
 
 @login_required
@@ -37,8 +40,18 @@ def new_nick(request):
             form = ChangeNick(instance = acc,data=request.POST)
             if form.is_valid():
                 form.save()
-                return redirect("player_account",{'player':player})
+                return redirect("player_account",player, 'nick_success')
         else:
-            return redirect("player_account",{'player':player})
+            return redirect("player_account",player, 'nick_not_valid')
     else:
-        return redirect("player_account", {'player': player})
+        noti = Notification.objects.get(name='nickchange_forbidden')
+        return redirect("player_account", player, noti.name)
+
+@login_required
+def edit_description(request, acc):
+    form = ChangeDescription
+    usr = request.user
+    player = Player.objects.get(parent=usr.username)
+    desc = player.description
+    args = {"form":form, "description":desc}
+    return render (request, 'player/player_edit_description.html',args)

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Description
+{% endblock %}
+
+{% block content %}
+<h2> Edit Description</h2>
+<hr>
+{{notification}}
+<hr>
+<div class = 'jumbotron'>
+    <h4> Current Description:</h4>
+    <hr>
+<p>
+    {{description}}
+</p>
+</div>
+<div class = 'jumbotron'>
+    <h4> Edit Description:</h4>
+    <hr>
+<form method = 'POST'>
+{% csrf_token%}
+    {{form}}
+
+<button type = 'submit'>Confirm Changes.</button>
+</form>
+</div>
+{% endblock %}

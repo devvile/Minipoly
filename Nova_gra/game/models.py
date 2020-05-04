@@ -1,4 +1,5 @@
 from django.db import models
+from player.models import Player
 
 class Game(models.Model):
     name = models.CharField(max_length=150)
@@ -6,6 +7,7 @@ class Game(models.Model):
     is_played = models.BooleanField(default = False)
     players_ready = models.IntegerField(default =0)
     max_players = models.IntegerField(default=4)
+    who_is_ready = models.ManyToManyField(Player)
 
     def __str__(self):
         return self.name

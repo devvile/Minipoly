@@ -8,7 +8,8 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def detail(request, id):
     game = Game.objects.get(pk=id)
-    return render( request, 'game/detail.html', {'game' : game})
+    players_ready= game.who_is_ready.all()
+    return render( request, 'game/detail.html', {'game' : game, 'players_ready':players_ready})
 
 
 @login_required
@@ -48,13 +49,24 @@ def delete_room(request, id):
 def ready(request, id):
     game = Game.objects.get(id=id)
     w_pokoju = game.players_ready
-    if w_pokoju < game.max_players:
-        if not game.is_played:
+    player = Player.objects.get(name=request.user)
+    usr = player.nick
+    bool_test = player in game.who_is_ready.all()
+    if not game.is_played and not bool_test :
+        if w_pokoju < game.max_players:
             game.players_ready += 1
             game.save()
+            guys_ready = game.who_is_ready
+            guys_ready.add(player)
             return redirect('detail',id = game.id)
         else:
-            return redirect('detail',id = game.id)
+            return redirect('detail', id=game.id)
+    elif not game.is_played and bool_test :
+        game.players_ready -= 1
+        game.save()
+        guys_ready = game.who_is_ready
+        guys_ready.remove(player)
+        return redirect('detail', id=game.id)
     else:
         return redirect('detail',id = game.id)
 

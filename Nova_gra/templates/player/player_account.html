@@ -10,6 +10,8 @@ Account Settings
 {{notification}}
 <hr>
 <div class = 'jumbotron'>
+    <h4>Account info:</h4>
+    <hr>
     <ul>
         <li>Account name:<strong> {{user.username}}</strong></li>
         <li>Nick: <strong>{{player}}</strong></li>
@@ -28,6 +30,12 @@ Account Settings
        </form>
     </ul>
     <hr>
+    <h4> Description:</h4>
+    <hr>
+    <p>
+        {{description}}
+    </p>
+    <a href='{% url "edit_description" user.username%}'>Edit Description</a>
 </div>
 </div>
 

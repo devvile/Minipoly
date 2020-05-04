@@ -21,8 +21,12 @@ Welcome to Mini Game!
     <p>
         DASDSASDLAKSD SPAM SPAM SDASMDSAMDSAM  MSADMASMD MDASMDSAMDSA
         <ul>
-        <li>Players Ready : {{game.players_ready}}</li>
+        <li>Players Ready :{{game.players_ready}} {% for player in players_ready %}
+            {{player}}
+            {% endfor %}
+        </li>
         <li>Max Players: {{game.max_players}}</li>
+
     </ul>
     </p>
     </div>
@@ -33,7 +37,7 @@ Welcome to Mini Game!
         <ul>
             <li><h4><a href ="{% url 'game_start' game.id%}"><span style ="color:gray; text-align:center;">Start Game</span></a></h4></li>
             <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:red; text-align:center;">End Game</span></a></h4></li>
-            <li><h4><a href ="{% url 'player_ready' game.id%}"><span style ="color:green; text-align:center;">Make Player Ready</span></a></h4></li>
+            <li><h4><a href ="{% url 'player_ready' game.id%}"><span style ="color:green; text-align:center;">Ready</span></a></h4></li>
             <li><h4><a href ="{% url 'delete_gam' game.id%}"><span style ="color:red; text-align:center;">Delete</span></a></h4></li>
             <li><h4><a href ="{% url 'home' 'pusty'%}"><strong>Home</strong></a></h4></li>
         </ul>
