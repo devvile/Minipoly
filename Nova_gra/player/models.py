@@ -7,5 +7,6 @@ class Player(models.Model):
     nick = models.CharField(max_length=10 )
     description = models.TextField(max_length = 300, null = True)
 
+
     def __str__(self):
         return self.nick

@@ -1,15 +1,17 @@
-from django.shortcuts import render, redirect
-from .models import Game
-from player.models import Player
-from .forms import CreateGame
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from player.models import Player
+
+from .forms import CreateGame
+from .models import Game
 
 
-@login_required
+#@login_required
 def detail(request, id):
     game = Game.objects.get(pk=id)
-    players_ready= game.who_is_ready.all()
-    return render( request, 'game/detail.html', {'game' : game, 'players_ready':players_ready})
+    players_ready = game.who_is_ready.all()
+    args = {'game' : game, 'players_ready':players_ready }
+    return render( request, 'game/detail.html', args)
 
 
 @login_required
@@ -51,7 +53,6 @@ def ready(request, id):
     w_pokoju = game.players_ready
     player = Player.objects.get(name=request.user)
     usr = player.nick
-    bool_test = player in game.who_is_ready.all()
     if not game.is_played and not bool_test :
         if w_pokoju < game.max_players:
             game.players_ready += 1

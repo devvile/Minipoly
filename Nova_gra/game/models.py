@@ -7,7 +7,7 @@ class Game(models.Model):
     is_played = models.BooleanField(default = False)
     players_ready = models.IntegerField(default =0)
     max_players = models.IntegerField(default=4)
-    who_is_ready = models.ManyToManyField(Player)
+    who_is_ready = models.ManyToManyField(Player, related_name="guys_ready", blank=True)
 
     def __str__(self):
         return self.name
