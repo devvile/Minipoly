@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from player.models import Player
-
+from match.models import Match
 from .forms import CreateGame
 from .models import Game
 
@@ -89,13 +89,20 @@ def game_start(request, id):
         if not game.is_played:
             game.is_played = True
             all_players  = list(game.who_is_ready.all())
-            game.first_player = all_players[0]
-            game.second_player = all_players[1]
+            match = Match.objects.create(name=game.name)
+            match.is_played = True
+            match.first_player = all_players[0]
+            match.second_player = all_players[1]
+            for i in game.who_is_ready.all():
+                match.who_is_playing.add(i)
+                game.who_is_ready.remove(i)
             if w_pokoju >= 3:
-                game.third_player=all_players[2]
-                if w_pokoju ==4:
-                    game.forth_player == all_players[3]
+                match.third_player=all_players[2]
+            if w_pokoju ==4:
+                    match.forth_player == all_players[3]
+            game.players_ready = 0
             game.save()
+            match.save()
             return redirect('detail', id=game.id)
         else:
             return redirect('detail', id=game.id)

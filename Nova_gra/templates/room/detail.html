@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Welcome to Mini Game!
+{% endblock %}
+
+{% block content %}
+<h1><span style ="color:grey">{{game.name}}</span></h1>
+<hr>
+<h4>Hosted by {{game.host}}/
+ {% if game.is_played %}
+    <span style= "color:green">Game has already started!</span>
+    {% else %}
+    <span style= "color:gray">Game hasn't started yet.</span>
+    {% endif %}
+</h4>
+<hr>
+<div class = 'row'>
+    <div class = 'col-sm-8'>
+    <div class = 'jumbotron'>
+    <p>
+        DASDSASDLAKSD SPAM SPAM SDASMDSAMDSAM  MSADMASMD MDASMDSAMDSA
+        <ul>
+        <li>Players Ready :{{game.players_ready}} ({% for player in players_ready %}
+            {{player}},
+            {% endfor %}
+            )
+        </li>
+        <li>Max Players: {{game.max_players}}</li>
+
+    </ul>
+    </p>
+    </div>
+    </div>
+<div class = "col-sm-4">
+    <div class = 'jumbotron'>
+        <div class = 'row'><h4 style="text-align:center">Menu</h4>
+        <ul>
+            {% if game.is_played %}
+            <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:blue; text-align:center;">End Turn</span></a></h4></li>
+            <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:red; text-align:center;">End Game</span></a></h4></li>
+            <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:gray; text-align:center;">Leave Game</span></a></h4></li>
+            {% else %}
+
+            <li><h4><a href ="{% url 'game_start' game.id%}"><span style ="color:gray; text-align:center;">Start Game</span></a></h4></li>
+            <li><h4><a href ="{% url 'player_ready' game.id%}"><span style ="color:green; text-align:center;">Ready</span></a></h4></li>
+            {% if user.username == game.host %}
+            <li><h4><a href ="{% url 'delete_gam' game.id%}"><span style ="color:red; text-align:center;">Delete</span></a></h4></li>
+            {% endif %}
+            {% endif %}
+
+
+
+            <li><h4><a href ="{% url 'home' 'pusty'%}"><strong>Home</strong></a></h4></li>
+        </ul>
+    </div>
+        </div>
+</div>
+{% endblock %}
