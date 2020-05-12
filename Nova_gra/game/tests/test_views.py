@@ -10,8 +10,10 @@ class TestViews(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(username='testuser', password='12345')
-        self.user = User.objects.create_user(username='testuser2', password='12345')
+        self.user2 = User.objects.create_user(username='testuser2', password='12345')
+        usr = self.user
         self.client.login(username='testuser', password='12345')
+        self.player = Player.objects.create(name=usr, parent = usr.username, nick = 'nie')
 
 
     def test_authorisation(self):
@@ -27,10 +29,21 @@ class TestViews(TestCase):
     def test_join_empty_room(self):
 
         game = Game.objects.create(name='empty',host='dottore',is_played=False,max_players=4,players_ready=0)
-        self.join_url_empty = reverse('game_join', args=[game.id])
+        self.join_url_empty = reverse('detail', args=[game.id])
         response = self.client.get(self.join_url_empty, follow=True)
 
         self.assertEquals(response.request['PATH_INFO'],'/game/1/')
+
+
+    def test_start_room(self):
+
+        game = Game.objects.create(name='start',host= self.user,is_played=False,max_players=4,players_ready=2)
+        self.start_room = reverse('game_start', args=[game.id])
+        response = self.client.get(self.start_room, follow=True)
+        self.status = game.is_played
+
+        self.assertEquals(self.status,True)
+
 
 
 

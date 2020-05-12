@@ -19,7 +19,7 @@ Home Page
           <hr>
     {% for g in games %}
 
-        <li><a href="{% url 'game_join' g.id %}">{{g.name}}</a>
+        <li><a href="{% url 'detail' g.id %}">{{g.name}}</a>
         {% if g.players_ready == 4 %}
             <span style ="color:red"><strong>Full</strong></span>
             {% else %}
