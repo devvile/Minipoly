@@ -56,10 +56,12 @@ def ready(request, id):
     player = Player.objects.get(name=request.user)
     usr = player.nick
     bool_test = player in game.who_is_ready.all()
-    if not game.is_played and not bool_test:
+    if not game.is_played and not bool_test and not player.in_game:
         if w_pokoju < game.max_players:
             game.players_ready += 1
             game.save()
+            player.in_game = True
+            player.save()
             guys_ready = game.who_is_ready
             guys_ready.add(player)
             return redirect('detail', id=game.id)
@@ -70,6 +72,8 @@ def ready(request, id):
         guys_ready = game.who_is_ready
         guys_ready.remove(player)
         game.save()
+        player.in_game = False
+        player.save()
         return redirect('detail', id=game.id)
     else:
         return redirect('detail', id=game.id)
@@ -84,6 +88,13 @@ def game_start(request, id):
     if w_pokoju > 1 and game.host == usr:
         if not game.is_played:
             game.is_played = True
+            all_players  = list(game.who_is_ready.all())
+            game.first_player = all_players[0]
+            game.second_player = all_players[1]
+            if w_pokoju >= 3:
+                game.third_player=all_players[2]
+                if w_pokoju ==4:
+                    game.forth_player == all_players[3]
             game.save()
             return redirect('detail', id=game.id)
         else:
@@ -95,7 +106,8 @@ def game_start(request, id):
 @login_required
 def game_end(request, id):
     game = Game.objects.get(id=id)
-    if game.is_played:
+    bool_test = request.user.username == game.host
+    if game.is_played and bool_test:
         guys_ready= game.who_is_ready
         for i in guys_ready.all():
             guys_ready.remove(i)

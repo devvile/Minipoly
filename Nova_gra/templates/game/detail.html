@@ -37,8 +37,9 @@ Welcome to Mini Game!
         <div class = 'row'><h4 style="text-align:center">Menu</h4>
         <ul>
             {% if game.is_played %}
+            <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:blue; text-align:center;">End Turn</span></a></h4></li>
             <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:red; text-align:center;">End Game</span></a></h4></li>
-            <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:red; text-align:center;">Leave Game</span></a></h4></li>
+            <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:gray; text-align:center;">Leave Game</span></a></h4></li>
             {% else %}
 
             <li><h4><a href ="{% url 'game_start' game.id%}"><span style ="color:gray; text-align:center;">Start Game</span></a></h4></li>
