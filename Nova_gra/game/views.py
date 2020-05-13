@@ -95,6 +95,7 @@ def game_start(request, id):
             game.second_player = all_players[1]
             for i in game.who_is_ready.all():
                 game.who_is_playing.add(i)
+                game.turn_of_player = game.first_player
                 game.who_is_ready.remove(i)
             if w_pokoju >= 3:
                 game.third_player=all_players[2]
@@ -154,3 +155,8 @@ def game_leave(request, id):
     else:
         return redirect('detail', id=game.id)
 
+
+@login_required
+def game_end_turn(request, id):
+    game = Game.objects.get(id=id)
+    return redirect('detail', id=game.id)

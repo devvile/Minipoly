@@ -27,7 +27,9 @@ Welcome to Mini Game!
                 {% for player in players_playing %}
                 {{player}},
                 {% endfor %}
-        )
+
+        )<hr>
+             {{game.turn_of_player}} turn!
             {% else %}
             <li>Players Ready :{{game.players_ready}} ({% for player in players_ready %}
                 {{player}},
@@ -47,7 +49,7 @@ Welcome to Mini Game!
         <div class = 'row'><h4 style="text-align:center">Menu</h4>
         <ul>
             {% if player_in_game %}
-            <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:blue; text-align:center;">End Turn</span></a></h4></li>
+            <li><h4><a href ="{% url 'game_end_turn' game.id%}"><span style ="color:blue; text-align:center;">End Turn</span></a></h4></li>
             <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:red; text-align:center;">End Game</span></a></h4></li>
             <li><h4><a href ="{% url 'game_leave' game.id%}"><span style ="color:gray; text-align:center;">Leave Game</span></a></h4></li>
             {% elif  game.is_played %}

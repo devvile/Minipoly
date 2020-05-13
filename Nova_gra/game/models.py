@@ -13,6 +13,9 @@ class Game(models.Model):
     third_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='trzeci', blank=True, null=True)
     forth_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='czwarty', blank=True, null=True)
     who_is_playing = models.ManyToManyField(Player, related_name="guys_playing", blank=True)
+    turn = models.IntegerField(default=1)
+    turn_of_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='czyja_tura', blank=True, null=True)
+    how_many_players=models.IntegerField(default=3)
 
 
 
