@@ -7,7 +7,7 @@ from player.models import Player
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
-    list_display = ( 'id','name','nick')
+    list_display = ( 'id','name','nick','in_game')
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
