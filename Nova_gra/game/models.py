@@ -8,6 +8,10 @@ class Game(models.Model):
     players_ready = models.IntegerField(default =0)
     max_players = models.IntegerField(default=4)
     who_is_ready = models.ManyToManyField(Player, related_name="guys_ready", blank=True)
+    first_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='pierwszy', blank=True, null=True)
+    second_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='drugi', blank=True, null=True)
+    third_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='trzeci', blank=True, null=True)
+    forth_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='czwarty', blank=True, null=True)
 
 
     def __str__(self):
