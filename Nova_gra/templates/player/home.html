@@ -20,10 +20,10 @@ Home Page
     {% for g in games %}
 
         <li><a href="{% url 'detail' g.id %}">{{g.name}}</a>
-        {% if g.players_ready == 4 %}
+        {% if g.how_many_players_ready == 4 %}
             <span style ="color:red"><strong>Full</strong></span>
             {% else %}
-            {{g.players_ready}} players ready.
+            {{g.how_many_players_ready}} players ready.
             {% endif %}
               {% if g.is_played %}
             <span style ="color:red"><strong>Game Started</strong></span>

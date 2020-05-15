@@ -37,7 +37,7 @@ class TestViews(TestCase):
 
     def test_start_room(self):
 
-        game = Game.objects.create(name='start',host= self.user,is_played=False,max_players=4,players_ready=2)
+        game = Game.objects.create(name='start',host= self.user.username,is_played=False,max_players=4,players_ready=2)
         self.start_room = reverse('game_start', args=[game.id])
         response = self.client.get(self.start_room, follow=True)
         self.status = game.is_played

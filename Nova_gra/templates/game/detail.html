@@ -31,7 +31,7 @@ Welcome to Mini Game!
         )<hr>
              {{game.turn_of_player}} turn!
             {% else %}
-            <li>Players Ready :{{game.players_ready}} ({% for player in players_ready %}
+            <li>Players Ready :{{game.how_many_players_ready}} ({% for player in players_ready %}
                 {{player}},
                 {% endfor %}
             )
