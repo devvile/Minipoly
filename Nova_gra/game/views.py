@@ -112,7 +112,9 @@ def game_leave(request, id):
     player=Player.objects.get(parent=request.user.username)
     if game.is_played:
         guys_playing = game.who_is_playing
+        game.turn_of_player = game.next_player
         guys_playing.remove(player)
+        game.save()
         player.in_game = False
         player.save()
         if game.who_is_playing.count()<2:
@@ -124,6 +126,7 @@ def game_leave(request, id):
                 j.save()
             return redirect('detail', id=game.id)
         else:
+            #zmiana tury
             return redirect('detail', id=game.id)
     else:
         return redirect('detail', id=game.id)
