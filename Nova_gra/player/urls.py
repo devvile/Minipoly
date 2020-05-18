@@ -4,7 +4,7 @@ from Nova_gra.views import home_first
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
-    path('home/<str:name>', home, name='home'),
+    path('home/s', home, name='home'),
     path('home', home_first, name='home_first'),
     path('account/<str:acc>=<str:notif>', account, name="player_account"),
     path('login', LoginView.as_view(template_name="player/login_form.html"), name='player_login'),

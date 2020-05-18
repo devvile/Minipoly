@@ -6,14 +6,12 @@ from .forms import ChangeNick, ChangeDescription
 from game.forms import CreateGame
 
 @login_required
-def home(request, name):
+def home(request):
     usr = request.user.username
     player = Player.objects.get(parent=usr)
     games = Game.objects.all()
-    noti =  Notification.objects.get(name=name)
-    text = noti.note
     form = CreateGame
-    args = {'usr': usr, 'games': games, 'form' : form, 'message': text,'player':player}
+    args = {'usr': usr, 'games': games, 'form' : form,'player':player}
     return render(request,'player/home.html', args)
 
 @login_required
