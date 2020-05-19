@@ -32,6 +32,5 @@ class TestUrls(SimpleTestCase):
 
     def test_game_end_is_resolved(self):
         url = reverse("game_end",args=[2])
-        print(resolve(url))
         self.assertEquals(resolve(url).func,game_end)
 
