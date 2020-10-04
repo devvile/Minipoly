@@ -1,60 +1,62 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
-Welcome to Mini Game!
+
 {% endblock %}
-
-
 {% block content %}
-<h1><p class="gray">{{game.name}}</p></h1>
-<hr>
-<h4>Hosted by {{game.host}}/
- {% if game.is_played %}
-    <p class = "green">Game has already started!</p>
-    {% else %}
-    <p class = "gray">Game hasn't started yet.</p>
-    {% endif %}
-</h4>
-<hr>
-<div class = 'row'>
-    <div class = 'col-sm-8'>
-    <div class = 'jumbotron'>
-    <p>
-        DASDSASDLAKSD SPAM SPAM SDASMDSAMDSAM  MSADMASMD MDASMDSAMDSA
-        <ul>
-        <li>Players Ready :{{game.players_ready}} ({% for player in players_ready %}
-            {{player}},
-            {% endfor %}
-            )
-        </li>
-        <li>Max Players: {{game.max_players}}</li>
-
-    </ul>
-    </p>
-    </div>
-    </div>
-<div class = "col-sm-4">
-    <div class = 'jumbotron'>
-        <div class = 'row'><h4 style="text-align:center">Menu</h4>
-        <ul>
-            {% if game.is_played %}
-            <li><a href ="{% url 'game_end' game.id%}"><p class = '_menu_item --blue'>End Turn</p></a></li>
-            <li><a href ="{% url 'game_end' game.id%}"><p class = '_menu_item --red'>End Game</p></a></li>
-            <li><a href ="{% url 'game_end' game.id%}"><p class = '_menu_item --gray'>Leave Game</p></a></li>
+<h1 class="gray">{{game.name}}</h1>
+<div class="content-container">
+    <section class="game-section board">
+        <h2>board</h2>
+    </section>
+    <section class="game-section sidebar">
+        <h4>Hosted by {{game.host}}/
+        {% if game.is_played %}
+        <p class = "green">Game has already started!</p>
             {% else %}
-
-            <li><a href ="{% url 'game_start' game.id%}"><a class='_menu_item --gray'>Start Game</p></a></li>
-            <li><a href ="{% url 'player_ready' game.id%}"><p class ='_menu_item --green'>Ready</p></a></li>
-            {% if user.username == game.host %}
-            <li><a href ="{% url 'delete_gam' game.id%}"><p class = '_menu_item --red'>Delete</p></a></li>
+        <p class = "gray">Game hasn't started yet.</p>
             {% endif %}
-            {% endif %}
+        </h4>
+        <hr>
+        <div class = 'row'>
+            <p class ='test'>
+               MORDO AKSD SPAM SPAM SDASMDSAMDSAM  MSADMASMD MDASMDSAMDSA
+            <ul>
+            <li>Players Ready :{{game.players_ready}} ({% for player in players_ready %}
+                {{player}},
+                {% endfor %}
+                )
+            </li>
+            <li>Max Players: {{game.max_players}}</li>
 
-
-
-            <li><h4><a href ="{% url 'home' 'pusty'%}"><strong>Home</strong></a></h4></li>
         </ul>
-    </div>
+        </p>
         </div>
+        </div>
+    <div class = "col-sm-4">
+        <div class = 'jumbotron'>
+            <div class = 'row'><h4 style="text-align:center">Menu</h4>
+            <ul>
+                {% if game.is_played %}
+                <li><a href ="{% url 'game_end' game.id%}"><p class = '_menu_item --blue'>End Turn</p></a></li>
+                <li><a href ="{% url 'game_end' game.id%}"><p class = '_menu_item --red'>End Game</p></a></li>
+                <li><a href ="{% url 'game_end' game.id%}"><p class = '_menu_item --gray'>Leave Game</p></a></li>
+                {% else %}
+
+                <li><a href ="{% url 'game_start' game.id%}"><a class='_menu_item --gray'>Start Game</p></a></li>
+                <li><a href ="{% url 'player_ready' game.id%}"><p class ='_menu_item --green'>Ready</p></a></li>
+                {% if user.username == game.host %}
+                <li><a href ="{% url 'delete_gam' game.id%}"><p class = '_menu_item --red'>Delete</p></a></li>
+                {% endif %}
+                {% endif %}
+
+
+
+                <li><h4><a href ="{% url 'home' 'pusty'%}"><strong>Home</strong></a></h4></li>
+            </ul>
+    </div>
+    </div>
+    </section>  
 </div>
 {% endblock %}
