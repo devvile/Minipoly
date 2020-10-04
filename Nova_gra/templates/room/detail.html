@@ -3,11 +3,14 @@
 {% block title %}
 Welcome to Mini Game!
 {% endblock %}
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{%block css%}
 
-
+{% endblock %}
 {% block content %}
-<h1><p class="gray">{{game.name}}</p></h1>
+<h1 class="gray">{{game.name}}</h1>
 <hr>
+
 <h4>Hosted by {{game.host}}/
  {% if game.is_played %}
     <p class = "green">Game has already started!</p>
@@ -17,8 +20,6 @@ Welcome to Mini Game!
 </h4>
 <hr>
 <div class = 'row'>
-    <div class = 'col-sm-8'>
-    <div class = 'jumbotron'>
     <p>
         DASDSASDLAKSD SPAM SPAM SDASMDSAMDSAM  MSADMASMD MDASMDSAMDSA
         <ul>
