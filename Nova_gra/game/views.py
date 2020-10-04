@@ -5,7 +5,7 @@ from .forms import CreateGame
 from .models import Game
 
 
-# @login_required
+@login_required
 def detail(request, id):
     game = Game.objects.get(pk=id)
     player = Player.objects.get(parent=request.user.username)

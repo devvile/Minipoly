@@ -9,71 +9,36 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-        <style>
-        body {
-                padding-top: 50px;
-                padding-bottom: 20px;
-
-            }
-        footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: black;
-        color: white;
-        text-align: center;
-        }
-
-
-        </style>
-        <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap" rel="stylesheet">
 
         <script src="{% static 'js/vendor/modernizr-2.8.3-respond-1.4.2.min.js' %}"></script>
-    </head>
-    <body>
-    <div class ="bg">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-
-             </div>
-        <ul class ='nav navbar-nav navbar-right'>
-            <li><a class="navbar-brand" href="/">Home</a></li>
-            {% if user.is_authenticated %}
-           <li><a class="navbar-brand" href="{% url 'player_account' user.username "pusty"%}">Account</a></li>
-            <li><a class="navbar-brand" href="{% url 'player_logout' %}">Logout</a></li>
-            {% else %}
-            <li><a class="navbar-brand" href="{% url 'player_login' %}"> Login </a> </li>
-            {% endif %}
- </div>
-
-
-    </nav>
-
-    <div class="container">
-
-    {% block content %}
-    {% endblock %}
-
+</head>
+<body>
+   <nav class="navbar">
+        <ul class ='navbar-list'>
+            <li><a class="navbar-item" href="/">Home</a></li>
+                {% if user.is_authenticated %}
+            <li><a class="navbar-item" href="{% url 'player_account' user.username "pusty"%}">Account</a></li>
+            <li><a class="navbar-item" href="{% url 'player_logout' %}">Logout</a></li>
+                {% else %}
+            <li><a class="navbar-item" href="{% url 'player_login' %}"> Login </a> </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <section class='s_main'>
+            <div class ="bg">
+                <div class="content-container">
+                {% block content %}
+                </div>
+            </div>
+            {% endblock %}
+        </section>
     </div>
-
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
-
-        <script src="{% static 'js/vendor/bootstrap.min.js' %}"></script>
-
-        <script src="{% static 'js/main.js' %}"></script>
     <footer>
         Made by .tore
     </footer>
-    </body>
+
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
 </html>
