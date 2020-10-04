@@ -1,27 +1,28 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
-Welcome to Mini Game!
+Mini Game: {{game.name}}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/detail.css' %}"> 
 {% endblock %}
 
 {% block content %}
-<h1><span style ="color:grey">{{game.name}}</span></h1>
-<hr>
-<h4>Hosted by {{game.host}}/
- {% if game.is_played %}
-    <span style= "color:green">Game has already started!</span>
-    {% else %}
-    <span style= "color:gray">Game hasn't started yet.</span>
-    {% endif %}
-</h4>
-<hr>
-<div class = 'row'>
-    <div class = 'col-sm-8'>
-    <div class = 'jumbotron'>
-    <p>
-        DASDSASDLAKSD SPAM SPAM SDASMDSAMDSAM  MSADMASMD MDASMDSAMDSA
+<div class="content-container"></div>
+    <section class="game_section game_section_board">
+        <h1>board</h1>
+    </section>
+    <section class = "game_section game_section_sidebar">
+        <h4>Hosted by {{game.host}}</h4>
+        {% if game.is_played %}
+        <h5 class = "--green"">Game has already started!</h5>
+            {% else %}
+        <h5 class  = "--gray">Game hasn't started yet.</h5>
+            {% endif %}
+        <hr>
 
-        <ul>
             {% if game.is_played %}
                 Players in game: (
                 {% for player in players_playing %}
@@ -29,6 +30,7 @@ Welcome to Mini Game!
                 {% endfor %}
 
         )<hr>
+        <ul>
              {{game.turn_of_player}} turn!
             {% else %}
             <li>Players Ready :{{game.how_many_players_ready}} ({% for player in players_ready %}
@@ -70,5 +72,6 @@ Welcome to Mini Game!
         </ul>
     </div>
         </div>
+        </section>
 </div>
 {% endblock %}

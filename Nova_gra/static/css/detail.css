@@ -1,5 +1,21 @@
-/* DETAIL */
+.content-container {
+  display: grid;
+  grid-template-areas: "board board sidebar";
+}
 
+.game_section {
+  height: 100%;
+  border: 5px solid black;
+}
+
+.game_section_board {
+  background-color: red;
+  grid-area: board;
+}
+.game_section_sidebar {
+  background-color: coral;
+  grid-area: sidebar;
+}
 .--blue {
   color: blue;
 }
