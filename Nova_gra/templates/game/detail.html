@@ -11,20 +11,22 @@ Mini Game: {{game.name}}
 
 {% block content %}
     <section class="game_section game_section_board">
-        <h1>board</h1>
     </section>
     <section class = "game_section game_section_sidebar">
         <div class="game_section_sidebar_top">
-            <article class="sidebar_top__player_info">
-                <h2>Player INFO</h2>
+            <article class="sidebar_top__sidebar_header">
+                <h2>Dottore</h2>
             </article>
-            <article class="sidebar_top__game_stats">
-                <h2>Player STATS</h2>
+            <article class="sidebar_top__player_info __sidebar_item">
+                <h3>Player INFO</h2>
             </article>
-            <article class="sidebar_top__game_actions">
-                <h2>Player Actions</h2>
+            <article class="sidebar_top__game_stats __sidebar_item">
+                <h3>Player STATS</h2>
             </article>
-            <article class="sidebar_top__global_actions">
+            <article class="sidebar_top__game_actions __sidebar_item">
+                <h3>Player Actions</h2>
+            </article>
+            <article class="sidebar_top__global_actions  __sidebar_item">
             <ul>
                 {% if player_in_game %}
                 <li><h4 class="--green"><a href ="{% url 'game_end_turn' game.id%}">End Turn</span></a></h4></li>
@@ -68,6 +70,8 @@ Mini Game: {{game.name}}
                 <li>Max Players: {{game.max_players}}</li>
                     {% endif %}
             </ul>
+            <hr>
+            <p class='Notification'>LOREM ISPUMS COMENKTIZEJE<p>
         </div>
     </section>
 </div>

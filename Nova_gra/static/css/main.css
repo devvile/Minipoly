@@ -11,7 +11,10 @@ body {
 
 :root {
   --main-bg-color: hsla(0, 0%, 70%, 50%);
-  --main-bars-color: rgba(39, 26, 26, 0.9);
+  --main-bars-color: rgba(59, 50, 50, 0.9);
+  --main-color-alpha: rgba(39, 26, 26, 0.3);
+  --main-gold-border: #f69c55;
+  --font-color: rgb(238, 232, 232);
 }
 
 .navbar {
@@ -19,7 +22,7 @@ body {
   height: 7vh;
   width: 100%;
   background-color: var(--main-bars-color);
-  color: whitesmoke;
+  color: var(--font-color);
 }
 
 .navbar-list {
@@ -36,8 +39,8 @@ body {
   align-items: center;
   height: 100%;
   width: 100%;
-  border: 2px solid #f69c55;
-  color: whitesmoke;
+  border: 2px solid var(--main-gold-border);
+  color: var(--font-color);
   text-decoration: none;
   margin: 6px;
   padding: 10px;
@@ -66,7 +69,7 @@ body {
 .content-container {
   margin: 25px;
   padding: 25px;
-  height: 85vh;
+  height: 84vh;
   background-color: var(--main-bg-color);
   border-radius: 15px;
 }
@@ -75,7 +78,7 @@ footer {
   position: absolute;
   height: 4vh;
   width: 100vw;
-  color: whitesmoke;
+  color: var(--font-color);
   background-color: var(--main-bars-color);
   text-align: center;
 }
