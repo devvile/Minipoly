@@ -16,6 +16,34 @@
   background-color: coral;
   grid-area: sidebar;
 }
+.game_section_sidebar_top {
+  display: flex;
+  flex-direction: column;
+  height: 70%;
+  align-items: center;
+}
+.sidebar_top__player_info {
+  background-color: aqua;
+  height: 20%;
+  border: 2px solid black;
+}
+.sidebar_top__game_stats {
+  background-color: blue;
+  height: 20%;
+  border: 2px solid black;
+}
+
+.sidebar_top__game_actions {
+  background-color: lavenderblush;
+  height: 30%;
+  border: 2px solid black;
+}
+
+.sidebar_top__global_actions {
+  background-color: yellow;
+  height: 30%;
+  border: 2px solid black;
+}
 .--blue {
   color: blue;
 }
