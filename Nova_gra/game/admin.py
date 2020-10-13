@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Game, Notification
+from .models import Game, Notification, Field, FieldType
 
 from player.models import Player
 
@@ -17,4 +17,9 @@ class GameAdmin(admin.ModelAdmin):
 @admin.register(Notification)
 class NoteAdmin(admin.ModelAdmin):
     list_display = ( 'id','name', 'note')
+
+admin.site.register(Field)
+admin.site.register(FieldType)
+
+
 

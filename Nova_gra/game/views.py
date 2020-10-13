@@ -2,15 +2,16 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from player.models import Player
 from .forms import CreateGame
-from .models import Game
+from .models import Game, Field
 
 
 @login_required
 def detail(request, id):
     game = Game.objects.get(pk=id)
     player = Player.objects.get(parent=request.user.username)
+    fields = Field.objects.all
     args = {'game': game, 'players_ready': game.players_ready, 'players_playing':game.players_playing,
-            'player_in_game':player in game.players_playing}
+            'player_in_game':player in game.players_playing, 'fields':fields}
     return render(request, 'game/detail.html', args)
 
 

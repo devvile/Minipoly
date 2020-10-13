@@ -11,6 +11,11 @@ Mini Game: {{game.name}}
 
 {% block content %}
     <section class="game_section game_section_board">
+        <ul>
+        {%for field in fields %}
+       <li> {{field.name}}</li>
+        {% endfor %}
+        </ul>
     </section>
     <section class = "game_section game_section_sidebar">
         <div class="game_section_sidebar_top">
@@ -24,25 +29,30 @@ Mini Game: {{game.name}}
                 <h3>Player STATS</h2>
             </article>
             <article class="sidebar_top__game_actions __sidebar_item">
-                <h3>Player Actions</h2>
+                <h3>Player Actions</h3>
+                {% if player_in_game %}
+                <ul><li><h4 class="--green"><a href ="{% url 'game_end_turn' game.id%}">End Turn</span></a></h4></li></ul>
+                {% endif %}
             </article>
             <article class="sidebar_top__global_actions  __sidebar_item">
             <ul>
                 {% if player_in_game %}
-                <li><h4 class="--green"><a href ="{% url 'game_end_turn' game.id%}">End Turn</span></a></h4></li>
-                <li><h4><a href ="{% url 'game_end' game.id%}"><span style ="color:red; text-align:center;">End Game</span></a></h4></li>
-                <li><h4><a href ="{% url 'game_leave' game.id%}"><span style ="color:gray; text-align:center;">Leave Game</span></a></h4></li>
+                <li><a href ="{% url 'game_end' game.id%}"><h4></h4>End Game</h4></a></li>
+                <li><a href ="{% url 'game_leave' game.id%}"><h4>Leave Game</h4></a></li>
                 {% elif  game.is_played %}
     
-                <strong>Spectator Mode</strong>
+                <h4>Spectator Mode</h4>
                     {% else %}
-                    <li><h4><a href ="{% url 'game_start' game.id%}"><span style ="color:gray; text-align:center;">Start Game</span></a></h4></li>
-                    <li><h4><a href ="{% url 'player_ready' game.id%}"><span style ="color:green; text-align:center;">Ready</span></a></h4></li>
+                    <li><button class="action_item __start">Start Game</button></li>
+                    <li><button class="action_item __ready" > Ready</button></li>
+
+                    <!--<a href ="{% url 'game_start' game.id%}"-->
+                    <!--<a href ="{% url 'player_ready' game.id%}"></a>-->
                     {% endif %}
                     {% if user.username == game.host %}
-                <li><h4 class="--red"></h4><a href ="{% url 'delete_gam' game.id%}">Delete</a></h4></li>
+                <li class="action_item"><a href ="{% url 'delete_gam' game.id%}"><h4>Delete</h4></a></li>
                     {% endif %}
-                <li><h4><a href ="{% url 'home'%}"><strong>Home</strong></a></h4></li>
+                <li class="action_item"><a href ="{% url 'home'%}"><h4>Home</h4></a></li>
             </ul>
         </article>
         </div>
@@ -50,9 +60,9 @@ Mini Game: {{game.name}}
         <div class="game_section_sidebar_bottom">
             <h4>Hosted by {{game.host}}</h4>
             {% if game.is_played %}
-            <h5 class = "--green"">Game has already started!</h5>
+            <h5 class = "notification-item">Game has already started!</h5>
                 {% else %}
-            <h5 class  = "--gray">Game hasn't started yet.</h5>
+            <h5 class  = "notification-item">Game hasn't started yet.</h5>
                 {% endif %}
             <hr>
                 {% if game.is_played %}
@@ -71,7 +81,7 @@ Mini Game: {{game.name}}
                     {% endif %}
             </ul>
             <hr>
-            <p class='Notification'>LOREM ISPUMS COMENKTIZEJE<p>
+            <p class="notification-item">LOREM ISPUMS COMENKTIZEJE<p>
         </div>
     </section>
 </div>
