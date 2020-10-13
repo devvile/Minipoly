@@ -1,15 +1,17 @@
 from django.db import models
 from player.models import Player
 
+
 class Game(models.Model):
     name = models.CharField(max_length=150)
     host = models.CharField(max_length=10)
-    is_played = models.BooleanField(default = False)
+    is_played = models.BooleanField(default=False)
     max_players = models.IntegerField(default=4)
     who_is_ready = models.ManyToManyField(Player, related_name="guys_ready", blank=True)
     who_is_playing = models.ManyToManyField(Player, related_name="guys_playing", blank=True)
     turn = models.IntegerField(default=1)
-    turn_of_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='czyja_tura', blank=True, null=True)
+    turn_of_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='czyja_tura', blank=True,
+                                       null=True)
 
     @property
     def how_many_players_ready(self):
@@ -48,21 +50,19 @@ class Game(models.Model):
     def forth_player(self):
         return self.players_playing[3]
 
-
     @property
     def next_player(self):
         x = self.players_playing.index(self.turn_of_player)
-        nast= x+1
+        nast = x + 1
         if nast > (self.how_many_players_playing - 1):
-            self.turn +=1
+            self.turn += 1
             self.save()
             return self.players_playing[0]
         else:
-            return self.players_playing[x+1]
+            return self.players_playing[x + 1]
 
     def __str__(self):
         return self.name
-
 
 
 class Notification(models.Model):
@@ -72,6 +72,7 @@ class Notification(models.Model):
     def __str__(self):
         return self.name
 
+
 class FieldType(models.Model):
     name = models.CharField(max_length=150)
 
@@ -80,12 +81,12 @@ class FieldType(models.Model):
 
 
 class Field(models.Model):
+    nr = models.IntegerField(default = None, blank = True, null = True)
     name = models.CharField(max_length=150)
-    owner = models.ForeignKey(Player, on_delete= models.CASCADE,related_name='fieldOwner',null= True, default=None)
+    owner = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='fieldOwner', null=True, default=None, blank=True)
+    typeof = models.ForeignKey(FieldType, on_delete=models.CASCADE, related_name='typeOfField', null=True, default= None, blank=True)
     price = models.IntegerField(default=100)
     grade = models.IntegerField(default=1)
 
     def __str__(self):
         return self.name
-
-
