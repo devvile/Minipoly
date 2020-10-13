@@ -23,6 +23,7 @@ body {
   width: 100%;
   background-color: var(--main-bars-color);
   color: var(--font-color);
+  z-index: 100;
 }
 
 .navbar-list {

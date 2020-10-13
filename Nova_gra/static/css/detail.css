@@ -1,6 +1,6 @@
 .content-container {
   display: grid;
-  grid-template-areas: "board board board sidebar";
+  grid-template-areas: "board board sidebar";
 }
 
 .game_section {
@@ -10,10 +10,51 @@
 
 .game_section_board {
   grid-area: board;
+  display: grid;
+  grid-template-areas:
+    "r1 r1 r1 r1 r1 r1"
+    "r4 vo vo vo vo r2"
+    "r4 vo vo vo vo r2"
+    "r4 vo vo vo vo r2"
+    "r4 vo vo vo vo r2"
+    "r3 r3 r3 r3 r3 r3";
+  grid-gap: 0px 0px;
+  width: 50vw;
+}
+
+.r1 {
+  background-color: red;
+  grid-area: r1;
+}
+
+.r2 {
+  background-color: green;
+  grid-area: r2;
+}
+.r3 {
+  background-color: pink;
+  grid-area: r3;
+}
+.r4 {
+  background-color: yellow;
+  grid-area: r4;
+}
+.game_field {
+  border: 2px solid var(--main-bars-color);
+  width: 100px;
+  height: 100px;
+  z-index: 10;
+}
+
+.inner_board {
+  background-color: red;
+  width: 200px;
+  height: 200px;
 }
 
 .game_section_sidebar {
   grid-area: sidebar;
+  width: 450px;
 }
 .game_section_sidebar_top {
   display: grid;
@@ -63,6 +104,34 @@
   border: 2px solid var(--main-bars-color);
   background-color: var(--main-color-alpha);
   color: var(--font-color);
+}
+
+.__sidebar_menu_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.__sidebar_item_action {
+  border: 2px solid var(--main-gold-border);
+  background-color: var(--main-color-alpha);
+  width: 100%;
+  text-align: center;
+}
+
+.__sidebar_item_action a {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+.game_section_sidebar_bottom {
+  padding: 10px;
+  color: var(--font-color);
+  background-color: var(--main-bars-color);
+}
+
+.--menu {
+  list-style: none;
 }
 
 .--blue {
