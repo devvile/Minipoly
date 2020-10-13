@@ -71,3 +71,21 @@ class Notification(models.Model):
 
     def __str__(self):
         return self.name
+
+class FieldType(models.Model):
+    name = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.name
+
+
+class Field(models.Model):
+    name = models.CharField(max_length=150)
+    owner = models.ForeignKey(Player, on_delete= models.CASCADE,related_name='fieldOwner',null= True, default=None)
+    price = models.IntegerField(default=100)
+    grade = models.IntegerField(default=1)
+
+    def __str__(self):
+        return self.name
+
+

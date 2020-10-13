@@ -11,6 +11,7 @@
 .game_section_board {
   grid-area: board;
 }
+
 .game_section_sidebar {
   grid-area: sidebar;
 }
