@@ -1,6 +1,6 @@
 .content-container {
   display: grid;
-  grid-template-areas: "board board board sidebar";
+  grid-template-areas: "board board sidebar";
 }
 
 .game_section {
@@ -10,10 +10,74 @@
 
 .game_section_board {
   grid-area: board;
+  display: grid;
+  grid-template-areas:
+    "r1 r1 r1 r1 r1 r1"
+    "r4 vo vo vo vo r2"
+    "r4 vo vo vo vo r2"
+    "r4 vo vo vo vo r2"
+    "r4 vo vo vo vo r2"
+    "r3 r3 r3 r3 r3 r3";
+  grid-gap: 0px 0px;
+  position: relative;
+}
+
+.r1 {
+  grid-area: r1;
+  display: flex;
+}
+
+.r2 {
+  grid-area: r2;
+  display: flex;
+  flex-direction: column;
+}
+
+.r3 {
+  grid-area: r3;
+  display: flex;
+  width: 100%;
+}
+
+.r4 {
+  grid-area: r4;
+}
+.game_field {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--main-bars-color);
+  height: 80px;
+  z-index: 10;
+  background-color: var(--main-color-alpha);
+}
+.game_field__header {
+  background-color: var(--main-color-alpha);
+  color: var(--font-color);
+  text-align: center;
+}
+
+.--row {
+  width: 100px;
+}
+
+.--col {
+  width: 100px;
+}
+
+.inner_board {
+  position: absolute;
+  left: 200px;
+  top: 120px;
+  width: 400px;
+  height: 400px;
+  background-color: var(--main-color-alpha);
+  border-radius: 20px;
+  z-index: 100;
 }
 
 .game_section_sidebar {
   grid-area: sidebar;
+  width: 450px;
 }
 .game_section_sidebar_top {
   display: grid;
@@ -63,6 +127,34 @@
   border: 2px solid var(--main-bars-color);
   background-color: var(--main-color-alpha);
   color: var(--font-color);
+}
+
+.__sidebar_menu_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.__sidebar_item_action {
+  border: 2px solid var(--main-gold-border);
+  background-color: var(--main-color-alpha);
+  width: 100%;
+  text-align: center;
+}
+
+.__sidebar_item_action a {
+  color: var(--font-color);
+  text-decoration: none;
+}
+
+.game_section_sidebar_bottom {
+  padding: 10px;
+  color: var(--font-color);
+  background-color: var(--main-bars-color);
+}
+
+.--menu {
+  list-style: none;
 }
 
 .--blue {

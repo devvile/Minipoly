@@ -11,11 +11,37 @@ Mini Game: {{game.name}}
 
 {% block content %}
     <section class="game_section game_section_board">
-        <ul>
-        {%for field in fields %}
-       <li> {{field.name}}</li>
+     <div class="r1">
+        {% for field in r1 %}
+        <div class= 'game_field --row'><div class='game_field__header'> {{field.name}}</div></div>
         {% endfor %}
-        </ul>
+     </div>
+     <div class="r2 ">
+        {% for field in r2 %}
+        <div class= 'game_field --col'>
+            <div class='game_field__header'>
+                {{field.name}}
+            </div>
+        </div>
+        {% endfor %}
+     </div>
+     <div class="r3">
+        {% for field in r3 %}
+        <div class= 'game_field --row'><div class='game_field__header'> {{field.name}}</div></div>
+        {% endfor %}
+     </div>
+     
+     <div class="r4">
+        {% for field in r4 %}
+        <div class= 'game_field --col'>
+            <div class='game_field__header'>
+                {{field.name}}
+            </div>
+        </div>
+        {% endfor %}
+     </div>
+      <div class="inner_board"></div>
+
     </section>
     <section class = "game_section game_section_sidebar">
         <div class="game_section_sidebar_top">
@@ -23,37 +49,38 @@ Mini Game: {{game.name}}
                 <h2>Dottore</h2>
             </article>
             <article class="sidebar_top__player_info __sidebar_item">
-                <h3>Player INFO</h2>
+                <div class= '__sidebar_item_action'><h4>Player Info:</h4></div>
+                    {% if  game.is_played %}
+                    <h4>Spectator Mode</h4>
+                    {% endif %}
             </article>
             <article class="sidebar_top__game_stats __sidebar_item">
-                <h3>Player STATS</h2>
+                <div class= '__sidebar_item_action'><h4>Player capital:</h4></div>
             </article>
             <article class="sidebar_top__game_actions __sidebar_item">
-                <h3>Player Actions</h3>
+            <div class= '__sidebar_item_action'><h4>Player Actions:</h4></div>
+            <div class="__sidebar_menu_column">
                 {% if player_in_game %}
-                <ul><li><h4 class="--green"><a href ="{% url 'game_end_turn' game.id%}">End Turn</span></a></h4></li></ul>
+                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">End Turn</a></div>
                 {% endif %}
+            </div>
             </article>
             <article class="sidebar_top__global_actions  __sidebar_item">
-            <ul>
-                {% if player_in_game %}
-                <li><a href ="{% url 'game_end' game.id%}"><h4></h4>End Game</h4></a></li>
-                <li><a href ="{% url 'game_leave' game.id%}"><h4>Leave Game</h4></a></li>
-                {% elif  game.is_played %}
-    
-                <h4>Spectator Mode</h4>
-                    {% else %}
-                    <li><button class="action_item __start">Start Game</button></li>
-                    <li><button class="action_item __ready" > Ready</button></li>
-
-                    <!--<a href ="{% url 'game_start' game.id%}"-->
-                    <!--<a href ="{% url 'player_ready' game.id%}"></a>-->
+                <div class= '__sidebar_item_action'><h4>Game options:</h4></div>
+                <div class="__sidebar_menu_column">
+                    {% if player_in_game %}
+                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end' game.id%}">End Game</a></div>
+                    <div class= '__sidebar_item_action'><a href ="{% url 'game_leave' game.id%}">Leave Game</a></div>
+                    {% endif %}
+                    {% if not game.is_played %}
+                    <div class= '__sidebar_item_action'><a href ="{% url 'game_start' game.id%}">Start Game</a></div>
+                    <div class= '__sidebar_item_action'><a href ="{% url 'player_ready' game.id%}">Ready</a></div>
                     {% endif %}
                     {% if user.username == game.host %}
-                <li class="action_item"><a href ="{% url 'delete_gam' game.id%}"><h4>Delete</h4></a></li>
-                    {% endif %}
-                <li class="action_item"><a href ="{% url 'home'%}"><h4>Home</h4></a></li>
-            </ul>
+                    <div class='__sidebar_item_action'><a href ="{% url 'delete_gam' game.id%}">Delete</a></div>
+                        {% endif %}
+                    <div class='__sidebar_item_action'><a href ="{% url 'home'%}">Home</a></div>
+                </div>
         </article>
         </div>
         <hr>
@@ -72,16 +99,16 @@ Mini Game: {{game.name}}
                 {% endfor %})
             </p>
             <hr>
-            <ul>
+            <div class = '--menu'>
                 {{game.turn_of_player}} turn!
                     {% else %}
-                <li>Players Ready :{{game.how_many_players_ready}} ({% for player in players_ready %}{{player}},</li>
+                Players Ready :{{game.how_many_players_ready}} ({% for player in players_ready %}{{player}},
                     {% endfor %})
-                <li>Max Players: {{game.max_players}}</li>
+                Max Players: {{game.max_players}}
                     {% endif %}
-            </ul>
+            </div>
             <hr>
-            <p class="notification-item">LOREM ISPUMS COMENKTIZEJE<p>
+            <p class="notification-item">NOTIFICATIONS DISPLAYED HERE<p>
         </div>
     </section>
 </div>
