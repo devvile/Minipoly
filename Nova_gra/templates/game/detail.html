@@ -11,16 +11,36 @@ Mini Game: {{game.name}}
 
 {% block content %}
     <section class="game_section game_section_board">
-     <div class="r1"></div>
-     <div class="r2"></div>
-     <div class="r3"></div>
-     <div class="r4"></div>
-
-     <!--
-        {% for field in fields %}
-        <div class= 'game_field'> {{field.name}}</div>
+     <div class="r1">
+        {% for field in r1 %}
+        <div class= 'game_field --row'><div class='game_field__header'> {{field.name}}</div></div>
         {% endfor %}
-      <div class="inner_board"></div> -->
+     </div>
+     <div class="r2 ">
+        {% for field in r2 %}
+        <div class= 'game_field --col'>
+            <div class='game_field__header'>
+                {{field.name}}
+            </div>
+        </div>
+        {% endfor %}
+     </div>
+     <div class="r3">
+        {% for field in r3 %}
+        <div class= 'game_field --row'><div class='game_field__header'> {{field.name}}</div></div>
+        {% endfor %}
+     </div>
+     
+     <div class="r4">
+        {% for field in r4 %}
+        <div class= 'game_field --col'>
+            <div class='game_field__header'>
+                {{field.name}}
+            </div>
+        </div>
+        {% endfor %}
+     </div>
+      <div class="inner_board"></div>
 
     </section>
     <section class = "game_section game_section_sidebar">

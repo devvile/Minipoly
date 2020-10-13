@@ -9,9 +9,13 @@ from .models import Game, Field
 def detail(request, id):
     game = Game.objects.get(pk=id)
     player = Player.objects.get(parent=request.user.username)
-    fields = Field.objects.all
+    boardSize = 8
+    r1 = Field.objects.all()[:boardSize]
+    r2 = Field.objects.filter()[:(boardSize-2)]
+    r3 = Field.objects.filter()[:boardSize]
+    r4 = Field.objects.filter()[:boardSize-2]
     args = {'game': game, 'players_ready': game.players_ready, 'players_playing':game.players_playing,
-            'player_in_game':player in game.players_playing, 'fields':fields}
+            'player_in_game':player in game.players_playing, 'r1':r1, 'r2':r2, 'r3':r3, 'r4':r4}
     return render(request, 'game/detail.html', args)
 
 

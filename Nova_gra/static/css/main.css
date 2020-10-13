@@ -6,7 +6,6 @@
 
 body {
   font-family: "Noto Sans JP", sans-serif;
-  overflow: hidden;
 }
 
 :root {
@@ -56,7 +55,6 @@ body {
 
 .s_main {
   position: relative;
-  height: 97vh;
   width: 100vw;
   padding: 50px;
 }
@@ -70,7 +68,6 @@ body {
 .content-container {
   margin: 25px;
   padding: 25px;
-  height: 84vh;
   background-color: var(--main-bg-color);
   border-radius: 15px;
 }
