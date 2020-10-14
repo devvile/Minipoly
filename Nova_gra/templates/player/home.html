@@ -4,28 +4,34 @@
 {% endblock %} {% block content %}
 
 <section class="lobby">
-  <h3>Games list:</h3>
+  <div class="__header">
+    <h3>Games list:</h3>
+  </div>
   <hr />
   <ul class="games_list">
     {% for g in games %}
-    <li>
-      <p>
-        <a href="{% url 'detail' g.id %}">{{g.name}}</a>
-        {% if g.how_many_players_ready == 4 %} Full {% else %}
-        {{g.how_many_players_ready}}
-        <span>players ready{% endif %} {% if g.is_played %} </span>
-        <span class="--grey">Game Started</span>
-        {% else %}
-        <span class="--red">Game hasn't started yet.</span>
-        {% endif %}
-      </p>
+    <li class="game_list__game">
+      <a class="game_list__room" href="{% url 'detail' g.id %}">{{g.name}}</a>
+      {% if g.is_played %}
+
+      <span class="__game_status --gray">Game Started</span>
+      {% else %}
+      <span class="__game_status --green">Game hasn't started yet.</span>
+      {% if g.how_many_players_ready == 4 %}
+      <span class="__players_status --red"> Full</span> {% else %}
+      <span class="__players_status">
+        {{g.how_many_players_ready}} players ready{% endif %}
+      </span>
+      {% endif %}
     </li>
     <hr />
     {% endfor %}
   </ul>
 </section>
 <section class="user_menu">
-  <h1>Welcome, {{player}}</h1>
+  <div class="__header">
+    <h1>Welcome {{player}}!</h1>
+  </div>
   <hr />
   <h3>Create Game</h3>
   <form method="POST" action='{% url "new_room"%}'>

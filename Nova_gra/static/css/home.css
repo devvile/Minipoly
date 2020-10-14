@@ -5,27 +5,60 @@
   width: 86vw;
 }
 
+.user_menu,
+.lobby {
+  border: 2px solid black;
+  border-radius: 10px;
+}
+
 .lobby {
   width: 70%;
-  border: 2px solid black;
+  background-color: var(--main-color-alpha);
 }
-.user_menu {
-  border: 2px solid black;
+
+.__header {
+  color: var(--font-color);
+  background-color: var(--main-bars-color);
+  text-align: center;
 }
 
 .games_list {
   list-style: none;
 }
+.game_list__game {
+  margin-left: 7%;
+  position: relative;
+}
+.game_list__room {
+  text-decoration: none;
+  color: var(--font-color);
+}
+
+.__game_status,
+.__players_status {
+  position: absolute;
+}
+
+.__game_status {
+  left: 40%;
+}
+
+.__players_status {
+  right: 10%;
+}
 
 .--blue {
   color: blue;
 }
+
 .--green {
-  color: green;
+  color: rgb(14, 122, 23);
 }
+
 .--gray {
-  color: gray;
+  color: rgb(201, 181, 181);
 }
+
 .--red {
   color: red;
 }
