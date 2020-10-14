@@ -1,8 +1,15 @@
 # monopoly online
 
-Projekt jest obecnie w fazie developmentu, budownay jest na frameworku Django 3.0. Docelowo ma powstać aplikacja dla wielu graczy, wzorowana na grze planszowej Monopoly i serwisie z grami online "kurnik.pl". Stopniowo dodaję poszczególne fukncjonalności. Dodatkowo, staram się na bieżąco dodawać testy.
+Project is multiplayer "boardgame" based on fameous "Monopoly game". There is lobby for players complete and now I'm working on game mechanics.
+Player can create rooms for hosting games and join rooms created by other players. Once there is minimum 2 players in game, players can start a match. 
+Game is made in turn-system. Players move around the board by tossing dice. Rest of game mechanics is now in development. Actions in game are synced by websockets managed by Channels.
 
-Technologie:
 
-Django/HTML/CSS/WEB SOCETS (wdrażana)
+Technologies:
+
+Python/Django ( + Channels 2 for handling WebSockets)
+Html/CSS
+Javascript
+Redis
+
 
