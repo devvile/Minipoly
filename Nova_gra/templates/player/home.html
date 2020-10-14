@@ -6,17 +6,19 @@
 <section class="lobby">
   <h3>Games list:</h3>
   <hr />
-  <ul>
+  <ul class="games_list">
     {% for g in games %}
     <li>
-      <a href="{% url 'detail' g.id %}">{{g.name}}</a>
-      {% if g.how_many_players_ready == 4 %} Full {% else %}
-      <p>{{g.how_many_players_ready}} players ready. {% endif %}</p>
-      {% if g.is_played%}
-      <p class="--grey">Game Started</p>
-      {% else %}
-      <p class="--red">Game hasn't started yet.</p>
-      {% endif %}
+      <p>
+        <a href="{% url 'detail' g.id %}">{{g.name}}</a>
+        {% if g.how_many_players_ready == 4 %} Full {% else %}
+        {{g.how_many_players_ready}}
+        <span>players ready{% endif %} {% if g.is_played %} </span>
+        <span class="--grey">Game Started</span>
+        {% else %}
+        <span class="--red">Game hasn't started yet.</span>
+        {% endif %}
+      </p>
     </li>
     <hr />
     {% endfor %}
