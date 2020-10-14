@@ -1,49 +1,34 @@
-{% extends 'base.html' %}
-{% block title %}
+{% extends 'base.html' %} {% load static %} {% block title %} Welcome to Nova!
+{% endblock %} {% block css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" />
+{% endblock %} {% block content %}
 
-Home Page
-{% endblock %}
-
-{% block content %}
-<h1>Welcome, {{player}}</h1>
-<hr>
-{{message}}
-<hr>
-
-<div class="row">
-  <div class="col-sm-8">
-      <div class = 'jumbotron'>
-          <h3>List of games: </h3>
-          <hr>
+<section class="lobby">
+  <h3>Games list:</h3>
+  <hr />
+  <ul>
     {% for g in games %}
-
-        <li><a href="{% url 'detail' g.id %}">{{g.name}}</a>
-        {% if g.how_many_players_ready == 4 %}
-            <span style ="color:red"><strong>Full</strong></span>
-            {% else %}
-            {{g.how_many_players_ready}} players ready.
-            {% endif %}
-              {% if g.is_played %}
-            <span style ="color:red"><strong>Game Started</strong></span>
-            {% else %}
-            <span style="color:gray">Game hasn't started yet.</span>
-            {% endif %}
-        </li>
-
+    <li>
+      <a href="{% url 'detail' g.id %}">{{g.name}}</a>
+      {% if g.how_many_players_ready == 4 %} Full {% else %}
+      <p>{{g.how_many_players_ready}} players ready. {% endif %}</p>
+      {% if g.is_played%}
+      <p class="--grey">Game Started</p>
+      {% else %}
+      <p class="--red">Game hasn't started yet.</p>
+      {% endif %}
+    </li>
+    <hr />
     {% endfor %}
-    </ul>
-      </div></div>
-  <div class="col-sm-4"></div>
-
-  <div class="col-sm-4">
-      <div class = 'jumbotron' name="menu" id ="menu">
-          <h3>Create Game</h3>
-<form method ="POST" action = '{% url "new_room"%}'>
-    {% csrf_token %}
-{{form}}
-    <button type = 'submit' name="create" value = 'ok'>Create Room</button>
-</form>
-
-      </div></div>
-</div>
+  </ul>
+</section>
+<section class="user_menu">
+  <h1>Welcome, {{player}}</h1>
+  <hr />
+  <h3>Create Game</h3>
+  <form method="POST" action='{% url "new_room"%}'>
+    {% csrf_token %} {{form}}
+    <button type="submit" name="create" value="ok">Create Room</button>
+  </form>
+</section>
 {% endblock %}
