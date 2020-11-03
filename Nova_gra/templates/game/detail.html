@@ -77,13 +77,17 @@ Mini Game: {{game.name}}
                     <div class= '__sidebar_item_action'><a href ="{% url 'game_leave' game.id%}">Leave Game</a></div>
                     {% endif %}
                     {% if not game.is_played %}
-                    <div class= '__sidebar_item_action'><a href ="{% url 'game_start' game.id%}">Start Game</a></div>
-                    <div class= '__sidebar_item_action'><a href ="{% url 'player_ready' game.id%}">Ready</a></div>
+                    <input type ="button" value="Start Game" class="__sidebar_item_action --start_btn">
+                    <input type ="button" value="Ready" class="__sidebar_item_action --ready_btn">
+
                     {% endif %}
                     {% if user.username == game.host %}
                     <div class='__sidebar_item_action'><a href ="{% url 'delete_gam' game.id%}">Delete</a></div>
                         {% endif %}
                     <div class='__sidebar_item_action'><a href ="{% url 'home'%}">Home</a></div>
+
+                                        <!-- <a href ="{% url 'game_start' game.id%}">Start Game</a></div> 
+                     <a href ="{% url 'player_ready' game.id%}">Ready</a></div> -->
                 </div>
         </article>
         </div>
@@ -116,4 +120,5 @@ Mini Game: {{game.name}}
         </div>
     </section>
 </div>
+<script src="{% static 'js/game.js' %}"></script>
 {% endblock %}
