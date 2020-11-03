@@ -7,7 +7,6 @@ from player.models import Player
 class GameEventsConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         game_id = (self.scope['url_route']['kwargs']['id'])
-        print(game_id)
         self.game = await database_sync_to_async(self.get_game)(id=game_id)
         self.room_group_name = self.game.name
 
@@ -22,27 +21,27 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return Game.objects.get(pk=id)
 
     async def receive(self, text_data):
-# Gracz  musi sie przedstawic w Jsonie
         """
         if text_data == "klik":
             self.counter.klik +=1
         elif text_data == "klak":
             self.counter.key += 1
             """
-        message = text_data
-        print(message)
-        if message=="Ready":
-            pass
+        message = json.loads(text_data)
+        if message['action']=="ready":
+            print("Bingo!")
+        elif message['action']=="start":
+            print("Starto!")
         await database_sync_to_async(self.game.save)()
         await (self.channel_layer.group_send)(
             self.room_group_name,
             {
-                'type': 'chat_message',
+                'type': 'game_message',
                 'message': message,
             }
         )
 
-    async def chat_message(self, event):
+    async def game_message(self, event):
         message = event['message']
         await self.send(text_data=json.dumps({
             'message': message,

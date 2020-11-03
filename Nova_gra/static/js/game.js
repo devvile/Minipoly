@@ -11,11 +11,17 @@ function configGame() {
     const ready_btn = document.querySelector(".--ready_btn");
     const start_btn = document.querySelector(".--start_btn");
     ready_btn.addEventListener("click", () => {
-      let mess = `${playerName} Ready`;
+      let mess = JSON.stringify({
+        player: playerName,
+        action: "ready",
+      });
       sendMess(mess);
     });
     start_btn.addEventListener("click", () => {
-      let mess = `${playerName} Start`;
+      let mess = JSON.stringify({
+        player: playerName,
+        action: "start",
+      });
       sendMess(mess);
     });
   }
