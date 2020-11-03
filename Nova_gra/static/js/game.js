@@ -3,7 +3,7 @@ function main() {
 }
 
 function configGame() {
-  const socket = "ws://" + window.location.host + "/";
+  const socket = "ws://" + window.location.host + window.location.pathname;
   websocket = new WebSocket(socket);
 
   function asignEvents() {

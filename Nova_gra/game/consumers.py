@@ -4,9 +4,12 @@ from channels.db import database_sync_to_async
 from .models import Game
 
 class GameEventsConsumer(AsyncWebsocketConsumer):
-   async def connect(self):
+    async def connect(self):
+        game_id = (self.scope['url_route']['kwargs']['id'])
+        print(game_id)
         self.room_group_name = 'main_room'
-        self.game = await database_sync_to_async(self.get_game)()
+        self.game = await database_sync_to_async(self.get_game)(id=game_id)
+        print(self.game)
 
         await (self.channel_layer.group_add)(
             self.room_group_name,
@@ -15,10 +18,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
 
-   def get_game(self):
-       return Game.objects.all()[0]
+    def get_game(self,id):
+        return Game.objects.get(pk=id)
 
-   async def receive(self, text_data):
+    async def receive(self, text_data):
 
         """
         if text_data == "klik":
@@ -36,13 +39,13 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             }
         )
 
-   async def chat_message(self, event):
+    async def chat_message(self, event):
         message = event['message']
         await self.send(text_data=json.dumps({
             'message': message,
         }))
 
-   async def disconnect(self, close_code):
+    async def disconnect(self, close_code):
         await (self.channel_layer.group_discard)(
             self.room_group_name,
             self.channel_name
