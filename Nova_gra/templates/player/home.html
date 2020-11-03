@@ -10,20 +10,24 @@
   <hr />
   <ul class="games_list">
     {% for g in games %}
-    <li class="game_list__game">
-      <a class="game_list__room" href="{% url 'detail' g.id %}">{{g.name}}</a>
-      {% if g.is_played %}
+    <div class="game_list__container">
+      <li class="game_list__game">
+        <a class="game_list__room" href="{% url 'detail' g.id %}">
+          <strong>{{g.name}}</strong>
+        </a>
+        {% if g.is_played %}
 
-      <span class="__game_status --gray">Game Started</span>
-      {% else %}
-      <span class="__game_status --green">Game hasn't started yet.</span>
-      {% if g.how_many_players_ready == 4 %}
-      <span class="__players_status --red"> Full</span> {% else %}
-      <span class="__players_status">
-        {{g.how_many_players_ready}} players ready{% endif %}
-      </span>
-      {% endif %}
-    </li>
+        <span class="__game_status --gray">Game Started</span>
+        {% else %}
+        <span class="__game_status --green">Game hasn't started yet.</span>
+        {% if g.how_many_players_ready == 4 %}
+        <span class="__players_status --red"> Full</span> {% else %}
+        <span class="__players_status">
+          {{g.how_many_players_ready}} players ready{% endif %}
+        </span>
+        {% endif %}
+      </li>
+    </div>
     <hr />
     {% endfor %}
   </ul>
@@ -33,10 +37,15 @@
     <h1>Welcome {{player}}!</h1>
   </div>
   <hr />
-  <h3>Create Game</h3>
-  <form method="POST" action='{% url "new_room"%}'>
+  <div class="__header">
+    <h4>Create Game:</h4>
+  </div>
+  <form class="new_game_form" method="POST" action='{% url "new_room"%}'>
     {% csrf_token %} {{form}}
     <button type="submit" name="create" value="ok">Create Room</button>
   </form>
+  <div class="__header">
+    <h4>All Players:</h4>
+  </div>
 </section>
 {% endblock %}

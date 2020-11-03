@@ -29,6 +29,11 @@
   margin-left: 7%;
   position: relative;
 }
+.game_list__container:hover {
+  background-color: rgba(100, 100, 100, 0.5);
+  cursor: pointer;
+}
+
 .game_list__room {
   text-decoration: none;
   color: var(--font-color);
@@ -45,6 +50,10 @@
 
 .__players_status {
   right: 10%;
+}
+
+.new_game_form {
+  margin: 40px 0;
 }
 
 .--blue {

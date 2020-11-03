@@ -61,6 +61,10 @@ Mini Game: {{game.name}}
             <div class= '__sidebar_item_action'><h4>Player Actions:</h4></div>
             <div class="__sidebar_menu_column">
                 {% if player_in_game %}
+                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Roll Dice</a></div>
+                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Buy Property</a></div>
+                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Sell Property</a></div>
+                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Use Bonus</a></div>
                 <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">End Turn</a></div>
                 {% endif %}
             </div>
