@@ -5,15 +5,18 @@ function main() {
 function configGame() {
   const socket = "ws://" + window.location.host + window.location.pathname;
   websocket = new WebSocket(socket);
+  const playerName = document.querySelector(".playerName_header").textContent;
 
   function asignEvents() {
     const ready_btn = document.querySelector(".--ready_btn");
     const start_btn = document.querySelector(".--start_btn");
     ready_btn.addEventListener("click", () => {
-      sendMess("Ready");
+      let mess = `${playerName} Ready`;
+      sendMess(mess);
     });
     start_btn.addEventListener("click", () => {
-      sendMess("Start");
+      let mess = `${playerName} Start`;
+      sendMess(mess);
     });
   }
 

@@ -2,14 +2,14 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 from channels.db import database_sync_to_async
 from .models import Game
+from player.models import Player
 
 class GameEventsConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         game_id = (self.scope['url_route']['kwargs']['id'])
         print(game_id)
-        self.room_group_name = 'main_room'
         self.game = await database_sync_to_async(self.get_game)(id=game_id)
-        print(self.game)
+        self.room_group_name = self.game.name
 
         await (self.channel_layer.group_add)(
             self.room_group_name,
@@ -22,7 +22,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return Game.objects.get(pk=id)
 
     async def receive(self, text_data):
-
+# Gracz  musi sie przedstawic w Jsonie
         """
         if text_data == "klik":
             self.counter.klik +=1
@@ -30,6 +30,9 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             self.counter.key += 1
             """
         message = text_data
+        print(message)
+        if message=="Ready":
+            pass
         await database_sync_to_async(self.game.save)()
         await (self.channel_layer.group_send)(
             self.room_group_name,
