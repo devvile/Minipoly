@@ -1,10 +1,20 @@
 function main() {
-  openWebsocket();
+  configWebsocket();
   asignEvents();
 }
 
-function openWebsocket() {
-  console.log("Establishing Websocket Connection...");
+function configWebsocket() {
+  const socket = "ws://" + window.location.host + "/";
+  websocket = new WebSocket(socket);
+
+  function openWebsocket() {
+    console.log("Establishing Websocket Connection...");
+    websocket.onopen = () => {
+      console.log("Connection Established!");
+      console.log(websocket);
+    };
+    openWebsocket();
+  }
 }
 
 // Asigning Event Listneres to DOM ELEMENTS
