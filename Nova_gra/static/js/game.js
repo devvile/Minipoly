@@ -2,6 +2,8 @@ function main() {
   configGame();
 }
 
+// Musi istniec zapytanie wysyalne na poczatku aktualizujace stan
+
 function configGame() {
   const socket = "ws://" + window.location.host + window.location.pathname;
   websocket = new WebSocket(socket);
@@ -35,9 +37,14 @@ function configGame() {
   }
   function setWebsocket() {
     websocket.onmessage = (mess) => {
-      dataJson = JSON.parse(mess.data);
-      console.log(mess.data);
       console.log(`Message:  ${mess.data}`);
+      dataJson = JSON.parse(mess.data);
+      dataJson = JSON.parse(dataJson.message);
+      //Player Ready (jeszcze z max_players zrobic kontrolke)
+      if (dataJson.action === "player_ready") {
+        const playersReadyText = document.querySelector(".players_ready_text");
+        playersReadyText.textContent = `Players ready: ${dataJson.players_ready}`;
+      }
     };
 
     websocket.onclose = () => {

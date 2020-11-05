@@ -34,6 +34,11 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return player.in_game
 
     @database_sync_to_async
+    def get_players_ready(self, game):
+        x = [i.nick for i in game.who_is_ready.all()]
+        return x
+
+    @database_sync_to_async
     def add_player_to_game(self, player, game):
         return game.who_is_ready.add(player)
 
@@ -51,13 +56,8 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data):
 
-        """
-        if text_data == "klik":
-            self.counter.klik +=1
-        elif text_data == "klak":
-            self.counter.key += 1
-            """
         game = self.game
+        message = json.loads(text_data)
         action = message['action']
         game.player = await self.get_player(message['player'])
         player = game.player
@@ -77,13 +77,19 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             print("Starto!")
         await database_sync_to_async(game.save)()
         await database_sync_to_async(player.save)()
-        message = json.loads(text_data)
         #tutaj trzeba wyslac json ze stanem
+        print (self.get_players_ready(game))
+        gameState = {
+            "action": "player_ready",
+            "players_ready": await self.get_players_ready(game),
+            "hes": "yes",
+        }
+        stateSend = json.dumps(gameState)
         await (self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'game_message',
-                'message': message,
+                'message': stateSend,
             }
         )
 

@@ -52,7 +52,7 @@ def delete_room(request, id):
     else:
         return redirect('detail', id=game.id)
 
-
+"""
 @login_required
 def ready(request, id):
     game = Game.objects.get(id=id)
@@ -73,7 +73,7 @@ def ready(request, id):
         return redirect('detail', id=game.id)
     else:
         return redirect('detail', id=game.id)
-
+"""
 
 @login_required
 def game_start(request, id):
