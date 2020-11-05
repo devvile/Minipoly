@@ -33,6 +33,21 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     def get_player_in_game(self,player):
         return player.in_game
 
+    @database_sync_to_async
+    def add_player_to_game(self, player, game):
+        return game.who_is_ready.add(player)
+
+    @database_sync_to_async
+    def remove_player_from_game(self, player, game):
+        return game.who_is_ready.remove(player)
+
+    @database_sync_to_async
+    def set_player_game_status_ready(self, player):
+        player.set_player_in_game()
+
+    @database_sync_to_async
+    def set_player_game_status_off(self, player):
+        player.set_player_leave_game()
 
     async def receive(self, text_data):
 
@@ -43,7 +58,6 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             self.counter.key += 1
             """
         game = self.game
-        message = json.loads(text_data)
         action = message['action']
         game.player = await self.get_player(message['player'])
         player = game.player
@@ -52,10 +66,19 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
 
         if action=="ready":
             if not game.is_played and not player.in_game:  #and  player not in game.players_ready
-                print("KRUCZAK")
+                #if game.how_many_players_ready < game.max_players:
+                await self.add_player_to_game(player, game)   #adds_to_who_is_ready
+                await self.set_player_game_status_ready(player) #player.in game
+            elif not game.is_played and player.in_game:
+                await self.remove_player_from_game(player, game)
+                await self.set_player_game_status_off(player)
+
         elif action=="start":
             print("Starto!")
-        await database_sync_to_async(self.game.save)()
+        await database_sync_to_async(game.save)()
+        await database_sync_to_async(player.save)()
+        message = json.loads(text_data)
+        #tutaj trzeba wyslac json ze stanem
         await (self.channel_layer.group_send)(
             self.room_group_name,
             {

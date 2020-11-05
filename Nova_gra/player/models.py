@@ -12,6 +12,11 @@ class Player(models.Model):
     tossed_dice= models.BooleanField(default=False)
     description = models.TextField(max_length = 300, null = True)
 
+    def set_player_in_game(self):
+        self.in_game = True
+
+    def set_player_leave_game(self):
+        self.in_game = False
 
     def __str__(self):
         return self.nick
