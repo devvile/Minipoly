@@ -7,7 +7,7 @@ from player.models import Player
 class GameEventsConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         game_id = (self.scope['url_route']['kwargs']['id'])
-        self.game = await database_sync_to_async(self.get_game)(id=game_id)
+        self.game = await self.get_game(id=game_id)
         self.room_group_name = self.game.name
 
 
@@ -17,19 +17,19 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         )
         await self.accept()
 
-
+    @database_sync_to_async
     def get_game(self,id):
         return Game.objects.get(pk=id)
 
-
+    @database_sync_to_async
     def get_player(self, usr):
         return Player.objects.get(nick=usr)
 
-
+    @database_sync_to_async
     def get_game_is_played(self, game):
         return game.is_played
 
-
+    @database_sync_to_async
     def get_player_in_game(self,player):
         return player.in_game
 
@@ -45,10 +45,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         game = self.game
         message = json.loads(text_data)
         action = message['action']
-        game.player = await database_sync_to_async(self.get_player)(message['player'])
+        game.player = await self.get_player(message['player'])
         player = game.player
-        game.is_played = await database_sync_to_async(self.get_game_is_played)(game)
-        player.in_game = await database_sync_to_async(self.get_player_in_game)(player)
+        game.is_played = await self.get_game_is_played(game)
+        player.in_game = await self.get_player_in_game(player)
 
         if action=="ready":
             if not game.is_played and not player.in_game:  #and  player not in game.players_ready
