@@ -73,6 +73,8 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         player.in_game = await self.get_player_in_game(player)
         how_many_players_ready = await self.get_how_many_players_ready(game)
         max_players = await self.get_max_players(game)
+        gameState = {'Error': "WRONG GAME STATE!"}
+
 
         if action=="ready":
             if not game.is_played and not player.in_game and how_many_players_ready < max_players:
@@ -95,10 +97,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 "hes": "yes",
             }
 
-        elif action=="game state":
-            print("E!")
+        elif action=="initial state":
+            print("Initial state!")
             gameState = {
-                "action": "check_state",
+                "action": "initial_state",
                 "players_ready": await self.get_players_ready(game),
                 "stan": "stan",
             }

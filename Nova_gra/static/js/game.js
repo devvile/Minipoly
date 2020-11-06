@@ -2,8 +2,6 @@ function main() {
   configGame();
 }
 
-// Musi istniec zapytanie wysyalne na poczatku aktualizujace stan
-
 function configGame() {
   const socket = "ws://" + window.location.host + window.location.pathname;
   const websocket = new WebSocket(socket);
@@ -56,7 +54,7 @@ function configGame() {
   function checkState() {
     let mess = JSON.stringify({
       player: playerName,
-      action: "game state",
+      action: "initial state",
     });
     sendMess(mess);
   }
