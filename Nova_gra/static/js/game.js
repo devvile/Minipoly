@@ -6,6 +6,16 @@ function configGame() {
   const socket = "ws://" + window.location.host + window.location.pathname;
   const websocket = new WebSocket(socket);
   const playerName = document.querySelector(".playerName_header").textContent;
+  const game = {
+    name: "default",
+    is_played: false,
+    players_ready: 0,
+    players_playing: [],
+    who_is_ready: [],
+    max_players: 4,
+    turn: 1,
+    turn_of_player: "",
+  };
 
   function asignEvents() {
     const ready_btn = document.querySelector(".--ready_btn");
@@ -39,12 +49,24 @@ function configGame() {
       console.log(`Message:  ${mess.data}`);
       dataJson = JSON.parse(mess.data);
       dataJson = JSON.parse(dataJson.message);
-      //Player Ready (jeszcze z max_players zrobic kontrolke)
+
+      if (dataJson.action === "initial_state") {
+        makeInitialState(dataJson);
+      }
       if (dataJson.action === "player_ready") {
-        const playersReadyText = document.querySelector(".players_ready_text");
-        playersReadyText.textContent = `Players ready: ${dataJson.players_ready}`;
+        playersReady(dataJson);
       }
     };
+
+    function playersReady(dataJson) {
+      const playersReadyText = document.querySelector(".players_ready_text");
+      playersReadyText.textContent = `Players ready: ${dataJson.players_ready}`;
+    }
+
+    function makeInitialState(dataJson) {
+      game.name = dataJson.name;
+      console.log(game.name);
+    }
 
     websocket.onclose = () => {
       console.log("Websocket Connection Terminated!");

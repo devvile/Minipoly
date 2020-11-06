@@ -126,6 +126,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         elif action=="initial state":
             print("Initial state!")
             gameState = {
+                "name": game.name,
                 "action": "initial_state",
                 "players_ready": await self.get_players_ready(game),
                 "mess": "Initial State sent",
