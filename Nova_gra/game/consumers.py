@@ -34,6 +34,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return player.in_game
 
     @database_sync_to_async
+    def get_how_many_players_ready(self,game):
+        return game.how_many_players_ready
+
+    @database_sync_to_async
     def get_players_ready(self, game):
         x = [i.nick for i in game.who_is_ready.all()]
         return x
@@ -54,6 +58,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     def set_player_game_status_off(self, player):
         player.set_player_leave_game()
 
+    @database_sync_to_async
+    def get_max_players(self, game):
+        return game.max_players
+
     async def receive(self, text_data):
 
         game = self.game
@@ -63,27 +71,42 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         player = game.player
         game.is_played = await self.get_game_is_played(game)
         player.in_game = await self.get_player_in_game(player)
+        how_many_players_ready = await self.get_how_many_players_ready(game)
+        max_players = await self.get_max_players(game)
 
         if action=="ready":
-            if not game.is_played and not player.in_game:  #and  player not in game.players_ready
-                #if game.how_many_players_ready < game.max_players:
-                await self.add_player_to_game(player, game)   #adds_to_who_is_ready
-                await self.set_player_game_status_ready(player) #player.in game
+            if not game.is_played and not player.in_game and how_many_players_ready < max_players:
+                await self.add_player_to_game(player, game)
+                await self.set_player_game_status_ready(player)
             elif not game.is_played and player.in_game:
                 await self.remove_player_from_game(player, game)
                 await self.set_player_game_status_off(player)
+            gameState = {
+                "action": "player_ready",
+                "players_ready": await self.get_players_ready(game),
+                "hes": "yes",
+            }
 
         elif action=="start":
             print("Starto!")
+            gameState = {
+                "action": "start_game",
+                "players_ready": await self.get_players_ready(game),
+                "hes": "yes",
+            }
+
+        elif action=="game state":
+            print("E!")
+            gameState = {
+                "action": "check_state",
+                "players_ready": await self.get_players_ready(game),
+                "stan": "stan",
+            }
+
         await database_sync_to_async(game.save)()
         await database_sync_to_async(player.save)()
         #tutaj trzeba wyslac json ze stanem
         print (self.get_players_ready(game))
-        gameState = {
-            "action": "player_ready",
-            "players_ready": await self.get_players_ready(game),
-            "hes": "yes",
-        }
         stateSend = json.dumps(gameState)
         await (self.channel_layer.group_send)(
             self.room_group_name,
