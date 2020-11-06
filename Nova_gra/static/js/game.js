@@ -56,6 +56,9 @@ function configGame() {
       if (dataJson.action === "player_ready") {
         playersReady(dataJson);
       }
+      if (dataJson.action === "start_game") {
+        startGame(dataJson);
+      }
     };
 
     function playersReady(dataJson) {
@@ -66,6 +69,10 @@ function configGame() {
     function makeInitialState(dataJson) {
       game.name = dataJson.name;
       console.log(game.name);
+    }
+    function startGame(dataJson) {
+      game.is_played = true;
+      console.log(console.log(game.is_played));
     }
 
     websocket.onclose = () => {
@@ -84,12 +91,14 @@ function configGame() {
   function sendMess(messText) {
     websocket.send(messText);
   }
+
   openWebsocket();
   asignEvents();
   setWebsocket();
 }
 
 // Asigning Event Listneres to DOM ELEMENTS
+
 function asignEvents() {
   const ready_btn = document.querySelector(".--ready_btn");
   const start_btn = document.querySelector(".--start_btn");

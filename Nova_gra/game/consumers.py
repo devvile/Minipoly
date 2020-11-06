@@ -55,6 +55,11 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return game.who_is_ready.add(player)
 
     @database_sync_to_async
+    def add_player_to_players_playing(self, player, game):
+        return game.who_is_playing.add(player)
+
+
+    @database_sync_to_async
     def remove_player_from_game(self, player, game):
         return game.who_is_ready.remove(player)
 
@@ -102,11 +107,12 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
 
         elif action=="start":
             if how_many_players_ready >1 and host == player.nick :
-                print("We can start game")
                 await self.set_game_played(game)
                 ready_players = await self.get_players_ready(game)
                 for i in ready_players:
-                    print(i)
+                    i = await self.get_player(i)
+                    await self.add_player_to_players_playing(i, game)
+                    await self.remove_player_from_game(i, game)
 
                 gameState = {
                     "action": "start_game",
