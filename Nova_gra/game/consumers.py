@@ -43,6 +43,14 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return x
 
     @database_sync_to_async
+    def get_max_players(self, game):
+        return game.max_players
+
+    @database_sync_to_async
+    def get_host(self, game):
+        return game.host
+
+    @database_sync_to_async
     def add_player_to_game(self, player, game):
         return game.who_is_ready.add(player)
 
@@ -59,8 +67,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         player.set_player_leave_game()
 
     @database_sync_to_async
-    def get_max_players(self, game):
-        return game.max_players
+    def set_game_played(self, game):
+        game.is_played = True
+
+
 
     async def receive(self, text_data):
 
@@ -73,6 +83,9 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         player.in_game = await self.get_player_in_game(player)
         how_many_players_ready = await self.get_how_many_players_ready(game)
         max_players = await self.get_max_players(game)
+        host = await self.get_host(game)
+        gameState = {'Error': "WRONG GAME STATE!"}
+
 
         if action=="ready":
             if not game.is_played and not player.in_game and how_many_players_ready < max_players:
@@ -81,31 +94,45 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             elif not game.is_played and player.in_game:
                 await self.remove_player_from_game(player, game)
                 await self.set_player_game_status_off(player)
+
             gameState = {
                 "action": "player_ready",
                 "players_ready": await self.get_players_ready(game),
-                "hes": "yes",
             }
 
         elif action=="start":
-            print("Starto!")
-            gameState = {
-                "action": "start_game",
-                "players_ready": await self.get_players_ready(game),
-                "hes": "yes",
-            }
+            if how_many_players_ready >1 and host == player.nick :
+                print("We can start game")
+                await self.set_game_played(game)
+                ready_players = await self.get_players_ready(game)
+                for i in ready_players:
+                    print(i)
 
-        elif action=="game state":
-            print("E!")
+                gameState = {
+                    "action": "start_game",
+                    "game_played": await self.get_game_is_played(game),
+                    "players_ready": await self.get_players_ready(game),
+                    "mess": "start, Conditions matched!",
+                }
+            else:
+                gameState = {
+                    "action": "start_game",
+                    "game_played": await self.get_game_is_played(game),
+                    "players_ready": await self.get_players_ready(game),
+                    "mess": "start_failure conditions cannot be matched",
+                }
+
+
+        elif action=="initial state":
+            print("Initial state!")
             gameState = {
-                "action": "check_state",
+                "action": "initial_state",
                 "players_ready": await self.get_players_ready(game),
-                "stan": "stan",
+                "mess": "Initial State sent",
             }
 
         await database_sync_to_async(game.save)()
         await database_sync_to_async(player.save)()
-        #tutaj trzeba wyslac json ze stanem
         print (self.get_players_ready(game))
         stateSend = json.dumps(gameState)
         await (self.channel_layer.group_send)(
