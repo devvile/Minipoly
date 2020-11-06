@@ -73,6 +73,7 @@ Mini Game: {{game.name}}
                 <div class= '__sidebar_item_action'><h4>Game options:</h4></div>
                 <div class="__sidebar_menu_column">
                     {% if player_in_game %}
+                    <input type ="button" value="Ready" class="__sidebar_item_action --end_btn">
                     <div class= '__sidebar_item_action'><a href ="{% url 'game_end' game.id%}">End Game</a></div>
                     <div class= '__sidebar_item_action'><a href ="{% url 'game_leave' game.id%}">Leave Game</a></div>
                     {% endif %}
@@ -86,7 +87,6 @@ Mini Game: {{game.name}}
                         {% endif %}
                     <div class='__sidebar_item_action'><a href ="{% url 'home'%}">Home</a></div>
 
-                                        <!-- <a href ="{% url 'game_start' game.id%}">Start Game</a></div> -->
                 </div>
         </article>
         </div>
