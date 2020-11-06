@@ -6,7 +6,7 @@ function main() {
 
 function configGame() {
   const socket = "ws://" + window.location.host + window.location.pathname;
-  websocket = new WebSocket(socket);
+  const websocket = new WebSocket(socket);
   const playerName = document.querySelector(".playerName_header").textContent;
 
   function asignEvents() {
@@ -32,9 +32,10 @@ function configGame() {
     console.log("Establishing Websocket Connection...");
     websocket.onopen = () => {
       console.log("Websocket Connection Established!");
-      console.log(websocket);
+      checkState();
     };
   }
+
   function setWebsocket() {
     websocket.onmessage = (mess) => {
       console.log(`Message:  ${mess.data}`);
@@ -51,11 +52,20 @@ function configGame() {
       console.log("Websocket Connection Terminated!");
     };
   }
+
+  function checkState() {
+    let mess = JSON.stringify({
+      player: playerName,
+      action: "game state",
+    });
+    sendMess(mess);
+  }
+
   function sendMess(messText) {
     websocket.send(messText);
   }
-  asignEvents();
   openWebsocket();
+  asignEvents();
   setWebsocket();
 }
 
