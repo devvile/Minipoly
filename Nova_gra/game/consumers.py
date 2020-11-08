@@ -51,6 +51,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return game.host
 
     @database_sync_to_async
+    def get_turn(self, game):
+        return game.turn
+
+    @database_sync_to_async
     def add_player_to_game(self, player, game):
         return game.who_is_ready.add(player)
 
@@ -88,6 +92,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         player.in_game = await self.get_player_in_game(player)
         how_many_players_ready = await self.get_how_many_players_ready(game)
         max_players = await self.get_max_players(game)
+        game.turn = await self.get_turn(game)
         host = await self.get_host(game)
         gameState = {'Error': "WRONG GAME STATE!"}
 
@@ -132,9 +137,14 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         elif action=="initial state":
             print("Initial state!")
             gameState = {
-                "name": game.name,
                 "action": "initial_state",
-                "players_ready": await self.get_players_ready(game),
+                "name": game.name,
+                "host" : game.host,
+                "who_is_ready": await self.get_players_ready(game),
+                "is_played": game.is_played,
+                "max_players": game.max_players,
+                "turn" : game.turn,
+                "turn_of_player" : "tu bedzie cyzja tura",
                 "mess": "Initial State sent",
             }
 
