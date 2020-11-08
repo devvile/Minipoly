@@ -74,7 +74,7 @@ Mini Game: {{game.name}}
                 <div class="__sidebar_menu_column">
                     {% if player_in_game %}
                     <input type ="button" value="END GAME" class="__sidebar_item_action --end_btn">
-                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end' game.id%}">End Game</a></div>
+                  <!--  <div class= '__sidebar_item_action'><a href ="{% url 'game_end' game.id%}">End Game</a></div> -->
                     <div class= '__sidebar_item_action'><a href ="{% url 'game_leave' game.id%}">Leave Game</a></div>
                     {% endif %}
                     {% if not game.is_played %}
@@ -109,7 +109,7 @@ Mini Game: {{game.name}}
             <div class = '--menu'>
                 {{game.turn_of_player}} turn!
                     {% else %}
-                <p class = "players_ready_text">Players Ready:</p>
+                <p class = "players_ready_text">Players ready:</p>
                 Max Players: {{game.max_players}}
                     {% endif %}
             </div>
