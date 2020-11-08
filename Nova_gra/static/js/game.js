@@ -30,22 +30,25 @@ function configGame() {
   const game = new Game();
 
   function asignEvents() {
-    const ready_btn = document.querySelector(".--ready_btn");
-    const start_btn = document.querySelector(".--start_btn");
-    ready_btn.addEventListener("click", () => {
-      let mess = JSON.stringify({
-        player: playerName,
-        action: "ready",
+    if (game.is_played === false) {
+      const ready_btn = document.querySelector(".--ready_btn");
+      const start_btn = document.querySelector(".--start_btn");
+
+      ready_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "ready",
+        });
+        sendMess(mess);
       });
-      sendMess(mess);
-    });
-    start_btn.addEventListener("click", () => {
-      let mess = JSON.stringify({
-        player: playerName,
-        action: "start",
+      start_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "start",
+        });
+        sendMess(mess);
       });
-      sendMess(mess);
-    });
+    }
   }
 
   function openWebsocket() {
@@ -82,14 +85,14 @@ function configGame() {
       (game.name = dataJson.name),
         (game.is_played = dataJson.is_played),
         (game.host = dataJson.host),
-        (game.players_ready = dataJson.players_ready),
         (game.who_is_ready = dataJson.who_is_ready),
+        (game.who_is_playing = dataJson.who_is_playing),
         (game.max_players = dataJson.max_players),
         (game.turn = dataJson.turn),
         (game.turn_of_player = dataJson.turn_of_player);
 
       console.log(game.host + " host");
-      console.log(game.turn);
+      console.log(game.who_is_playing);
       return game;
     }
 

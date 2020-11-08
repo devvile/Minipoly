@@ -43,6 +43,11 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return x
 
     @database_sync_to_async
+    def get_who_is_playing(self, game):
+        x = [i.nick for i in game.who_is_playing.all()]
+        return x
+
+    @database_sync_to_async
     def get_max_players(self, game):
         return game.max_players
 
@@ -141,10 +146,11 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 "name": game.name,
                 "host" : game.host,
                 "who_is_ready": await self.get_players_ready(game),
+                "who_is_playing": await self.get_who_is_playing(game),
                 "is_played": game.is_played,
                 "max_players": game.max_players,
                 "turn" : game.turn,
-                "turn_of_player" : "tu bedzie cyzja tura",
+                "turn_of_player" : "tu bedzie czyja tura",
                 "mess": "Initial State sent",
             }
 
