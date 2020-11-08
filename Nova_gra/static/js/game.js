@@ -6,34 +6,49 @@ function configGame() {
   const socket = "ws://" + window.location.host + window.location.pathname;
   const websocket = new WebSocket(socket);
   const playerName = document.querySelector(".playerName_header").textContent;
-  const game = {
-    name: "default",
-    is_played: false,
-    players_ready: 0,
-    players_playing: [],
-    who_is_ready: [],
-    max_players: 4,
-    turn: 1,
-    turn_of_player: "",
-  };
+
+  class Game {
+    constructor(
+      name,
+      host,
+      is_played,
+      who_is_ready,
+      max_players,
+      turn,
+      turn_of_player
+    ) {
+      this.name = name;
+      this.host = host;
+      this.is_played = is_played;
+      this.who_is_ready = who_is_ready;
+      this.max_players = max_players;
+      this.turn = turn;
+      this.turn_of_player = turn_of_player;
+    }
+  }
+
+  const game = new Game();
 
   function asignEvents() {
-    const ready_btn = document.querySelector(".--ready_btn");
-    const start_btn = document.querySelector(".--start_btn");
-    ready_btn.addEventListener("click", () => {
-      let mess = JSON.stringify({
-        player: playerName,
-        action: "ready",
+    if (game.is_played === false) {
+      const ready_btn = document.querySelector(".--ready_btn");
+      const start_btn = document.querySelector(".--start_btn");
+
+      ready_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "ready",
+        });
+        sendMess(mess);
       });
-      sendMess(mess);
-    });
-    start_btn.addEventListener("click", () => {
-      let mess = JSON.stringify({
-        player: playerName,
-        action: "start",
+      start_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "start",
+        });
+        sendMess(mess);
       });
-      sendMess(mess);
-    });
+    }
   }
 
   function openWebsocket() {
@@ -67,12 +82,23 @@ function configGame() {
     }
 
     function makeInitialState(dataJson) {
-      game.name = dataJson.name;
-      console.log(game.name);
+      (game.name = dataJson.name),
+        (game.is_played = dataJson.is_played),
+        (game.host = dataJson.host),
+        (game.who_is_ready = dataJson.who_is_ready),
+        (game.who_is_playing = dataJson.who_is_playing),
+        (game.max_players = dataJson.max_players),
+        (game.turn = dataJson.turn),
+        (game.turn_of_player = dataJson.turn_of_player);
+
+      console.log(game.host + " host");
+      console.log(game.who_is_playing);
+      return game;
     }
+
     function startGame(dataJson) {
       game.is_played = true;
-      console.log(console.log(game.is_played));
+      console.log(game.is_played);
     }
 
     websocket.onclose = () => {
