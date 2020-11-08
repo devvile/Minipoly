@@ -66,10 +66,35 @@ function configGame() {
       playersReadyText.textContent = `Players ready: ${dataJson.players_ready}`;
     }
 
+    class Game {
+      constructor(name, is_played, players_ready, who_is_ready, max_players, turn, turn_of_player) {
+        this.name = name;
+        this.is_played = is_played;
+        this.players_ready = players_ready;
+        this.who_is_ready = who_is_ready;
+        this.may_players = max_players;
+        this.turn = turn;
+        this.turn_of_player = turn_of_player
+
+      }
+    }
+
+    players_ready: 0,
+    players_playing: [],
+    who_is_ready: [],
+    max_players: 4,
+    turn: 1,
+    turn_of_player: "",
+
+
+
+
     function makeInitialState(dataJson) {
+      mapGame(dataJson);
       game.name = dataJson.name;
       console.log(game.name);
     }
+
     function startGame(dataJson) {
       game.is_played = true;
       console.log(console.log(game.is_played));

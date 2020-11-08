@@ -58,15 +58,15 @@ Mini Game: {{game.name}}
                 <div class= '__sidebar_item_action'><h4>Player capital:</h4></div>
             </article>
             <article class="sidebar_top__game_actions __sidebar_item">
-            <div class= '__sidebar_item_action'><h4>Player Actions:</h4></div>
-            <div class="__sidebar_menu_column">
-                {% if player_in_game %}
-                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Roll Dice</a></div>
-                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Buy Property</a></div>
-                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Sell Property</a></div>
-                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Use Bonus</a></div>
-                <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">End Turn</a></div>
-                {% endif %}
+            <div class="game_actions --player_in_game">
+                <div class= '__sidebar_item_action'><h4>Player Actions:</h4></div>
+                <div class="__sidebar_menu_column">                    
+                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Roll Dice</a></div>
+                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Buy Property</a></div>
+                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Sell Property</a></div>
+                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Use Bonus</a></div>
+                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">End Turn</a></div>
+                </div>
             </div>
             </article>
             <article class="sidebar_top__global_actions  __sidebar_item">
