@@ -29,28 +29,6 @@ function configGame() {
 
   const game = new Game();
 
-  function asignEvents() {
-    if (game.is_played === false) {
-      const ready_btn = document.querySelector(".--ready_btn");
-      const start_btn = document.querySelector(".--start_btn");
-
-      ready_btn.addEventListener("click", () => {
-        let mess = JSON.stringify({
-          player: playerName,
-          action: "ready",
-        });
-        sendMess(mess);
-      });
-      start_btn.addEventListener("click", () => {
-        let mess = JSON.stringify({
-          player: playerName,
-          action: "start",
-        });
-        sendMess(mess);
-      });
-    }
-  }
-
   function openWebsocket() {
     console.log("Establishing Websocket Connection...");
     websocket.onopen = () => {
@@ -58,6 +36,8 @@ function configGame() {
       checkState();
     };
   }
+
+  // MESS RESPONSE
 
   function setWebsocket() {
     websocket.onmessage = (mess) => {
@@ -76,23 +56,35 @@ function configGame() {
       }
     };
 
-    function playersReady(dataJson) {
+    //MESS RESPONSE FUNCTIONS
+
+    function playersReady(game) {
       const playersReadyText = document.querySelector(".players_ready_text");
-      playersReadyText.textContent = `Players ready: ${dataJson.players_ready}`;
+      playersReadyText.textContent = `Players ready: ${game.who_is_ready}`;
     }
 
-    function makeInitialState(dataJson) {
-      (game.name = dataJson.name),
-        (game.is_played = dataJson.is_played),
-        (game.host = dataJson.host),
-        (game.who_is_ready = dataJson.who_is_ready),
-        (game.who_is_playing = dataJson.who_is_playing),
-        (game.max_players = dataJson.max_players),
-        (game.turn = dataJson.turn),
-        (game.turn_of_player = dataJson.turn_of_player);
+    //INITIAL SETUP
 
-      console.log(game.host + " host");
-      console.log(game.who_is_playing);
+    function makeInitialState(dataJson) {
+      function aquireInitialState(dataJson) {
+        (game.name = dataJson.name),
+          (game.is_played = dataJson.is_played),
+          (game.host = dataJson.host),
+          (game.who_is_ready = dataJson.who_is_ready),
+          (game.who_is_playing = dataJson.who_is_playing),
+          (game.max_players = dataJson.max_players),
+          (game.turn = dataJson.turn),
+          (game.turn_of_player = dataJson.turn_of_player);
+      }
+
+      function renderInitialState(game) {
+        console.log("Rendering Initial State");
+        playersReady(game);
+        console.log(typeof game);
+      }
+
+      aquireInitialState(dataJson);
+      renderInitialState(game);
       return game;
     }
 
@@ -118,22 +110,39 @@ function configGame() {
     websocket.send(messText);
   }
 
+  //EVENTS ASSIGNMENT
+
+  function asignEvents() {
+    console.log("AsSINGING EVENTS");
+
+    //TUTAJ TRZEBA TO PRZESPISAC ASYNCHRONICZNIE
+    if (game.is_played === false) {
+      console.log("GRA NIE ZACZETa");
+      const ready_btn = document.querySelector(".--ready_btn");
+      const start_btn = document.querySelector(".--start_btn");
+
+      ready_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "ready",
+        });
+        sendMess(mess);
+      });
+      start_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "start",
+        });
+        sendMess(mess);
+        console.log("send ready");
+      });
+    }
+  }
+
   openWebsocket();
-  asignEvents();
   setWebsocket();
-}
-
-// Asigning Event Listneres to DOM ELEMENTS
-
-function asignEvents() {
-  const ready_btn = document.querySelector(".--ready_btn");
-  const start_btn = document.querySelector(".--start_btn");
-  ready_btn.addEventListener("click", () => {
-    console.log("Ready");
-  });
-  start_btn.addEventListener("click", () => {
-    console.log("Start");
-  });
+  // dopiero po skonczeniu wykonywania jakos
+  asignEvents();
 }
 
 main();
