@@ -80,7 +80,7 @@ function configGame() {
       function renderInitialState(game) {
         console.log("Rendering Initial State");
         playersReady(game);
-        console.log(typeof game);
+        console.log(game.who_is_ready);
       }
 
       aquireInitialState(dataJson);
@@ -136,13 +136,14 @@ function configGame() {
         sendMess(mess);
         console.log("send ready");
       });
+    } else {
+      console.log("Gra Zaczęta");
     }
   }
 
   openWebsocket();
   setWebsocket();
   // dopiero po skonczeniu wykonywania jakos
-  asignEvents();
+  setTimeout(asignEvents, 2000);
 }
-
 main();

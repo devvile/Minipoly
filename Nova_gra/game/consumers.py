@@ -112,7 +112,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
 
             gameState = {
                 "action": "player_ready",
-                "players_ready": await self.get_players_ready(game),
+                "who_is_ready": await self.get_players_ready(game),
             }
 
         elif action=="start":
@@ -127,14 +127,14 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 gameState = {
                     "action": "start_game",
                     "game_played": await self.get_game_is_played(game),
-                    "players_ready": await self.get_players_ready(game),
+                    "who_is_ready": await self.get_players_ready(game),
                     "mess": "start, Conditions matched!",
                 }
             else:
                 gameState = {
                     "action": "start_game",
                     "game_played": await self.get_game_is_played(game),
-                    "players_ready": await self.get_players_ready(game),
+                    "who_is_ready": await self.get_players_ready(game),
                     "mess": "start_failure conditions cannot be matched",
                 }
 
