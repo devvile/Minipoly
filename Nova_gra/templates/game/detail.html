@@ -61,11 +61,17 @@ Mini Game: {{game.name}}
             <div class="game_actions --player_in_game">
                 <div class= '__sidebar_item_action'><h4>Player Actions:</h4></div>
                 <div class="__sidebar_menu_column">                    
-                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Roll Dice</a></div>
-                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Buy Property</a></div>
-                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Sell Property</a></div>
-                    <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Use Bonus</a></div>
+                    <input type ="button" value="ROLL DICE" class="__sidebar_item_action --roll_btn">
+                   <!-- <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Buy Property</a></div> -->
+                    <input type ="button" value="BUY" class="__sidebar_item_action --buy_btn">
+                    <!--<div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Sell Property</a></div>-->
+                    <input type ="button" value="SELL PROPERTY" class="__sidebar_item_action --sell_btn">
+
+                   <!--- <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Use Bonus</a></div>-->
+                    <input type ="button" value="USE BONUS" class="__sidebar_item_action --bonus_btn">
+
                     <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">End Turn</a></div>
+                    <input type ="button" value="END TURN" class="__sidebar_item_action --end_btn">
                 </div>
             </div>
             </article>
