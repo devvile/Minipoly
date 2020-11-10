@@ -74,19 +74,17 @@ Mini Game: {{game.name}}
                 <div class="__sidebar_menu_column">
                     {% if player_in_game %}
                     <input type ="button" value="END GAME" class="__sidebar_item_action --end_btn">
-                  <!--  <div class= '__sidebar_item_action'><a href ="{% url 'game_end' game.id%}">End Game</a></div> -->
-                    <div class= '__sidebar_item_action'><a href ="{% url 'game_leave' game.id%}">Leave Game</a></div>
+                    <input tpye = "button" value = "LEAVE GAME" class= "__sidebar_item_action --leave_btn">
                     {% endif %}
                     {% if not game.is_played %}
-                    <input type ="button" value="Start Game" class="__sidebar_item_action --start_btn">
-                    <input type ="button" value="Ready" class="__sidebar_item_action --ready_btn">
+                    <input type ="button" value="START GAME" class="__sidebar_item_action --start_btn">
+                    <input type ="button" value="READY" class="__sidebar_item_action --ready_btn">
 
                     {% endif %}
                     {% if user.username == game.host %}
-                    <div class='__sidebar_item_action'><a href ="{% url 'delete_gam' game.id%}">Delete</a></div>
+                    <input type ="button" value="DELETE" class="__sidebar_item_action --delete_btn">
                         {% endif %}
-                    <div class='__sidebar_item_action'><a href ="{% url 'home'%}">Home</a></div>
-
+                    <input type ="button" value="HOME" class="__sidebar_item_action --home_btn"> 
                 </div>
         </article>
         </div>
