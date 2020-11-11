@@ -44,8 +44,7 @@ function makeInitialState(dataJson) {
   }
 
   function renderInitialState(game) {
-    console.log("Rendering Initial State");
-    playersReady(game);
+    gameRender(game);
   }
 
   aquireInitialState(dataJson);
@@ -53,15 +52,40 @@ function makeInitialState(dataJson) {
   return game;
 }
 
+function gameRender(game) {
+  console.log("Rendering game state!");
+  console.log("GAME IS PLAYED:" + game.is_played);
+  if (game.is_played === true) {
+    makeVisible();
+  } else {
+    console.log("making invisible");
+    makeInvisible();
+  }
+  playersReady(game);
+}
+
 function startGame(dataJson) {
+  makeVisible();
   game.is_played = true;
-  console.log(game.is_played);
+  console.log("Game starting");
 }
 
 function endGame(dataJson) {
+  makeInvisible();
+  game.is_played = false;
   console.log("endGame");
 }
 
 function endTurn(dataJson) {
   console.log("endTurn");
+}
+
+function makeVisible() {
+  const playerOptions = document.querySelector(".__sidebar_menu_column");
+  playerOptions.style.display = "flex";
+}
+
+function makeInvisible() {
+  const playerOptions = document.querySelector(".__sidebar_menu_column");
+  playerOptions.style.display = "none";
 }

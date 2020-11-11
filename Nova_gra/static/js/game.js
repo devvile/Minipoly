@@ -80,7 +80,6 @@ function configGame() {
   //EVENTS ASSIGNMENT
 
   function asignEvents() {
-    console.log("AsSINGING EVENTS");
     console.dir(game);
 
     if (game.is_played === false) {
@@ -107,6 +106,7 @@ function configGame() {
     } else {
       const end_turn_btn = document.querySelector(".--end_turn_btn");
       const end_game_btn = document.querySelector(".--end_game_btn");
+      const leave_game_btn = document.querySelector(".--leave_game_btn");
 
       end_turn_btn.addEventListener("click", () => {
         let mess = JSON.stringify({
@@ -123,12 +123,19 @@ function configGame() {
         });
         sendMess(mess);
       });
+      leave_game_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "leave_game",
+        });
+        sendMess(mess);
+      });
     }
+    console.log("Events Assigned!");
   }
 
   openWebsocket();
   setWebsocket();
-  // dopiero po skonczeniu wykonywania jakos
-  setTimeout(asignEvents, 2000);
+  setTimeout(asignEvents, 700);
 }
 main();

@@ -74,7 +74,12 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def remove_player_from_ready_players(self, player, game):
-        return game.who_is_ready.remove(player)
+        game.who_is_ready.remove(player)
+
+    @database_sync_to_async
+    def remove_player_from_game(self, player, game):
+        game.who_is_playing.remove(player)
+        player.in_game = False
 
     @database_sync_to_async
     def remove_players_from_game(self, game):
@@ -114,11 +119,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         player.in_game = await self.get_player_in_game(player)
         how_many_players_ready = await self.get_how_many_players_ready(game)
         number_of_players_playing = await self.get_how_many_players_playing(game)
-        print(number_of_players_playing)
         max_players = await self.get_max_players(game)
         game.turn = await self.get_turn(game)
         host = await self.get_host(game)
-        gameState = {'Error': "WRONG GAME STATE!"}
+        game_state = {'Error': "WRONG GAME STATE!"}
 
         if action == "ready":
             if not game.is_played and not player.in_game and how_many_players_ready < max_players:
@@ -128,7 +132,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 await self.remove_player_from_ready_players(player, game)
                 await self.set_player_game_status_off(player)
 
-            gameState = {
+            game_state = {
                 "action": "player_ready",
                 "is_played": await self.get_game_is_played(game),
                 "who_is_ready": await self.get_players_ready(game),
@@ -143,21 +147,20 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                     await self.add_player_to_players_playing(i, game)
                     await self.remove_player_from_ready_players(i, game)
 
-                gameState = {
+                game_state = {
                     "action": "start_game",
                     "is_played": await self.get_game_is_played(game),
                     "who_is_ready": await self.get_players_ready(game),
                     "mess": "start, Conditions matched!",
                 }
             else:
-                gameState = {
+                game_state = {
                     "action": "start_failure",
                     "mess": "Failed to start game, you're not a host, or there is not enough players"
                 }
 
         elif action == "initial state":
-            print("Initial state!")
-            gameState = {
+            game_state = {
                 "action": "initial_state",
                 "name": game.name,
                 "host" : game.host,
@@ -170,13 +173,11 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 "mess": "Initial State sent",
             }
 
-        elif action=="end_game":
-            if self.number_of_players_playing > 2 and host == player.nick:
-                print("END GAME!")
-                await self.set_game_ended(game)
-                await self.remove_players_from_game(game)
-                gameState = {
-                    "action": "end_game",
+        elif action == "leave_game":
+            if player != host:
+                await self.remove_player_from_game(player,game)
+                game_state = {
+                    "action": "leave_game",
                     "name": game.name,
                     "host" : game.host,
                     "who_is_ready": await self.get_players_ready(game),
@@ -185,13 +186,40 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                     "max_players": game.max_players,
                     "turn" : 1,
                     "turn_of_player" : "tu bedzie czyja tura",
-                    "mess": "Game Ended!",
+                    "mess": "You left game!",
+                }
+            else:
+                game_state = {"action": "leave_game", "mess": " Host Cannot leave game"}
+
+        elif action == "end_game":
+            if  number_of_players_playing > 1 and host == player.nick:
+                await self.set_game_ended(game)
+                await self.remove_players_from_game(game)
+                game_state = {
+                        "action": "end_game",
+                        "name": game.name,
+                        "host": game.host,
+                        "who_is_ready": await self.get_players_ready(game),
+                        "who_is_playing": await self.get_who_is_playing(game),
+                        "is_played": game.is_played,
+                        "max_players": game.max_players,
+                        "turn": 1,
+                        "turn_of_player": "tu bedzie czyja tura",
+                        "mess": "Game Ended!",
+                    }
+            elif player != host:
+                game_state = {
+                "action": "end_game", "mess": "Only Host can end game!"
+                }
+            else:
+                game_state = {
+                "action": "end_game",
+                "mess": "You cannot end game while players are playing!"
                 }
 
         await database_sync_to_async(game.save)()
         await database_sync_to_async(player.save)()
-        print (self.get_players_ready(game))
-        stateSend = json.dumps(gameState)
+        stateSend = json.dumps(game_state)
         await (self.channel_layer.group_send)(
             self.room_group_name,
             {
