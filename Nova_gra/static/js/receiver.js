@@ -23,9 +23,7 @@ class Game {
 const game = new Game();
 
 function playersReady(state) {
-  console.dir(state);
   if (state.is_played === false) {
-    console.log("CONDITION MET");
     const playersReadyText = document.querySelector(".players_ready_text");
     playersReadyText.textContent = `Players ready: ${state.who_is_ready}`;
   } else {

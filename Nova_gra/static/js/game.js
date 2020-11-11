@@ -31,7 +31,6 @@ function configGame() {
       console.log(`Message:  ${mess.data}`);
       let dataJson = JSON.parse(mess.data);
       let state = JSON.parse(dataJson.message);
-      console.log("state ation: " + state.action);
 
       if (state.action === "initial_state") {
         makeInitialState(state);
@@ -44,9 +43,13 @@ function configGame() {
       }
       if (state.action === "end_game") {
         endGame(state);
+        notify(state.mess);
       }
       if (state.action === "end_turn") {
         endTurn(state);
+      }
+      if (state.action === "start_failure") {
+        notify(state.mess);
       }
     };
 
@@ -55,6 +58,11 @@ function configGame() {
     websocket.onclose = () => {
       console.log("Websocket Connection Terminated!");
     };
+  }
+
+  function notify(notification) {
+    const notifBoard = document.querySelector(".notification-board");
+    notifBoard.textContent = notification;
   }
 
   function checkState() {
@@ -76,7 +84,6 @@ function configGame() {
     console.dir(game);
 
     if (game.is_played === false) {
-      console.log("GRA NIE ZACZETa");
       const ready_btn = document.querySelector(".--ready_btn");
       const start_btn = document.querySelector(".--start_btn");
 
@@ -94,13 +101,10 @@ function configGame() {
           action: "start",
         });
         sendMess(mess);
-        console.log("send ready");
       });
 
       // GAME STARTED
     } else {
-      console.log("Gra Zaczęta");
-
       const end_turn_btn = document.querySelector(".--end_turn_btn");
       const end_game_btn = document.querySelector(".--end_game_btn");
 
