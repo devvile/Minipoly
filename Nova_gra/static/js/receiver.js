@@ -22,10 +22,12 @@ class Game {
 
 const game = new Game();
 
-function playersReady(game) {
-  if (game.is_played === false) {
+function playersReady(state) {
+  console.dir(state);
+  if (state.is_played === false) {
+    console.log("CONDITION MET");
     const playersReadyText = document.querySelector(".players_ready_text");
-    playersReadyText.textContent = `Players ready: ${game.who_is_ready}`;
+    playersReadyText.textContent = `Players ready: ${state.who_is_ready}`;
   } else {
     console.log("GAME ALREADY STARTED CANNOT MAKE PLAYER READY");
   }
