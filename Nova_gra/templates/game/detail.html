@@ -60,18 +60,14 @@ Mini Game: {{game.name}}
             <article class="sidebar_top__game_actions __sidebar_item">
             <div class="game_actions --player_in_game">
                 <div class= '__sidebar_item_action'><h4>Player Actions:</h4></div>
-                <div class="__sidebar_menu_column">                    
+                <div class="__sidebar_menu_column">      
+                    {% if player_in_game %}              
                     <input type ="button" value="ROLL DICE" class="__sidebar_item_action --roll_btn">
-                   <!-- <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Buy Property</a></div> -->
                     <input type ="button" value="BUY" class="__sidebar_item_action --buy_btn">
-                    <!--<div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Sell Property</a></div>-->
                     <input type ="button" value="SELL PROPERTY" class="__sidebar_item_action --sell_btn">
-
-                   <!--- <div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">Use Bonus</a></div>-->
                     <input type ="button" value="USE BONUS" class="__sidebar_item_action --bonus_btn">
-
-                    <!--<div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">End Turn</a></div> -->
-                    <input type ="button" value="END TURN" class="__sidebar_item_action --end_btn">
+                    <input type ="button" value="END TURN" class="__sidebar_item_action --end_turn_btn">
+                    {%endif%}
                 </div>
             </div>
             </article>
@@ -79,7 +75,7 @@ Mini Game: {{game.name}}
                 <div class= '__sidebar_item_action'><h4>Game options:</h4></div>
                 <div class="__sidebar_menu_column">
                     {% if player_in_game %}
-                    <input type ="button" value="END GAME" class="__sidebar_item_action --end_btn">
+                    <input type ="button" value="END GAME" class="__sidebar_item_action --end_game_btn">
                     <input tpye = "button" value = "LEAVE GAME" class= "__sidebar_item_action --leave_btn">
                     {% endif %}
                     {% if not game.is_played %}
