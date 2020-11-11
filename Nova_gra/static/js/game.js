@@ -1,4 +1,11 @@
-import { playersReady, makeInitialState, startGame, game } from "./receiver.js";
+import {
+  playersReady,
+  makeInitialState,
+  startGame,
+  game,
+  endGame,
+  endTurn,
+} from "./receiver.js";
 
 function main() {
   configGame();
@@ -35,6 +42,12 @@ function configGame() {
       if (state.action === "start_game") {
         startGame(state);
       }
+      if (state.action === "end_game") {
+        endGame(state);
+      }
+      if (state.action === "end_turn") {
+        endTurn(state);
+      }
     };
 
     //INITIAL SETUP
@@ -62,7 +75,6 @@ function configGame() {
     console.log("AsSINGING EVENTS");
     console.dir(game);
 
-    //TUTAJ TRZEBA TO PRZESPISAC ASYNCHRONICZNIE
     if (game.is_played === false) {
       console.log("GRA NIE ZACZETa");
       const ready_btn = document.querySelector(".--ready_btn");
@@ -75,6 +87,7 @@ function configGame() {
         });
         sendMess(mess);
       });
+
       start_btn.addEventListener("click", () => {
         let mess = JSON.stringify({
           player: playerName,
@@ -83,8 +96,29 @@ function configGame() {
         sendMess(mess);
         console.log("send ready");
       });
+
+      // GAME STARTED
     } else {
       console.log("Gra Zaczęta");
+
+      const end_turn_btn = document.querySelector(".--end_turn_btn");
+      const end_game_btn = document.querySelector(".--end_game_btn");
+
+      end_turn_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "end_turn",
+        });
+        sendMess(mess);
+      });
+
+      end_game_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "end_game",
+        });
+        sendMess(mess);
+      });
     }
   }
 

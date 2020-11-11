@@ -71,7 +71,7 @@ Mini Game: {{game.name}}
                     <input type ="button" value="USE BONUS" class="__sidebar_item_action --bonus_btn">
 
                     <!--<div class= '__sidebar_item_action'><a href ="{% url 'game_end_turn' game.id%}">End Turn</a></div> -->
-                    <input type ="button" value="END TURN" class="__sidebar_item_action --end_btn">
+                    <input type ="button" value="END TURN" class="__sidebar_item_action --end_turn_btn">
                 </div>
             </div>
             </article>
@@ -79,7 +79,7 @@ Mini Game: {{game.name}}
                 <div class= '__sidebar_item_action'><h4>Game options:</h4></div>
                 <div class="__sidebar_menu_column">
                     {% if player_in_game %}
-                    <input type ="button" value="END GAME" class="__sidebar_item_action --end_btn">
+                    <input type ="button" value="END GAME" class="__sidebar_item_action --end_game_btn">
                     <input tpye = "button" value = "LEAVE GAME" class= "__sidebar_item_action --leave_btn">
                     {% endif %}
                     {% if not game.is_played %}

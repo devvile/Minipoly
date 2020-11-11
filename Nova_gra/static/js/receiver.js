@@ -1,4 +1,4 @@
-export { playersReady, makeInitialState, startGame, game };
+export { playersReady, makeInitialState, startGame, endTurn, endGame, game };
 
 class Game {
   constructor(
@@ -23,8 +23,12 @@ class Game {
 const game = new Game();
 
 function playersReady(game) {
-  const playersReadyText = document.querySelector(".players_ready_text");
-  playersReadyText.textContent = `Players ready: ${game.who_is_ready}`;
+  if (game.is_played === false) {
+    const playersReadyText = document.querySelector(".players_ready_text");
+    playersReadyText.textContent = `Players ready: ${game.who_is_ready}`;
+  } else {
+    console.log("GAME ALREADY STARTED CANNOT MAKE PLAYER READY");
+  }
 }
 
 function makeInitialState(dataJson) {
@@ -52,4 +56,12 @@ function makeInitialState(dataJson) {
 function startGame(dataJson) {
   game.is_played = true;
   console.log(game.is_played);
+}
+
+function endGame(dataJson) {
+  console.log("endGame");
+}
+
+function endTurn(dataJson) {
+  console.log("endTurn");
 }
