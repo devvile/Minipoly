@@ -1,3 +1,5 @@
+import { nan, man } from "./receiver.js";
+
 function main() {
   configGame();
 }
