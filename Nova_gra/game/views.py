@@ -74,7 +74,7 @@ def ready(request, id):
     else:
         return redirect('detail', id=game.id)
 """
-
+"""
 @login_required
 def game_start(request, id):
     game = Game.objects.get(id=id)
@@ -92,7 +92,7 @@ def game_start(request, id):
             return redirect('detail', id=game.id)
     else:
         return redirect('detail', id=game.id)
-
+"""
 
 @login_required
 def game_end(request, id):

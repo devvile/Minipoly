@@ -58,16 +58,14 @@ Mini Game: {{game.name}}
                 <div class= '__sidebar_item_action'><h4>Player capital:</h4></div>
             </article>
             <article class="sidebar_top__game_actions __sidebar_item">
-            <div class="game_actions --player_in_game">
+            <div class="game_actions">
                 <div class= '__sidebar_item_action'><h4>Player Actions:</h4></div>
-                <div class="__sidebar_menu_column">      
-                    {% if player_in_game %}              
-                    <input type ="button" value="ROLL DICE" class="__sidebar_item_action --roll_btn">
-                    <input type ="button" value="BUY" class="__sidebar_item_action --buy_btn">
-                    <input type ="button" value="SELL PROPERTY" class="__sidebar_item_action --sell_btn">
-                    <input type ="button" value="USE BONUS" class="__sidebar_item_action --bonus_btn">
-                    <input type ="button" value="END TURN" class="__sidebar_item_action --end_turn_btn">
-                    {%endif%}
+                <div class="__sidebar_menu_column">            
+                        <input type ="button" value="ROLL DICE" class="__sidebar_item_action --roll_btn">
+                        <input type ="button" value="BUY" class="__sidebar_item_action --buy_btn">
+                        <input type ="button" value="SELL PROPERTY" class="__sidebar_item_action --sell_btn">
+                        <input type ="button" value="USE BONUS" class="__sidebar_item_action --bonus_btn">
+                        <input type ="button" value="END TURN" class="__sidebar_item_action --end_turn_btn">  
                 </div>
             </div>
             </article>
@@ -75,8 +73,8 @@ Mini Game: {{game.name}}
                 <div class= '__sidebar_item_action'><h4>Game options:</h4></div>
                 <div class="__sidebar_menu_column">
                     {% if player_in_game %}
-                    <input type ="button" value="END GAME" class="__sidebar_item_action --end_game_btn">
-                    <input tpye = "button" value = "LEAVE GAME" class= "__sidebar_item_action --leave_btn">
+                    <input type = "button" value = "END GAME" class= "__sidebar_item_action --end_game_btn">
+                    <input type = "button" value = "LEAVE GAME" class= "__sidebar_item_action --leave_game_btn">
                     {% endif %}
                     {% if not game.is_played %}
                     <input type ="button" value="START GAME" class="__sidebar_item_action --start_btn">
@@ -114,7 +112,7 @@ Mini Game: {{game.name}}
                     {% endif %}
             </div>
             <hr>
-            <p class="notification-item">NOTIFICATIONS DISPLAYED HERE<p>
+            <p class="notification-board"><p>
         </div>
     </section>
 </div>
