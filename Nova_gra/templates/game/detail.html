@@ -60,7 +60,7 @@ Mini Game: {{game.name}}
             <article class="sidebar_top__game_actions __sidebar_item">
             <div class="game_actions">
                 <div class= '__sidebar_item_action'><h4>Player Actions:</h4></div>
-                <div class="__sidebar_menu_column">            
+                <div class="__sidebar_menu_column --invis">            
                         <input type ="button" value="ROLL DICE" class="__sidebar_item_action --roll_btn">
                         <input type ="button" value="BUY" class="__sidebar_item_action --buy_btn">
                         <input type ="button" value="SELL PROPERTY" class="__sidebar_item_action --sell_btn">
@@ -72,15 +72,14 @@ Mini Game: {{game.name}}
             <article class="sidebar_top__global_actions  __sidebar_item">
                 <div class= '__sidebar_item_action'><h4>Game options:</h4></div>
                 <div class="__sidebar_menu_column">
-                    <!-- if player in game -->
-                    <input type = "button" value = "END GAME" class= "__sidebar_item_action --end_game_btn">
-                    <input type = "button" value = "LEAVE GAME" class= "__sidebar_item_action --leave_game_btn">
-                    <!-- if not in game-->
-                    <input type ="button" value="START GAME" class="__sidebar_item_action --start_btn">
-                    <input type ="button" value="READY" class="__sidebar_item_action --ready_btn">
-
+                    <input type = "button" value = "END GAME" class= "__sidebar_item_action --end_game_btn --invis">
+                    <input type = "button" value = "LEAVE GAME" class= "__sidebar_item_action --leave_game_btn --invis">
+                    <div class="">
+                        <input type ="button" value="START GAME" class="__sidebar_item_action --start_btn --vis">
+                        <input type ="button" value="READY" class="__sidebar_item_action --ready_btn --vis">
+                    </div>
                     {% if user.username == game.host %}
-                    <input type ="button" value="DELETE" class="__sidebar_item_action --delete_btn">
+                    <input type ="button" value="DELETE" class="__sidebar_item_action --delete_btn --vis">
                         {% endif %}
                     <input type ="button" value="HOME" class="__sidebar_item_action --home_btn"> 
                 </div>
@@ -88,26 +87,21 @@ Mini Game: {{game.name}}
         </div>
         <hr>
         <div class="game_section_sidebar_bottom">
-            <h4>Hosted by {{game.host}}</h4>
-            {% if game.is_played %}
-            <h5 class = "notification-item">Game has already started!</h5>
-                {% else %}
-            <h5 class  = "notification-item">Game hasn't started yet.</h5>
-                {% endif %}
+            <div class = "host_info">
+                <h4>Hosted by {{game.host}}</h4>
+                <h5 class = "notification-item --game_state"></h5>
+            </div>
             <hr>
-                {% if game.is_played %}
-            <p>Players in game: (
+            <p class = "players_in_game --invis">Players in game: 
                 {% for player in players_playing %}
-                {{player}},
-                {% endfor %})
+                {{player}}
+                {% endfor%}
             </p>
             <hr>
             <div class = '--menu'>
-                {{game.turn_of_player}} turn!
-                    {% else %}
-                <p class = "players_ready_text">Players ready:</p>
-                Max Players: {{game.max_players}}
-                    {% endif %}
+              <p class="--invis">{{game.turn_of_player}} turn!</p>
+                <p class = "players_ready_text --vis">Players ready:</p>
+                <p class="max_players --vis">Max Players: {{game.max_players}}</p>
             </div>
             <hr>
             <p class="notification-board"><p>
