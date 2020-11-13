@@ -180,7 +180,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 "is_played": game.is_played,
                 "max_players": game.max_players,
                 "turn" : game.turn,
-                "turn_of_player" : "tu bedzie czyja tura",
+                "turn_of_player" : "Game hasn't started yet!",
                 "mess": "Initial State sent",
             }
 

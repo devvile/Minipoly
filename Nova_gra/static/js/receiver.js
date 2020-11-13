@@ -74,8 +74,10 @@ function gameRender(game) {
 
 function startGame(dataJson) {
   makeVisible();
+  game.turn_of_player = dataJson.turn_of_player;
   game.is_played = true;
   console.log("Game starting");
+  console.log(game.turn_of_player);
 }
 
 function endGame(dataJson) {
