@@ -1,4 +1,12 @@
-export { playersReady, makeInitialState, startGame, endTurn, endGame, game };
+export {
+  playersReady,
+  makeInitialState,
+  startGame,
+  endTurn,
+  endGame,
+  rollDice,
+  game,
+};
 
 class Game {
   constructor(
@@ -78,6 +86,9 @@ function endGame(dataJson) {
 
 function endTurn(dataJson) {
   console.log("endTurn");
+}
+function rollDice(dataJson) {
+  console.log("rollDice");
 }
 
 function makeVisible() {
