@@ -1,5 +1,5 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-import json
+import json, random
 from channels.db import database_sync_to_async
 from .models import Game
 from player.models import Player
@@ -24,6 +24,15 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_player(self, usr):
         return Player.objects.get(nick=usr)
+
+    @database_sync_to_async
+    def get_first_player(self, game):
+        temp = game.first_player
+        return temp.nick
+
+    @database_sync_to_async
+    def get_next_player(self, game):
+        return game.next_player
 
     @database_sync_to_async
     def get_game_is_played(self, game):
@@ -151,6 +160,8 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                     "action": "start_game",
                     "is_played": await self.get_game_is_played(game),
                     "who_is_ready": await self.get_players_ready(game),
+                    "turn": game.turn,
+                    "turn_of_player": await self.get_first_player(game),
                     "mess": "start, Conditions matched!",
                 }
             else:
@@ -171,6 +182,36 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 "turn" : game.turn,
                 "turn_of_player" : "tu bedzie czyja tura",
                 "mess": "Initial State sent",
+            }
+
+        elif action == "end_turn":
+            turn_of_player = await self.get_next_player(game)
+            print(turn_of_player)
+            game_state = {
+                "action": "end_turn",
+                "name": game.name,
+                "host" : game.host,
+                "who_is_ready": await self.get_players_ready(game),
+                "who_is_playing": await self.get_who_is_playing(game),
+                "is_played": game.is_played,
+                "max_players": game.max_players,
+                "turn" : game.turn,
+                "turn_of_player" : turn_of_player,
+                "mess": "Turn Ended!",
+            }
+        elif action == "roll_dice":
+            move = random.randint(1,6)
+            game_state = {
+                "action": "roll_dice",
+                "name": game.name,
+                "host" : game.host,
+                "who_is_ready": await self.get_players_ready(game),
+                "who_is_playing": await self.get_who_is_playing(game),
+                "is_played": game.is_played,
+                "max_players": game.max_players,
+                "turn" : game.turn,
+                "turn_of_player" : "tu bedzie czyja tura",
+                "mess": "You move " + str(move) + " fields",
             }
 
         elif action == "leave_game":

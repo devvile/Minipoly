@@ -72,15 +72,13 @@ Mini Game: {{game.name}}
             <article class="sidebar_top__global_actions  __sidebar_item">
                 <div class= '__sidebar_item_action'><h4>Game options:</h4></div>
                 <div class="__sidebar_menu_column">
-                    {% if player_in_game %}
+                    <!-- if player in game -->
                     <input type = "button" value = "END GAME" class= "__sidebar_item_action --end_game_btn">
                     <input type = "button" value = "LEAVE GAME" class= "__sidebar_item_action --leave_game_btn">
-                    {% endif %}
-                    {% if not game.is_played %}
+                    <!-- if not in game-->
                     <input type ="button" value="START GAME" class="__sidebar_item_action --start_btn">
                     <input type ="button" value="READY" class="__sidebar_item_action --ready_btn">
 
-                    {% endif %}
                     {% if user.username == game.host %}
                     <input type ="button" value="DELETE" class="__sidebar_item_action --delete_btn">
                         {% endif %}

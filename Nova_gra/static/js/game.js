@@ -34,7 +34,7 @@ function configGame() {
       let state = JSON.parse(dataJson.message);
 
       switch (state.action) {
-        case "intial_state":
+        case "initial_state":
           makeInitialState(state);
           break;
         case "player_ready":
@@ -123,7 +123,6 @@ function configGame() {
         });
         sendMess(mess);
       });
-
       end_game_btn.addEventListener("click", () => {
         let mess = JSON.stringify({
           player: playerName,
@@ -131,7 +130,6 @@ function configGame() {
         });
         sendMess(mess);
       });
-
       leave_game_btn.addEventListener("click", () => {
         let mess = JSON.stringify({
           player: playerName,
@@ -153,6 +151,6 @@ function configGame() {
 
   openWebsocket();
   setWebsocket();
-  setTimeout(asignEvents, 700);
+  setTimeout(asignEvents, 1000);
 }
 main();
