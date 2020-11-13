@@ -76,14 +76,17 @@ function startGame(dataJson) {
   game.turn_of_player = dataJson.turn_of_player;
   game.who_is_playing = dataJson.who_is_playing;
   game.is_played = true;
+  refreshPlayers();
+  console.log("Game starting");
+}
 
+function refreshPlayers() {
+  console.log("k: " + game.turn_of_player);
   const playerTurnText = document.querySelector(".player_turn_text");
   const playersInGame = document.querySelector(".players_in_game");
 
   playerTurnText.textContent = ` ${game.turn_of_player} turn!`;
   playersInGame.textContent = ` Players in game: ${game.who_is_playing}`;
-
-  console.log("Game starting");
 }
 
 function endGame(dataJson) {
@@ -110,6 +113,8 @@ function makeVisible() {
   visList.forEach((elem) => (elem.style.display = "none"));
   inVisList.forEach((elem) => (elem.style.display = "block"));
   menu.style.display = "flex";
+
+  refreshPlayers();
 }
 
 function makeInvisible() {
