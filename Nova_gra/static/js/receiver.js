@@ -74,8 +74,10 @@ function gameRender(game) {
 
 function startGame(dataJson) {
   makeVisible();
+  game.turn_of_player = dataJson.turn_of_player;
   game.is_played = true;
   console.log("Game starting");
+  console.log(game.turn_of_player);
 }
 
 function endGame(dataJson) {
@@ -92,11 +94,24 @@ function rollDice(dataJson) {
 }
 
 function makeVisible() {
-  const playerOptions = document.querySelector(".__sidebar_menu_column");
-  playerOptions.style.display = "flex";
+  const gamePlayed = document.querySelector(".--game_state");
+  const visList = document.querySelectorAll(".--vis");
+  const inVisList = document.querySelectorAll(".--invis");
+  const menu = document.querySelector(".__sidebar_menu_column");
+
+  gamePlayed.textContent = " GAME ALREADY STARTED!";
+
+  visList.forEach((elem) => (elem.style.display = "none"));
+  inVisList.forEach((elem) => (elem.style.display = "block"));
+  menu.style.display = "flex";
 }
 
 function makeInvisible() {
-  const playerOptions = document.querySelector(".__sidebar_menu_column");
-  playerOptions.style.display = "none";
+  const visList = document.querySelectorAll(".--vis");
+  const inVisList = document.querySelectorAll(".--invis");
+  const gamePlayed = document.querySelector(".--game_state");
+
+  gamePlayed.textContent = " GAME HASN'T STARTED YET!";
+  visList.forEach((elem) => (elem.style.display = "block"));
+  inVisList.forEach((elem) => (elem.style.display = "none"));
 }
