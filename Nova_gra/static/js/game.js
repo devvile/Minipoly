@@ -5,6 +5,7 @@ import {
   game,
   endGame,
   endTurn,
+  rollDice,
 } from "./receiver.js";
 
 function main() {
@@ -32,24 +33,30 @@ function configGame() {
       let dataJson = JSON.parse(mess.data);
       let state = JSON.parse(dataJson.message);
 
-      if (state.action === "initial_state") {
-        makeInitialState(state);
-      }
-      if (state.action === "player_ready") {
-        playersReady(state);
-      }
-      if (state.action === "start_game") {
-        startGame(state);
-      }
-      if (state.action === "end_game") {
-        endGame(state);
-        notify(state.mess);
-      }
-      if (state.action === "end_turn") {
-        endTurn(state);
-      }
-      if (state.action === "start_failure") {
-        notify(state.mess);
+      switch (state.action) {
+        case "initial_state":
+          makeInitialState(state);
+          break;
+        case "player_ready":
+          playersReady(state);
+          break;
+        case "start_game":
+          startGame(state);
+          break;
+        case "end_game":
+          endGame(state);
+          notify(state.mess);
+          break;
+        case "end_turn":
+          endTurn(state);
+          notify(state.mess);
+          break;
+        case "roll_dice":
+          rollDice(state);
+          notify(state.mess);
+          break;
+        case "start_failure":
+          notify(state.mess);
       }
     };
 
@@ -107,6 +114,7 @@ function configGame() {
       const end_turn_btn = document.querySelector(".--end_turn_btn");
       const end_game_btn = document.querySelector(".--end_game_btn");
       const leave_game_btn = document.querySelector(".--leave_game_btn");
+      const roll_dice_btn = document.querySelector(".--roll_btn");
 
       end_turn_btn.addEventListener("click", () => {
         let mess = JSON.stringify({
@@ -115,7 +123,6 @@ function configGame() {
         });
         sendMess(mess);
       });
-
       end_game_btn.addEventListener("click", () => {
         let mess = JSON.stringify({
           player: playerName,
@@ -130,12 +137,20 @@ function configGame() {
         });
         sendMess(mess);
       });
+
+      roll_dice_btn.addEventListener("click", () => {
+        let mess = JSON.stringify({
+          player: playerName,
+          action: "roll_dice",
+        });
+        sendMess(mess);
+      });
     }
     console.log("Events Assigned!");
   }
 
   openWebsocket();
   setWebsocket();
-  setTimeout(asignEvents, 700);
+  setTimeout(asignEvents, 1000);
 }
 main();
