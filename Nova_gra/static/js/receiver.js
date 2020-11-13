@@ -66,7 +66,6 @@ function gameRender(game) {
   if (game.is_played === true) {
     makeVisible();
   } else {
-    console.log("making invisible");
     makeInvisible();
   }
   playersReady(game);
@@ -75,9 +74,16 @@ function gameRender(game) {
 function startGame(dataJson) {
   makeVisible();
   game.turn_of_player = dataJson.turn_of_player;
+  game.who_is_playing = dataJson.who_is_playing;
   game.is_played = true;
+
+  const playerTurnText = document.querySelector(".player_turn_text");
+  const playersInGame = document.querySelector(".players_in_game");
+
+  playerTurnText.textContent = ` ${game.turn_of_player} turn!`;
+  playersInGame.textContent = ` Players in game: ${game.who_is_playing}`;
+
   console.log("Game starting");
-  console.log(game.turn_of_player);
 }
 
 function endGame(dataJson) {

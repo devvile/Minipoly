@@ -92,14 +92,10 @@ Mini Game: {{game.name}}
                 <h5 class = "notification-item --game_state"></h5>
             </div>
             <hr>
-            <p class = "players_in_game --invis">Players in game: 
-                {% for player in players_playing %}
-                {{player}}
-                {% endfor%}
-            </p>
+            <p class = "players_in_game --invis"> </p>
             <hr>
             <div class = '--menu'>
-              <p class="--invis">{{game.turn_of_player}} turn!</p>
+              <p class="player_turn_text --invis"></p>
                 <p class = "players_ready_text --vis">Players ready:</p>
                 <p class="max_players --vis">Max Players: {{game.max_players}}</p>
             </div>
