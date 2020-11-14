@@ -73,6 +73,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return game.turn
 
     @database_sync_to_async
+    def get_whose_turn(self, game):
+        return game.turn_of_player.nick
+
+    @database_sync_to_async
     def add_player_to_game(self, player, game):
         return game.who_is_ready.add(player)
 
@@ -103,6 +107,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def set_player_game_status_ready(self, player):
         player.set_player_in_game()
+
+    @database_sync_to_async
+    def set_first_player_turn(self, game):
+        game.turn_of_player = game.first_player
 
     @database_sync_to_async
     def set_player_game_status_off(self, player):
@@ -155,6 +163,9 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                     i = await self.get_player(i)
                     await self.add_player_to_players_playing(i, game)
                     await self.remove_player_from_ready_players(i, game)
+                await self.set_first_player_turn(game)
+                print(type(await self.get_whose_turn(game)))
+
 
                 game_state = {
                     "action": "start_game",
@@ -162,7 +173,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                     "who_is_ready": await self.get_players_ready(game),
                     "turn": game.turn,
                     "who_is_playing": await self.get_who_is_playing(game),
-                    "turn_of_player": await self.get_first_player(game),
+                    "turn_of_player": await self.get_whose_turn(game),
                     "mess": "start, Conditions matched!",
                 }
             else:
@@ -172,6 +183,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 }
 
         elif action == "initial state":
+            if game.is_played:
+                whose_turn = await self.get_whose_turn(game)
+            else:
+                whose_turn = "Game hasn't started yet!"
             game_state = {
                 "action": "initial_state",
                 "name": game.name,
@@ -181,7 +196,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 "is_played": game.is_played,
                 "max_players": game.max_players,
                 "turn" : game.turn,
-                "turn_of_player" : "Game hasn't started yet!",
+                "turn_of_player" : whose_turn,
                 "mess": "Initial State sent",
             }
 
@@ -208,6 +223,12 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 "turn" : game.turn,
                 "turn_of_player" : "tu bedzie czyja tura",
                 "mess": "You move " + str(move) + " fields",
+            }
+
+        elif action == "end_turn":
+            # tutaj funkcja co robi game.next_player
+            game_state = {
+                "mess": "TURN ENDED",
             }
 
         elif action == "leave_game":
