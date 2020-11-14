@@ -28,6 +28,8 @@ class Game {
   }
 }
 
+//bycmoze trzeba dac funkcje jako metody
+
 const game = new Game();
 
 function playersReady(state) {
