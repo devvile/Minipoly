@@ -139,7 +139,6 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         max_players = await self.get_max_players(game)
         game.turn = await self.get_turn(game)
         host = await self.get_host(game)
-        game_state = {'Error': "WRONG GAME STATE!"}
 
         if action == "ready":
             if not game.is_played and not player.in_game and how_many_players_ready < max_players:
@@ -183,10 +182,6 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 }
 
         elif action == "initial state":
-            if game.is_played:
-                whose_turn = await self.get_whose_turn(game)
-            else:
-                whose_turn = "Game hasn't started yet!"
             game_state = {
                 "action": "initial_state",
                 "name": game.name,
@@ -253,7 +248,9 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             if  number_of_players_playing > 1 and host == player.nick:
                 await self.set_game_ended(game)
                 await self.remove_players_from_game(game)
-                game_state = {
+                game_state = self.get_state(game, "end_game", "Game Ended!")
+                """
+                    {
                         "action": "end_game",
                         "name": game.name,
                         "host": game.host,
@@ -265,6 +262,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                         "turn_of_player": "tu bedzie czyja tura",
                         "mess": "Game Ended!",
                     }
+                    """
             elif player != host:
                 game_state = {
                 "action": "end_game", "mess": "Only Host can end game!"
@@ -291,6 +289,21 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             'message': message,
         }))
+
+
+    async def get_state(self, game, action, mess):
+        game.is_played = await self.get_game_is_played(game)
+        if game.is_played:
+            whose_turn = await self.get_whose_turn(game)
+        else:
+            whose_turn = "Game hasn't started yet!"
+        game_state = dict(action=action, name=game.name, host=await self.get_host(game),
+                         who_is_ready=await self.get_players_ready(game),
+                         who_is_playing=await self.get_who_is_playing(game), is_played=game.is_played,
+                         max_players=await self.get_max_players(game), turn=await self.get_turn(game),
+                         turn_of_player=whose_turn, mess=mess)
+        return game_state
+
 
     async def disconnect(self, close_code):
         await (self.channel_layer.group_discard)(
