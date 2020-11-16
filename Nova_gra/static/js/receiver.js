@@ -5,6 +5,8 @@ export {
   endTurn,
   endGame,
   rollDice,
+  refreshGame,
+  setState,
   game,
 };
 
@@ -63,8 +65,6 @@ function makeInitialState(dataJson) {
 }
 
 function gameRender(game) {
-  console.log("Rendering game state!");
-  console.log("GAME IS PLAYED:" + game.is_played);
   if (game.is_played === true) {
     makeVisible();
   } else {
@@ -78,12 +78,12 @@ function startGame(dataJson) {
   game.turn_of_player = dataJson.turn_of_player;
   game.who_is_playing = dataJson.who_is_playing;
   game.is_played = true;
-  refreshPlayers();
+  refreshPlayers(dataJson);
   console.log("Game starting");
 }
 
-function refreshPlayers() {
-  console.log("k: " + game.turn_of_player);
+function refreshPlayers(game) {
+  console.log("czemu" + game);
   const playerTurnText = document.querySelector(".player_turn_text");
   const playersInGame = document.querySelector(".players_in_game");
 
@@ -97,8 +97,27 @@ function endGame(dataJson) {
   console.log("endGame");
 }
 
-function endTurn(dataJson) {
-  console.log("endTurn");
+async function setState(game) {
+  console.dir(game);
+  refreshPlayers(game);
+}
+
+function refreshGame(dataJson) {
+  {
+    (game.name = dataJson.name),
+      (game.is_played = dataJson.is_played),
+      (game.host = dataJson.host),
+      (game.who_is_ready = dataJson.who_is_ready),
+      (game.who_is_playing = dataJson.who_is_playing),
+      (game.max_players = dataJson.max_players),
+      (game.turn = dataJson.turn),
+      (game.turn_of_player = dataJson.turn_of_player);
+  }
+}
+
+function endTurn(state) {
+  console.log("halo" + state.turn_of_player);
+  setTimeout(setState, 200, state);
 }
 function rollDice(dataJson) {
   console.log("rollDice");
@@ -116,7 +135,7 @@ function makeVisible() {
   inVisList.forEach((elem) => (elem.style.display = "block"));
   menu.style.display = "flex";
 
-  refreshPlayers();
+  refreshPlayers(game);
 }
 
 function makeInvisible() {
