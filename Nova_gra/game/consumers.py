@@ -124,6 +124,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     def set_game_ended(self, game):
         game.is_played = False
 
+    @database_sync_to_async
+    def set_next_turn(self, game):
+        game.turn_of_player = game.next_player
+
 
     async def receive(self, text_data):
 
@@ -168,7 +172,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             game_state = await self.get_state(game, "initial_state", "Initial State sent")
 
         elif action == "end_turn":
-            # logika do zmiany tury
+            await self.set_next_turn(game)
             game_state = await self.get_state(game, "end_turn", "Turn Ended!")
 
         elif action == "roll_dice":

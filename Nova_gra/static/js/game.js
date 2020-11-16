@@ -6,6 +6,8 @@ import {
   endGame,
   endTurn,
   rollDice,
+  refreshGame,
+  setState,
 } from "./receiver.js";
 
 function main() {
@@ -32,6 +34,7 @@ function configGame() {
       console.log(`Message:  ${mess.data}`);
       let dataJson = JSON.parse(mess.data);
       let state = JSON.parse(dataJson.message);
+      refreshGame(dataJson);
 
       switch (state.action) {
         case "initial_state":
