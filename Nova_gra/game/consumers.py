@@ -172,8 +172,12 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             game_state = await self.get_state(game, "initial_state", "Initial State sent")
 
         elif action == "end_turn":
-            await self.set_next_turn(game)
-            game_state = await self.get_state(game, "end_turn", "Turn Ended!")
+            whose_turn = await self.get_player(await self.get_whose_turn(game))
+            if game.player == whose_turn:
+                await self.set_next_turn(game)
+                game_state = await self.get_state(game, "end_turn", "Turn Ended!")
+            else:
+                game_state = await self.get_state(game, "end_turn", "It's not your turn!")
 
         elif action == "roll_dice":
             move = random.randint(1, 6)
