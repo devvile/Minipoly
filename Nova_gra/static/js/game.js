@@ -9,7 +9,7 @@ import {
   refreshGame,
 } from "./receiver.js";
 
-import { prepareBoard, Boardtest } from "./board.js";
+import { prepareBoard } from "./board.js";
 
 function main() {
   configGame();
@@ -157,6 +157,5 @@ function configGame() {
   setWebsocket();
   setTimeout(asignEvents, 1000);
   prepareBoard(8);
-  Boardtest(1, 2, "mark", 4, 5, 6, 7, 2);
 }
 main();

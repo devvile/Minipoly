@@ -1,12 +1,20 @@
-export { prepareBoard, Boardtest };
+export { prepareBoard };
 
-function Boardtest(...args) {
-  let x = args.length;
-  let counter = 1;
-  while (x >= counter) {
-    console.log(args[counter++]);
+class Board {
+  constructor(...args) {
+    this.fields = args[0];
   }
 }
+
+const lista = [
+  { nr: 1, value: 500 },
+  { nr: 2, value: 1500 },
+  { nr: 3, value: 200 },
+];
+
+const game_board = new Board(lista);
+
+console.log(game_board.fields[1]["value"]);
 
 function prepareBoard(boardSize) {
   const board = document.querySelectorAll(".game_field");
