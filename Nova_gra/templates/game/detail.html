@@ -27,7 +27,15 @@ Mini Game: {{game.name}}
      </div>
      <div class="r3">
         {% for field in r3 %}
-        <div class= 'game_field --row'><div class='game_field__header'> {{field.name}}</div></div>
+        <div class= 'game_field --row'><div class='game_field__header'> {{field.name}}</div>
+        <div class="pawns">
+            <div class="pawn"></div>
+            <div class="pawn"></div>
+            <div class="pawn"></div>
+            <div class="pawn"></div>
+        </div>
+        </div>
+
         {% endfor %}
      </div>
      
