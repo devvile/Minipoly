@@ -7,7 +7,6 @@ import {
   endTurn,
   rollDice,
   refreshGame,
-  setState,
 } from "./receiver.js";
 
 import { prepareBoard } from "./board.js";
@@ -157,6 +156,6 @@ function configGame() {
   openWebsocket();
   setWebsocket();
   setTimeout(asignEvents, 1000);
-  prepareBoard();
+  prepareBoard(8);
 }
 main();
