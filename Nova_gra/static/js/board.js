@@ -1,5 +1,11 @@
-export { check };
+export { prepareBoard };
 
-function check() {
-  console.log("Checked!");
+function prepareBoard() {
+  const board = document.querySelectorAll(".game_field");
+
+  board.forEach((elem) => {
+    const field = document.createElement("div");
+    field.classList.add("boardField");
+    elem.appendChild(field);
+  });
 }
