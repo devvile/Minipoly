@@ -10,7 +10,7 @@ import {
   setState,
 } from "./receiver.js";
 
-import { check } from "./board.js";
+import { prepareBoard } from "./board.js";
 
 function main() {
   configGame();
@@ -157,6 +157,6 @@ function configGame() {
   openWebsocket();
   setWebsocket();
   setTimeout(asignEvents, 1000);
-  check();
+  prepareBoard();
 }
 main();
