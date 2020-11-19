@@ -1,10 +1,21 @@
 from django.db import models
 from player.models import Player
 
+class Config(models.Model):
+    name = models.CharField(max_length=150)
+    nr_of_fields = models.IntegerField(default=28)
+    special = models.IntegerField(default=8)
+    start_money = models.IntegerField(default=1000)
+
+    def __str__(self):
+        return self.name
+
 
 class Game(models.Model):
     name = models.CharField(max_length=150)
     host = models.CharField(max_length=10)
+    config = models.ForeignKey(Config, on_delete=models.CASCADE, related_name='game_config', blank=True,
+                                       null=True)
     is_played = models.BooleanField(default=False)
     max_players = models.IntegerField(default=4)
     who_is_ready = models.ManyToManyField(Player, related_name="guys_ready", blank=True)
@@ -81,12 +92,14 @@ class FieldType(models.Model):
 
 
 class Field(models.Model):
-    nr = models.IntegerField(default = None, blank = True, null = True)
+    nr = models.IntegerField(default=None, blank=True, null=True)
     name = models.CharField(max_length=150)
-    owner = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='fieldOwner', null=True, default=None, blank=True)
-    typeof = models.ForeignKey(FieldType, on_delete=models.CASCADE, related_name='typeOfField', null=True, default= None, blank=True)
+    typeof = models.ForeignKey(FieldType, on_delete=models.CASCADE, related_name='typeOfField', null=True, default=None,
+                               blank=True)
     price = models.IntegerField(default=100)
     grade = models.IntegerField(default=1)
 
     def __str__(self):
         return self.name
+
+

@@ -1,7 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json, random
 from channels.db import database_sync_to_async
-from .models import Game
+from .models import Game, Field
 from player.models import Player
 
 class GameEventsConsumer(AsyncWebsocketConsumer):
@@ -145,6 +145,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         host = await self.get_host(game)
 
         if action == "ready":
+
             if not game.is_played and not player.in_game and how_many_players_ready < max_players:
                 await self.add_player_to_game(player, game)
                 await self.set_player_game_status_ready(player)
