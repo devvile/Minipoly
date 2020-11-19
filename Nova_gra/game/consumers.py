@@ -145,6 +145,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         host = await self.get_host(game)
 
         if action == "ready":
+
             if not game.is_played and not player.in_game and how_many_players_ready < max_players:
                 await self.add_player_to_game(player, game)
                 await self.set_player_game_status_ready(player)

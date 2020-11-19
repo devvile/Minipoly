@@ -13,6 +13,7 @@ class Game(models.Model):
     turn_of_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='czyja_tura', blank=True,
                                        null=True)
 
+
     @property
     def how_many_players_ready(self):
         return self.who_is_ready.count()
@@ -81,12 +82,14 @@ class FieldType(models.Model):
 
 
 class Field(models.Model):
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='gamefields', default=None,blank=False , null = True)
     nr = models.IntegerField(default = None, blank = True, null = True)
     name = models.CharField(max_length=150)
     owner = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='fieldOwner', null=True, default=None, blank=True)
     typeof = models.ForeignKey(FieldType, on_delete=models.CASCADE, related_name='typeOfField', null=True, default= None, blank=True)
     price = models.IntegerField(default=100)
     grade = models.IntegerField(default=1)
+
 
     def __str__(self):
         return self.name
