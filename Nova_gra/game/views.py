@@ -52,47 +52,6 @@ def delete_room(request, id):
     else:
         return redirect('detail', id=game.id)
 
-"""
-@login_required
-def ready(request, id):
-    game = Game.objects.get(id=id)
-    player = Player.objects.get(name=request.user)
-    bool_test = player in game.players_ready
-    if not game.is_played and not bool_test and not player.in_game:
-        if game.how_many_players_ready < game.max_players:
-            player.in_game = True  # todo to mozna udoskonalic przez metode Playera
-            player.save()
-            game.who_is_ready.add(player)
-            return redirect('detail', id=game.id)
-        else:
-            return redirect('detail', id=game.id)
-    elif not game.is_played and not game.how_many_players_ready == 0:
-        game.who_is_ready.remove(player)
-        player.in_game = False
-        player.save()
-        return redirect('detail', id=game.id)
-    else:
-        return redirect('detail', id=game.id)
-"""
-"""
-@login_required
-def game_start(request, id):
-    game = Game.objects.get(id=id)
-    player = Player.objects.get(name=request.user)
-    if game.how_many_players_ready > 1 and game.host == player.nick:
-        if not game.is_played:
-            game.is_played = True
-            for i in game.who_is_ready.all():
-                game.who_is_playing.add(i)
-                game.turn_of_player = game.first_player
-                game.who_is_ready.remove(i)
-            game.save()
-            return redirect('detail', id=game.id)
-        else:
-            return redirect('detail', id=game.id)
-    else:
-        return redirect('detail', id=game.id)
-"""
 
 @login_required
 def game_end(request, id):
