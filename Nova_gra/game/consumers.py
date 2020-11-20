@@ -194,7 +194,6 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
 
         elif action == "roll_dice":
             move = random.randint(1, 6)
-            # przesuniecie gracza na mapie
             game_state = await self.get_state(game, "roll_dice", "You move " + str(move) + " fields")
 
         elif action == "leave_game":
