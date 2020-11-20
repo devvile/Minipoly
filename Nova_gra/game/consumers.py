@@ -1,5 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json, random
+from django.core import serializers
 from channels.db import database_sync_to_async
 from .models import Game, Field
 from player.models import Player
@@ -71,6 +72,14 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_turn(self, game):
         return game.turn
+
+    @database_sync_to_async
+    def get_config(self, game):
+        return game.config
+
+    @database_sync_to_async
+    def get_fields(self, fields_nr):
+        return serializers.serialize("json", Field.objects.all()[:fields_nr])
 
     @database_sync_to_async
     def get_whose_turn(self, game):
@@ -170,7 +179,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 game_state = await self.get_state(game, "start_failure", "Failed to start game, you're not a host, or there is not enough players")
 
         elif action == "initial state":
-            game_state = await self.get_state(game, "initial_state", "Initial State sent")
+            config = await self.get_config(game)
+            fields_nr = config.nr_of_fields
+            fields = await self.get_fields(fields_nr)
+            game_state = await self.get_state(game, "initial_state", fields)
 
         elif action == "end_turn":
             whose_turn = await self.get_player(await self.get_whose_turn(game))
