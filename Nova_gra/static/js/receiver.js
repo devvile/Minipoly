@@ -38,6 +38,17 @@ class Board {
   }
 }
 
+class Player {
+  constructor(name, money, position, moved, estates, playing) {
+    this.name = name;
+    this.money = money;
+    this.position = position;
+    this.moved = moved;
+    this.estates = estates;
+    this.playing = playing;
+  }
+}
+
 //bycmoze trzeba dac funkcje jako metody
 
 const game = new Game();
