@@ -10,6 +10,8 @@ export {
   game,
 };
 
+//CLASSES
+
 class Game {
   constructor(
     name,
@@ -27,6 +29,12 @@ class Game {
     this.max_players = max_players;
     this.turn = turn;
     this.turn_of_player = turn_of_player;
+  }
+}
+
+class Board {
+  constructor(...args) {
+    this.fields = args[0];
   }
 }
 
@@ -58,9 +66,17 @@ function makeInitialState(dataJson) {
   function renderInitialState(game) {
     gameRender(game);
   }
+  function prepareFields(dataJson) {
+    let fields = JSON.parse(dataJson.mess);
+    const board = new Board(fields);
+    console.log(board.fields[2]["fields"]);
 
+    return board;
+  }
   aquireInitialState(dataJson);
   renderInitialState(game);
+  prepareFields(dataJson);
+
   return game;
 }
 
