@@ -38,6 +38,17 @@ class Board {
   }
 }
 
+class Player {
+  constructor(name, money, position, moved, estates, playing) {
+    this.name = name;
+    this.money = money;
+    this.position = position;
+    this.moved = moved;
+    this.estates = estates;
+    this.playing = playing;
+  }
+}
+
 //bycmoze trzeba dac funkcje jako metody
 
 const game = new Game();
@@ -66,18 +77,20 @@ function makeInitialState(dataJson) {
   function renderInitialState(game) {
     gameRender(game);
   }
-  function prepareFields(dataJson) {
-    let fields = JSON.parse(dataJson.mess);
-    const board = new Board(fields);
-    console.log(board.fields[2]["fields"]);
 
-    return board;
+  function prepareFields(dataJson) {
+    if (game.is_played === false) {
+      let fields = JSON.parse(dataJson.mess);
+      const board = new Board(fields);
+      return board;
+    }
   }
+
   aquireInitialState(dataJson);
   renderInitialState(game);
-  prepareFields(dataJson);
+  let boardFields = prepareFields(dataJson);
 
-  return game;
+  return boardFields;
 }
 
 function gameRender(game) {

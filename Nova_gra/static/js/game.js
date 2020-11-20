@@ -37,7 +37,7 @@ function configGame() {
 
       switch (state.action) {
         case "initial_state":
-          makeInitialState(state);
+          window.board = makeInitialState(state);
           break;
         case "player_ready":
           playersReady(state);
