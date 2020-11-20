@@ -15,7 +15,7 @@ def detail(request, id):
     r3 = Field.objects.filter()[:boardSize]
     r4 = Field.objects.filter()[:boardSize-2]
     args = {'game': game, 'players_ready': game.players_ready, 'players_playing':game.players_playing, 'player':player,
-            'player_in_game':player in game.players_playing, 'r1':r1, 'r2':r2, 'r3':r3, 'r4':r4}
+            'player_in_game':player in game.players_playing,'r1':r1, 'r2':r2, 'r3':r3, 'r4':r4}
     return render(request, 'game/detail.html', args)
 
 

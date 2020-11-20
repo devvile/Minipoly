@@ -9,8 +9,6 @@ import {
   refreshGame,
 } from "./receiver.js";
 
-import { prepareBoard } from "./board.js";
-
 function main() {
   configGame();
 }
@@ -39,7 +37,7 @@ function configGame() {
 
       switch (state.action) {
         case "initial_state":
-          makeInitialState(state);
+          window.board = makeInitialState(state);
           break;
         case "player_ready":
           playersReady(state);
@@ -156,6 +154,5 @@ function configGame() {
   openWebsocket();
   setWebsocket();
   setTimeout(asignEvents, 1000);
-  prepareBoard(8);
 }
 main();

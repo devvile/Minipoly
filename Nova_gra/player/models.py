@@ -8,7 +8,7 @@ class Player(models.Model):
     nick = models.CharField(max_length=10 )
     in_game= models.BooleanField(default = False)
     money = models.IntegerField(default=150)
-    position = models.IntegerField(default=1)
+    position = models.IntegerField(default=0)
     tossed_dice= models.BooleanField(default=False)
     description = models.TextField(max_length = 300, null = True)
 
