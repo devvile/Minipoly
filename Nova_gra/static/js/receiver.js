@@ -77,18 +77,20 @@ function makeInitialState(dataJson) {
   function renderInitialState(game) {
     gameRender(game);
   }
-  function prepareFields(dataJson) {
-    let fields = JSON.parse(dataJson.mess);
-    const board = new Board(fields);
-    console.log(board.fields[2]["fields"]);
 
-    return board;
+  function prepareFields(dataJson) {
+    if (game.is_played === false) {
+      let fields = JSON.parse(dataJson.mess);
+      const board = new Board(fields);
+      return board;
+    }
   }
+
   aquireInitialState(dataJson);
   renderInitialState(game);
-  prepareFields(dataJson);
+  let boardFields = prepareFields(dataJson);
 
-  return game;
+  return boardFields;
 }
 
 function gameRender(game) {
