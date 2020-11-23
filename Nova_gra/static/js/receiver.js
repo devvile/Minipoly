@@ -7,12 +7,11 @@ export {
   rollDice,
   refreshGame,
   setState,
-  makeMove,
   game,
   Player,
 };
 
-import { prepareBoard } from "./board.js";
+import { prepareBoard, makeMove } from "./board.js";
 
 //CLASSES
 
@@ -57,24 +56,6 @@ class Player {
 //bycmoze trzeba dac funkcje jako metody
 
 const game = new Game();
-
-function makeMove(player, fileds_to_move) {
-  let old_field = document.getElementById(player.position);
-  old_field.style.backgroundColor = "grey";
-  let new_poss = player.position + fileds_to_move;
-  if (new_poss >= 28) {
-    new_poss -= 28;
-  }
-  player.position = new_poss;
-  let color = player.color;
-
-  renderMove();
-  function renderMove() {
-    console.log("position" + player.position);
-    let new_field = document.getElementById(player.position);
-    new_field.style.backgroundColor = color;
-  }
-}
 
 function playersReady(state) {
   if (state.is_played === false) {

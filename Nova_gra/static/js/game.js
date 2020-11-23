@@ -7,9 +7,10 @@ import {
   endTurn,
   rollDice,
   refreshGame,
-  makeMove,
   Player,
 } from "./receiver.js";
+
+import { makeMove } from "./board.js";
 
 function main() {
   configGame();
@@ -61,9 +62,8 @@ function configGame() {
           notify(state.mess);
           break;
         case "roll_dice":
-          rollDice(state);
-          notify(state.mess);
           makeMove(player1, state.mess);
+          notify(state.mess);
           break;
         case "start_failure":
           notify(state.mess);
