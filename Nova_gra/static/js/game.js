@@ -5,7 +5,6 @@ import {
   game,
   endGame,
   endTurn,
-  rollDice,
   refreshGame,
   Player,
 } from "./receiver.js";

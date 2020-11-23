@@ -4,7 +4,6 @@ export {
   startGame,
   endTurn,
   endGame,
-  rollDice,
   refreshGame,
   setState,
   game,
@@ -12,6 +11,7 @@ export {
 };
 
 import { prepareBoard, makeMove } from "./board.js";
+import { makeInvisible, makeVisible, refreshPlayers } from "./prepare.js";
 
 //CLASSES
 
@@ -98,7 +98,7 @@ function makeInitialState(dataJson) {
 
 function gameRender(game) {
   if (game.is_played === true) {
-    makeVisible();
+    makeVisible(game);
   } else {
     makeInvisible();
   }
@@ -112,14 +112,6 @@ function startGame(dataJson) {
   game.is_played = true;
   refreshPlayers(dataJson);
   console.log("Game starting");
-}
-
-function refreshPlayers(game) {
-  const playerTurnText = document.querySelector(".player_turn_text");
-  const playersInGame = document.querySelector(".players_in_game");
-
-  playerTurnText.textContent = ` ${game.turn_of_player} turn!`;
-  playersInGame.textContent = ` Players in game: ${game.who_is_playing}`;
 }
 
 function endGame(dataJson) {
@@ -149,32 +141,4 @@ function refreshGame(dataJson) {
 function endTurn(state) {
   console.log("halo" + state.turn_of_player);
   setTimeout(setState, 200, state);
-}
-function rollDice(dataJson) {
-  console.log("rollDice");
-}
-
-function makeVisible() {
-  const gamePlayed = document.querySelector(".--game_state");
-  const visList = document.querySelectorAll(".--vis");
-  const inVisList = document.querySelectorAll(".--invis");
-  const menu = document.querySelector(".__sidebar_menu_column");
-
-  gamePlayed.textContent = " GAME ALREADY STARTED!";
-
-  visList.forEach((elem) => (elem.style.display = "none"));
-  inVisList.forEach((elem) => (elem.style.display = "block"));
-  menu.style.display = "flex";
-
-  refreshPlayers(game);
-}
-
-function makeInvisible() {
-  const visList = document.querySelectorAll(".--vis");
-  const inVisList = document.querySelectorAll(".--invis");
-  const gamePlayed = document.querySelector(".--game_state");
-
-  gamePlayed.textContent = " GAME HASN'T STARTED YET!";
-  visList.forEach((elem) => (elem.style.display = "block"));
-  inVisList.forEach((elem) => (elem.style.display = "none"));
 }
