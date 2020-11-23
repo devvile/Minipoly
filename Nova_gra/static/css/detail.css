@@ -36,10 +36,13 @@
 .r3 {
   grid-area: r3;
   display: flex;
+  flex-direction: row-reverse;
   width: 100%;
 }
 
 .r4 {
+  display: flex;
+  flex-direction: column-reverse;
   grid-area: r4;
 }
 .game_field {
