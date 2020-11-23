@@ -7,7 +7,9 @@ export {
   rollDice,
   refreshGame,
   setState,
+  makeMove,
   game,
+  Player,
 };
 
 import { prepareBoard } from "./board.js";
@@ -41,8 +43,9 @@ class Board {
 }
 
 class Player {
-  constructor(name, money, position, moved, estates, playing) {
+  constructor(name, color, money, position, moved, estates, playing) {
     this.name = name;
+    this.color = color;
     this.money = money;
     this.position = position;
     this.moved = moved;
@@ -54,6 +57,20 @@ class Player {
 //bycmoze trzeba dac funkcje jako metody
 
 const game = new Game();
+
+function makeMove(player, fileds_to_move) {
+  let old_field = document.getElementById(player.position);
+  old_field.style.backgroundColor = "grey";
+
+  player.position = player.position + fileds_to_move;
+  let color = player.color;
+  renderMove();
+  function renderMove() {
+    console.log("position" + player.position);
+    let new_field = document.getElementById(player.position);
+    new_field.style.backgroundColor = color;
+  }
+}
 
 function playersReady(state) {
   if (state.is_played === false) {
@@ -81,13 +98,9 @@ function makeInitialState(dataJson) {
   }
 
   function prepareFields(dataJson) {
-    if (game.is_played === false) {
-      let fields = JSON.parse(dataJson.mess);
-      const board = new Board(fields);
-      return board;
-    } else {
-      console.log("Board juz jest zdefiniowany");
-    }
+    let fields = JSON.parse(dataJson.mess);
+    const board = new Board(fields);
+    return board;
   }
 
   aquireInitialState(dataJson);

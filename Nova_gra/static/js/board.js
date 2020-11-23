@@ -2,7 +2,7 @@ export { prepareBoard };
 
 function prepareBoard(boardSize) {
   const board = document.querySelectorAll(".game_field");
-  let counter = 1;
+  let counter = 0;
   const bSize = boardSize - 1;
 
   board.forEach((elem) => {
@@ -11,6 +11,4 @@ function prepareBoard(boardSize) {
     elem.appendChild(field);
     field.id = counter++;
   });
-  let x = document.getElementById("16");
-  x.style.backgroundColor = "red";
 }
