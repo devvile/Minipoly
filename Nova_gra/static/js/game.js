@@ -7,6 +7,8 @@ import {
   endTurn,
   rollDice,
   refreshGame,
+  makeMove,
+  Player,
 } from "./receiver.js";
 
 function main() {
@@ -28,6 +30,10 @@ function configGame() {
 
   // MESS RESPONSE
 
+  const player1 = new Player("dottore", "red", 1000, 0, false, [], true);
+
+  // ****
+
   function setWebsocket() {
     websocket.onmessage = (mess) => {
       console.log(`Message:  ${mess.data}`);
@@ -38,6 +44,7 @@ function configGame() {
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
+          console.dir(window.board["fields"]);
           break;
         case "player_ready":
           playersReady(state);
@@ -56,6 +63,7 @@ function configGame() {
         case "roll_dice":
           rollDice(state);
           notify(state.mess);
+          makeMove(player1, state.mess);
           break;
         case "start_failure":
           notify(state.mess);
