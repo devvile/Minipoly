@@ -6,10 +6,10 @@ import {
   endGame,
   endTurn,
   refreshGame,
-  Player,
 } from "./receiver.js";
 
 import { makeMove } from "./board.js";
+import { Player } from "./prepare.js";
 
 function main() {
   configGame();
@@ -28,11 +28,7 @@ function configGame() {
     };
   }
 
-  // MESS RESPONSE
-
   const player1 = new Player("dottore", "red", 1000, 0, false, [], true);
-
-  // ****
 
   function setWebsocket() {
     websocket.onmessage = (mess) => {
