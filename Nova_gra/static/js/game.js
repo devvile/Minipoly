@@ -38,6 +38,7 @@ function configGame() {
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
+          console.dir(window.board["fields"]);
           break;
         case "player_ready":
           playersReady(state);

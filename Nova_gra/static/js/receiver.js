@@ -10,6 +10,8 @@ export {
   game,
 };
 
+import { prepareBoard } from "./board.js";
+
 //CLASSES
 
 class Game {
@@ -83,12 +85,15 @@ function makeInitialState(dataJson) {
       let fields = JSON.parse(dataJson.mess);
       const board = new Board(fields);
       return board;
+    } else {
+      console.log("Board juz jest zdefiniowany");
     }
   }
 
   aquireInitialState(dataJson);
   renderInitialState(game);
   let boardFields = prepareFields(dataJson);
+  prepareBoard();
 
   return boardFields;
 }
@@ -112,7 +117,6 @@ function startGame(dataJson) {
 }
 
 function refreshPlayers(game) {
-  console.log("czemu" + game);
   const playerTurnText = document.querySelector(".player_turn_text");
   const playersInGame = document.querySelector(".players_in_game");
 
