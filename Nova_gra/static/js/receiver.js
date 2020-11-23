@@ -61,9 +61,13 @@ const game = new Game();
 function makeMove(player, fileds_to_move) {
   let old_field = document.getElementById(player.position);
   old_field.style.backgroundColor = "grey";
-
-  player.position = player.position + fileds_to_move;
+  let new_poss = player.position + fileds_to_move;
+  if (new_poss >= 28) {
+    new_poss -= 28;
+  }
+  player.position = new_poss;
   let color = player.color;
+
   renderMove();
   function renderMove() {
     console.log("position" + player.position);
