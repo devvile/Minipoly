@@ -8,8 +8,11 @@ import {
   refreshGame,
 } from "./receiver.js";
 
-import { makeMove } from "./board.js";
-import { Player } from "./prepare.js";
+import { makeMove, renderPosition } from "./board.js";
+import { preparePlayers } from "./prepare.js";
+
+const players = preparePlayers({ who_is_playing: ["dottore", "elizka"] });
+const player1 = players[0];
 
 function main() {
   configGame();
@@ -28,8 +31,6 @@ function configGame() {
     };
   }
 
-  const player1 = new Player("dottore", "red", 1000, 0, false, [], true);
-
   function setWebsocket() {
     websocket.onmessage = (mess) => {
       console.log(`Message:  ${mess.data}`);
@@ -37,10 +38,13 @@ function configGame() {
       let state = JSON.parse(dataJson.message);
       refreshGame(dataJson);
 
+      //players def
+
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
           console.dir(window.board["fields"]);
+          renderPosition(players);
           break;
         case "player_ready":
           playersReady(state);
@@ -57,6 +61,7 @@ function configGame() {
           notify(state.mess);
           break;
         case "roll_dice":
+          console.dir(state);
           makeMove(player1, state.mess);
           notify(state.mess);
           break;
