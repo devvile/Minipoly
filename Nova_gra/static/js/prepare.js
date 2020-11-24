@@ -1,4 +1,12 @@
-export { makeInvisible, makeVisible, refreshPlayers, Game, Player, Board };
+export {
+  makeInvisible,
+  makeVisible,
+  refreshPlayers,
+  preparePlayers,
+  Game,
+  Player,
+  Board,
+};
 
 class Game {
   constructor(
@@ -38,7 +46,30 @@ class Player {
   }
 }
 
-function preparePlayers() {}
+function preparePlayers(game) {
+  const player1 = new Player(
+    game.who_is_playing[0],
+    "red",
+    1000,
+    0,
+    false,
+    [],
+    true
+  );
+  const player2 = new Player(
+    game.who_is_playing[1],
+    "blue",
+    1000,
+    0,
+    false,
+    [],
+    true
+  );
+  const player3 = new Player("marki", "green", 1000, 0, false, [], true);
+
+  const players = [player1, player2, player3];
+  return players;
+}
 
 function makeVisible(game) {
   const gamePlayed = document.querySelector(".--game_state");

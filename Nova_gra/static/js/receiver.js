@@ -55,7 +55,6 @@ function makeInitialState(dataJson) {
   renderInitialState(game);
   let boardFields = prepareFields(dataJson);
   prepareBoard();
-
   return boardFields;
 }
 
