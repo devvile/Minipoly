@@ -1,3 +1,5 @@
+export { notify };
+
 import {
   playersReady,
   makeInitialState,
@@ -12,16 +14,22 @@ import { makeMove, renderPosition } from "./board.js";
 import { preparePlayers } from "./prepare.js";
 
 const players = preparePlayers({ who_is_playing: ["dottore", "elizka"] });
-const player1 = players[0];
 
-function main() {
-  configGame();
+function notify(notification) {
+  const notifBoard = document.querySelector(".notification-board");
+  notifBoard.textContent = notification;
 }
 
 function configGame() {
   const socket = "ws://" + window.location.host + window.location.pathname;
   const websocket = new WebSocket(socket);
   const playerName = document.querySelector(".playerName_header").textContent;
+
+  const currentPlayer = players.filter((value) => {
+    return value.name == playerName;
+  })[0];
+
+  console.log(currentPlayer);
 
   function openWebsocket() {
     console.log("Establishing Websocket Connection...");
@@ -61,9 +69,7 @@ function configGame() {
           notify(state.mess);
           break;
         case "roll_dice":
-          console.dir(state);
-          makeMove(player1, state.mess);
-          notify(state.mess);
+          makeMove(state, currentPlayer, state.mess);
           break;
         case "start_failure":
           notify(state.mess);
@@ -76,12 +82,6 @@ function configGame() {
       console.log("Websocket Connection Terminated!");
     };
   }
-
-  function notify(notification) {
-    const notifBoard = document.querySelector(".notification-board");
-    notifBoard.textContent = notification;
-  }
-
   function checkState() {
     let mess = JSON.stringify({
       player: playerName,
@@ -163,4 +163,9 @@ function configGame() {
   setWebsocket();
   setTimeout(asignEvents, 1000);
 }
+
+function main() {
+  configGame();
+}
+
 main();

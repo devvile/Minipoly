@@ -1,4 +1,6 @@
 export { prepareBoard, giveMoney, makeMove, renderPosition };
+import { notify } from "./game.js";
+import { game } from "./receiver.js";
 
 function prepareBoard(boardSize) {
   const board = document.querySelectorAll(".game_field");
@@ -18,18 +20,26 @@ function giveMoney(player, money) {
   console.log(`${money} granted to ${player.name}`);
 }
 
-function makeMove(player, fileds_to_move) {
-  let old_poss = player.position;
-  let new_poss = player.position + fileds_to_move;
-  if (new_poss >= 28) {
-    new_poss -= 28;
-    giveMoney(player, 400);
+function makeMove(game, player, fileds_to_move) {
+  if (player.name === game.turn_of_player) {
+    if (player.moved === false) {
+      let old_poss = player.position;
+      let new_poss = player.position + fileds_to_move;
+      if (new_poss >= 28) {
+        new_poss -= 28;
+        giveMoney(player, 400);
+      }
+      player.position = new_poss;
+      renderMove(player, old_poss);
+      player.moved = true;
+      notify(`You moved ${fileds_to_move} fields!`);
+      return player;
+    } else {
+      notify("You already moved!");
+    }
+  } else {
+    notify("It's not your turn!");
   }
-  player.position = new_poss;
-  console.log("old poss " + old_poss);
-  console.log("player poss " + new_poss);
-  renderMove(player, old_poss);
-  return player;
 }
 // po co tworzyc tylko przesuwac
 function renderMove(player, old_poss) {
