@@ -13,7 +13,7 @@ import {
 import { makeMove, renderPosition } from "./board.js";
 import { preparePlayers } from "./prepare.js";
 
-const players = preparePlayers({ who_is_playing: ["dottore", "elizka"] });
+//FUNCTIONS TO EXPORT
 
 function notify(notification) {
   const notifBoard = document.querySelector(".notification-board");
@@ -21,15 +21,30 @@ function notify(notification) {
 }
 
 function configGame() {
+  //socket
   const socket = "ws://" + window.location.host + window.location.pathname;
   const websocket = new WebSocket(socket);
-  const playerName = document.querySelector(".playerName_header").textContent;
+  const players = preparePlayers({ who_is_playing: ["dottore", "elizka"] });
 
+  //player
+  const playerName = document.querySelector(".playerName_header").textContent;
   const currentPlayer = players.filter((value) => {
     return value.name == playerName;
   })[0];
 
-  console.log(currentPlayer);
+  function checkState() {
+    sendMess({
+      player: playerName,
+      action: "initial state",
+    });
+  }
+
+  function sendMess(messObj) {
+    const mess = JSON.stringify(messObj);
+    websocket.send(mess);
+  }
+
+  //functions
 
   function openWebsocket() {
     console.log("Establishing Websocket Connection...");
@@ -75,23 +90,11 @@ function configGame() {
           notify(state.mess);
       }
     };
-
     //INITIAL SETUP
 
     websocket.onclose = () => {
       console.log("Websocket Connection Terminated!");
     };
-  }
-  function checkState() {
-    let mess = JSON.stringify({
-      player: playerName,
-      action: "initial state",
-    });
-    sendMess(mess);
-  }
-
-  function sendMess(messText) {
-    websocket.send(messText);
   }
 
   //EVENTS ASSIGNMENT
@@ -104,19 +107,17 @@ function configGame() {
       const start_btn = document.querySelector(".--start_btn");
 
       ready_btn.addEventListener("click", () => {
-        let mess = JSON.stringify({
+        sendMess({
           player: playerName,
           action: "ready",
         });
-        sendMess(mess);
       });
 
       start_btn.addEventListener("click", () => {
-        let mess = JSON.stringify({
+        sendMess({
           player: playerName,
           action: "start",
         });
-        sendMess(mess);
       });
 
       // GAME STARTED
@@ -127,38 +128,36 @@ function configGame() {
       const roll_dice_btn = document.querySelector(".--roll_btn");
 
       end_turn_btn.addEventListener("click", () => {
-        let mess = JSON.stringify({
+        sendMess({
           player: playerName,
           action: "end_turn",
         });
-        sendMess(mess);
       });
+
       end_game_btn.addEventListener("click", () => {
-        let mess = JSON.stringify({
+        sendMess({
           player: playerName,
           action: "end_game",
         });
-        sendMess(mess);
       });
+
       leave_game_btn.addEventListener("click", () => {
-        let mess = JSON.stringify({
+        sendMess({
           player: playerName,
           action: "leave_game",
         });
-        sendMess(mess);
       });
 
       roll_dice_btn.addEventListener("click", () => {
-        let mess = JSON.stringify({
+        sendMess({
           player: playerName,
           action: "roll_dice",
         });
-        sendMess(mess);
       });
-    }
-    console.log("Events Assigned!");
-  }
 
+      console.log("Events Assigned!");
+    }
+  }
   openWebsocket();
   setWebsocket();
   setTimeout(asignEvents, 1000);
