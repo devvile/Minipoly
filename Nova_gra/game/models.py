@@ -76,14 +76,6 @@ class Game(models.Model):
         return self.name
 
 
-class Notification(models.Model):
-    name = models.CharField(max_length=150)
-    note = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return self.name
-
-
 class FieldType(models.Model):
     name = models.CharField(max_length=150)
 
