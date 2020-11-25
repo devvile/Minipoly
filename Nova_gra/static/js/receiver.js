@@ -6,10 +6,11 @@ export {
   endGame,
   refreshGame,
   setState,
-  game,
 };
 
 import { prepareBoard, makeMove } from "./board.js";
+import { game } from "./game.js";
+
 import {
   makeInvisible,
   makeVisible,
@@ -17,8 +18,6 @@ import {
   Game,
   Board,
 } from "./prepare.js";
-
-const game = new Game();
 
 function playersReady(state) {
   if (state.is_played === false) {
@@ -101,6 +100,5 @@ function refreshGame(dataJson) {
 }
 
 function endTurn(state) {
-  console.log("halo" + state.turn_of_player);
   setTimeout(setState, 200, state);
 }
