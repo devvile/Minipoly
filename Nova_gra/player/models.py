@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 
 class Player(models.Model):
     name = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player_name')
-    parent= models.CharField(max_length =10)
+    parent = models.CharField(max_length =10)
     nick = models.CharField(max_length=10)
-    in_game= models.BooleanField(default=False)
+    in_game = models.BooleanField(default=False)
     money = models.IntegerField(default=150)
     position = models.IntegerField(default=0)
     properties = models.CharField(max_length=400, null=True)
