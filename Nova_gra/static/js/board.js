@@ -1,6 +1,5 @@
 export { prepareBoard, giveMoney, makeMove, renderPosition };
-import { notify } from "./game.js";
-import { game } from "./receiver.js";
+import { notify, game } from "./game.js";
 
 function prepareBoard(boardSize) {
   const board = document.querySelectorAll(".game_field");
