@@ -59,6 +59,7 @@ function configGame() {
       console.log(`Message:  ${mess.data}`);
       let dataJson = JSON.parse(mess.data);
       let state = JSON.parse(dataJson.message);
+      let players_state = JSON.parse(state.players_state);
       refreshGame(dataJson);
 
       //players def
@@ -66,7 +67,8 @@ function configGame() {
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
-          console.dir(window.board["fields"]);
+          //wyparsowac state.players_state
+          console.log(players_state);
           renderPosition(players);
           break;
         case "player_ready":

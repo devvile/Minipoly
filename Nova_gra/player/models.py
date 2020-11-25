@@ -9,7 +9,7 @@ class Player(models.Model):
     in_game = models.BooleanField(default=False)
     money = models.IntegerField(default=150)
     position = models.IntegerField(default=0)
-    properties = models.CharField(max_length=400, null=True)
+    properties = models.CharField(max_length=400, null=True, default="")
     description = models.TextField(max_length=300, null=True)
 
     def set_player_in_game(self):
