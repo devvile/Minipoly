@@ -97,7 +97,6 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     def add_player_to_players_playing(self, player, game):
         return game.who_is_playing.add(player)
 
-
     @database_sync_to_async
     def remove_player_from_ready_players(self, player, game):
         game.who_is_ready.remove(player)

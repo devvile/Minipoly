@@ -1,5 +1,5 @@
 export { prepareBoard, giveMoney, makeMove, renderPosition };
-import { notify, sendMess } from "./game.js";
+import { notify } from "./game.js";
 import { game } from "./receiver.js";
 
 function prepareBoard(boardSize) {
@@ -31,14 +31,8 @@ function makeMove(game, player, fileds_to_move) {
       }
       player.position = new_poss;
 
-      let mess = JSON.stringify({
-        player: player.name,
-        action: "roll_dice",
-        new_field: player.position,
-      });
-      sendMess(mess);
-
       renderMove(player, old_poss);
+
       player.moved = true;
       notify(`You moved ${fileds_to_move} fields!`);
       return player;
