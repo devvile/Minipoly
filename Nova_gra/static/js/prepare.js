@@ -67,7 +67,7 @@ function preparePlayers(game) {
   );
   const player3 = new Player("marki", "green", 1000, 0, false, [], true);
 
-  const players = [player1, player2, player3];
+  const players = [player1, player2];
   return players;
 }
 
