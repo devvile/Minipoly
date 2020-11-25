@@ -1,6 +1,7 @@
 from django.db import models
 from player.models import Player
 
+
 class Config(models.Model):
     name = models.CharField(max_length=150)
     nr_of_fields = models.IntegerField(default=28)
@@ -14,8 +15,7 @@ class Config(models.Model):
 class Game(models.Model):
     name = models.CharField(max_length=150)
     host = models.CharField(max_length=10)
-    config = models.ForeignKey(Config, on_delete=models.CASCADE, related_name='game_config', blank=True,
-                                       null=True)
+    config = models.ForeignKey(Config, on_delete=models.CASCADE, related_name='game_config', blank=True, null=True)
     is_played = models.BooleanField(default=False)
     max_players = models.IntegerField(default=4)
     who_is_ready = models.ManyToManyField(Player, related_name="guys_ready", blank=True)
@@ -71,14 +71,6 @@ class Game(models.Model):
             return self.players_playing[0]
         else:
             return self.players_playing[x + 1]
-
-    def __str__(self):
-        return self.name
-
-
-class Notification(models.Model):
-    name = models.CharField(max_length=150)
-    note = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.name

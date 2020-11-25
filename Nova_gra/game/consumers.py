@@ -86,13 +86,16 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return game.turn_of_player.nick
 
     @database_sync_to_async
+    def get_player_position(self, player):
+        return player.position
+
+    @database_sync_to_async
     def add_player_to_game(self, player, game):
         return game.who_is_ready.add(player)
 
     @database_sync_to_async
     def add_player_to_players_playing(self, player, game):
         return game.who_is_playing.add(player)
-
 
     @database_sync_to_async
     def remove_player_from_ready_players(self, player, game):
@@ -116,6 +119,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def set_player_game_status_ready(self, player):
         player.set_player_in_game()
+
+    @database_sync_to_async
+    def set_player_position(self, player, position):
+        player.position = position
 
     @database_sync_to_async
     def set_first_player_turn(self, game):
@@ -152,6 +159,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         max_players = await self.get_max_players(game)
         game.turn = await self.get_turn(game)
         host = await self.get_host(game)
+        game_state = "Game state not assigned!"
 
         if action == "ready":
 
@@ -194,6 +202,8 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
 
         elif action == "roll_dice":
             move = random.randint(1, 6)
+            old_pos = await self.get_player_position(player)
+            await self.set_player_position(player, (old_pos+move))
             game_state = await self.get_state(game, "roll_dice", move)
 
         elif action == "leave_game":

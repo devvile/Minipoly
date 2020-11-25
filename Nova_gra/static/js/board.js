@@ -30,7 +30,9 @@ function makeMove(game, player, fileds_to_move) {
         giveMoney(player, 400);
       }
       player.position = new_poss;
+
       renderMove(player, old_poss);
+
       player.moved = true;
       notify(`You moved ${fileds_to_move} fields!`);
       return player;
