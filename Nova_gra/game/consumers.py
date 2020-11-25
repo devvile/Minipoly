@@ -27,6 +27,12 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return Player.objects.get(nick=usr)
 
     @database_sync_to_async
+    def get_players_state(self, game):
+        players = [i for i in game.who_is_playing.all()]
+        res = serializers.serialize("json", players)
+        return res
+
+    @database_sync_to_async
     def get_first_player(self, game):
         temp = game.first_player
         return temp.nick
@@ -253,7 +259,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                          who_is_ready=await self.get_players_ready(game),
                          who_is_playing=await self.get_who_is_playing(game), is_played=game.is_played,
                          max_players=await self.get_max_players(game), turn=await self.get_turn(game),
-                         turn_of_player=whose_turn, mess=mess)
+                         turn_of_player=whose_turn, players_state=await self.get_players_state(game), mess=mess)
         return game_state
 
 
