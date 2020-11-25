@@ -1,4 +1,4 @@
-export { notify };
+export { notify, sendMess };
 
 import {
   playersReady,
@@ -15,14 +15,21 @@ import { preparePlayers } from "./prepare.js";
 
 const players = preparePlayers({ who_is_playing: ["dottore", "elizka"] });
 
+//FUNCTIONS TO EXPORT
+
+const socket = "ws://" + window.location.host + window.location.pathname;
+const websocket = new WebSocket(socket);
+
 function notify(notification) {
   const notifBoard = document.querySelector(".notification-board");
   notifBoard.textContent = notification;
 }
 
+function sendMess(messText) {
+  websocket.send(messText);
+}
+
 function configGame() {
-  const socket = "ws://" + window.location.host + window.location.pathname;
-  const websocket = new WebSocket(socket);
   const playerName = document.querySelector(".playerName_header").textContent;
 
   const currentPlayer = players.filter((value) => {
@@ -89,11 +96,6 @@ function configGame() {
     });
     sendMess(mess);
   }
-
-  function sendMess(messText) {
-    websocket.send(messText);
-  }
-
   //EVENTS ASSIGNMENT
 
   function asignEvents() {
