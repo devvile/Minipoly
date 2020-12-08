@@ -52,6 +52,7 @@ function configGame() {
       const currentPlayer = players.filter((value) => {
         return value.name == playerName;
       })[0];
+      console.log(currentPlayer);
 
       // wziac stan gry
       // przypisac do obiektow player po stronie gracza
@@ -94,7 +95,6 @@ function configGame() {
 
   function renderPosition(players) {
     players.forEach((player) => {
-      console.log(player.position);
       let position = document.getElementById(player.position);
       const pawn = document.createElement("div");
       pawn.setAttribute("id", player.name);

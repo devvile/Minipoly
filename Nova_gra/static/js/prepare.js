@@ -56,13 +56,15 @@ function preparePlayers(...args) {
       player1data.nick,
       "red",
       player1data.money,
-      player1data.position
+      player1data.position,
+      player1data.moved
     );
     let player2 = new Player(
       player2data.nick,
       "blue",
       player2data.money,
-      player2data.position
+      player2data.position,
+      player2data.moved
     );
 
     let players = [player1, player2];
