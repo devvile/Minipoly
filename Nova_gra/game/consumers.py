@@ -142,6 +142,14 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         player.position = position
 
     @database_sync_to_async
+    def set_player_moved(self, player):
+        player.moved = True
+
+    @database_sync_to_async
+    def set_player_not_moved(self, player):
+        player.moved = False
+
+    @database_sync_to_async
     def set_first_player_turn(self, game):
         game.turn_of_player = game.first_player
 
@@ -214,6 +222,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             whose_turn = await self.get_player(await self.get_whose_turn(game))
             if game.player == whose_turn:
                 await self.set_next_turn(game)
+                await self.set_player_not_moved(player)
                 game_state = await self.get_state(game, "end_turn", "Turn Ended!")
             else:
                 game_state = await self.get_state(game, "end_turn", "It's not your turn!")
@@ -222,6 +231,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             move = random.randint(1, 6)
             old_pos = await self.get_player_position(player)
             await self.set_player_position(player, (old_pos+move))
+            await self.set_player_moved(player)
             game_state = await self.get_state(game, "roll_dice", move)
 
         elif action == "leave_game":
