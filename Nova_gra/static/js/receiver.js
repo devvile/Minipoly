@@ -82,7 +82,6 @@ function endGame(dataJson) {
 }
 
 async function setState(game) {
-  console.dir(game);
   refreshPlayers(game);
 }
 
