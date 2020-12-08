@@ -9,9 +9,9 @@ import {
   refreshGame,
 } from "./receiver.js";
 
-import { makeMove, renderPosition } from "./board.js";
+import { makeMove } from "./board.js";
 import { preparePlayers, Game } from "./prepare.js";
-import { asignEvents, checkState, currentPlayer, players } from "./buttons.js";
+import { asignEvents, checkState, playerName } from "./buttons.js";
 
 //FUNCTIONS TO EXPORT
 
@@ -31,8 +31,6 @@ const socket = "ws://" + window.location.host + window.location.pathname;
 const websocket = new WebSocket(socket);
 
 function configGame() {
-  //functions
-
   function openWebsocket() {
     console.log("Establishing Websocket Connection...");
     websocket.onopen = () => {
@@ -47,15 +45,23 @@ function configGame() {
       let dataJson = JSON.parse(mess.data);
       let state = JSON.parse(dataJson.message);
       let players_state = JSON.parse(state.players_state);
-      refreshGame(dataJson);
 
-      //players def
+      const players = preparePlayers(players_state);
+      console.dir(players);
+
+      const currentPlayer = players.filter((value) => {
+        return value.name == playerName;
+      })[0];
+
+      // wziac stan gry
+      // przypisac do obiektow player po stronie gracza
+      // wyrenderowac
+
+      refreshGame(dataJson);
 
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
-          //wyparsowac state.players_state
-          console.log(players_state);
           renderPosition(players);
           break;
         case "player_ready":
@@ -79,12 +85,26 @@ function configGame() {
           notify(state.mess);
       }
     };
-    //INITIAL SETUP
-
-    websocket.onclose = () => {
-      console.log("Websocket Connection Terminated!");
-    };
   }
+  //INITIAL SETUP
+
+  websocket.onclose = () => {
+    console.log("Websocket Connection Terminated!");
+  };
+
+  function renderPosition(players) {
+    players.forEach((player) => {
+      console.log(player.position);
+      let position = document.getElementById(player.position);
+      const pawn = document.createElement("div");
+      pawn.setAttribute("id", player.name);
+      pawn.classList.add("pawn");
+      position.appendChild(pawn);
+      let color = player.color;
+      pawn.style.backgroundColor = color;
+    });
+  }
+
   openWebsocket();
   setWebsocket();
   setTimeout(asignEvents, 1000, game);
@@ -93,5 +113,5 @@ function configGame() {
 function main() {
   configGame();
 }
-1;
+
 main();

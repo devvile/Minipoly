@@ -1,4 +1,4 @@
-export { prepareBoard, giveMoney, makeMove, renderPosition };
+export { prepareBoard, giveMoney, makeMove };
 import { notify, game } from "./game.js";
 
 function prepareBoard(boardSize) {
@@ -48,16 +48,4 @@ function renderMove(player, old_poss) {
   let old_field = document.getElementById(old_poss);
   const pawn = document.getElementById(player.name);
   new_field.appendChild(pawn);
-}
-
-function renderPosition(players) {
-  players.forEach((player) => {
-    let position = document.getElementById(player.position);
-    const pawn = document.createElement("div");
-    pawn.setAttribute("id", player.name);
-    pawn.classList.add("pawn");
-    position.appendChild(pawn);
-    let color = player.color;
-    pawn.style.backgroundColor = color;
-  });
 }

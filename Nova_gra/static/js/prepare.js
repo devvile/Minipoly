@@ -46,29 +46,28 @@ class Player {
   }
 }
 
-function preparePlayers(game) {
-  const player1 = new Player(
-    game.who_is_playing[0],
-    "red",
-    1000,
-    0,
-    false,
-    [],
-    true
-  );
-  const player2 = new Player(
-    game.who_is_playing[1],
-    "blue",
-    1000,
-    0,
-    false,
-    [],
-    true
-  );
-  const player3 = new Player("marki", "green", 1000, 0, false, [], true);
+function preparePlayers(...args) {
+  args = args[0];
+  let players_total = args.length;
+  if (players_total === 2) {
+    let player1data = args[0]["fields"];
+    let player2data = args[1]["fields"];
+    let player1 = new Player(
+      player1data.nick,
+      "red",
+      player1data.money,
+      player1data.position
+    );
+    let player2 = new Player(
+      player2data.nick,
+      "blue",
+      player2data.money,
+      player2data.position
+    );
 
-  const players = [player1, player2];
-  return players;
+    let players = [player1, player2];
+    return players;
+  }
 }
 
 function makeVisible(game) {

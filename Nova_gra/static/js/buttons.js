@@ -1,13 +1,8 @@
 import { sendMess } from "./game.js";
-import { preparePlayers } from "./prepare.js";
 
-export { asignEvents, checkState, currentPlayer, players };
+export { asignEvents, checkState, playerName };
 
-const players = preparePlayers({ who_is_playing: ["dottore", "elizka"] });
 const playerName = document.querySelector(".playerName_header").textContent;
-const currentPlayer = players.filter((value) => {
-  return value.name == playerName;
-})[0];
 
 function checkState() {
   sendMess({
@@ -17,8 +12,6 @@ function checkState() {
 }
 
 function asignEvents(game) {
-  console.dir(game);
-
   if (game.is_played === false) {
     const ready_btn = document.querySelector(".--ready_btn");
     const start_btn = document.querySelector(".--start_btn");
