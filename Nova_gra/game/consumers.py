@@ -205,6 +205,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             old_pos = await self.get_player_position(player)
             await self.set_player_position(player, (old_pos+move))
             game_state = await self.get_state(game, "roll_dice", move)
+            print(game_state)
 
         elif action == "leave_game":
             if player != host:

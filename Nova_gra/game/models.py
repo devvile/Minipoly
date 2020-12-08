@@ -23,6 +23,7 @@ class Game(models.Model):
     turn = models.IntegerField(default=1)
     turn_of_player = models.ForeignKey(Player, on_delete=models.CASCADE, related_name='czyja_tura', blank=True,
                                        null=True)
+    positions = models.CharField(max_length=300, default="", null=True, blank=True)
 
     @property
     def how_many_players_ready(self):
