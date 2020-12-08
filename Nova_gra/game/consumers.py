@@ -228,11 +228,16 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 game_state = await self.get_state(game, "end_turn", "It's not your turn!")
 
         elif action == "roll_dice":
-            move = random.randint(1, 6)
-            old_pos = await self.get_player_position(player)
-            await self.set_player_position(player, (old_pos+move))
-            await self.set_player_moved(player)
-            game_state = await self.get_state(game, "roll_dice", move)
+            if player == game.turn_of_player and player.moved is False:
+                move = random.randint(1, 6)
+                old_pos = await self.get_player_position(player)
+                #dodac zabezpiecznie z okrazeniem planszy
+                await self.set_player_position(player, (old_pos+move))
+                await self.set_player_moved(player)
+                game_state = await self.get_state(game, "roll_dice", move)
+            else:
+                print("nie twoja tura")
+
 
         elif action == "leave_game":
             if player != host:
