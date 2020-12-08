@@ -96,6 +96,17 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return player.position
 
     @database_sync_to_async
+    def get_players_positions(self, game):
+        x = {i.nick: i.position for i in game.who_is_playing.all()}
+        print(x)
+        return x
+
+    @database_sync_to_async
+    def get_players(self, game):
+        x = [i for i in game.who_is_playing.all()]
+        return serializers.serialize("json", x)
+
+    @database_sync_to_async
     def add_player_to_game(self, player, game):
         return game.who_is_ready.add(player)
 
@@ -129,6 +140,14 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def set_player_position(self, player, position):
         player.position = position
+
+    @database_sync_to_async
+    def set_player_moved(self, player):
+        player.moved = True
+
+    @database_sync_to_async
+    def set_player_not_moved(self, player):
+        player.moved = False
 
     @database_sync_to_async
     def set_first_player_turn(self, game):
@@ -185,6 +204,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 for i in ready_players:
                     i = await self.get_player(i)
                     await self.add_player_to_players_playing(i, game)
+                    await self.set_player_position(i, 0)
                     await self.remove_player_from_ready_players(i, game)
                 await self.set_first_player_turn(game)
                 game_state = await self.get_state(game, "start_game", "Game Started!")
@@ -202,15 +222,22 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             whose_turn = await self.get_player(await self.get_whose_turn(game))
             if game.player == whose_turn:
                 await self.set_next_turn(game)
+                await self.set_player_not_moved(player)
                 game_state = await self.get_state(game, "end_turn", "Turn Ended!")
             else:
                 game_state = await self.get_state(game, "end_turn", "It's not your turn!")
 
         elif action == "roll_dice":
-            move = random.randint(1, 6)
-            old_pos = await self.get_player_position(player)
-            await self.set_player_position(player, (old_pos+move))
-            game_state = await self.get_state(game, "roll_dice", move)
+            if player == game.turn_of_player and player.moved is False:
+                move = random.randint(1, 6)
+                old_pos = await self.get_player_position(player)
+                #dodac zabezpiecznie z okrazeniem planszy
+                await self.set_player_position(player, (old_pos+move))
+                await self.set_player_moved(player)
+                game_state = await self.get_state(game, "roll_dice", move)
+            else:
+                print("nie twoja tura")
+
 
         elif action == "leave_game":
             if player != host:
@@ -256,10 +283,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         else:
             whose_turn = "Game hasn't started yet!"
         game_state = dict(action=action, name=game.name, host=await self.get_host(game),
-                         who_is_ready=await self.get_players_ready(game),
-                         who_is_playing=await self.get_who_is_playing(game), is_played=game.is_played,
-                         max_players=await self.get_max_players(game), turn=await self.get_turn(game),
-                         turn_of_player=whose_turn, players_state=await self.get_players_state(game), mess=mess)
+                          who_is_ready=await self.get_players_ready(game),
+                          who_is_playing=await self.get_who_is_playing(game), is_played=game.is_played,
+                          max_players=await self.get_max_players(game), turn=await self.get_turn(game),
+                          turn_of_player=whose_turn, players_state=await self.get_players_state(game), mess=mess)
         return game_state
 
 
