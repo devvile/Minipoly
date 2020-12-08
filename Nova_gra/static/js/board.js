@@ -21,6 +21,7 @@ function giveMoney(player, money) {
 
 function makeMove(game, player, fileds_to_move) {
   if (player.name === game.turn_of_player) {
+    console.log("dudud " + player.moved);
     if (player.moved === false) {
       let old_poss = player.position;
       let new_poss = player.position + fileds_to_move;
