@@ -231,8 +231,12 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             if player == game.turn_of_player and player.moved is False:
                 move = random.randint(1, 6)
                 old_pos = await self.get_player_position(player)
-                #dodac zabezpiecznie z okrazeniem planszy
-                await self.set_player_position(player, (old_pos+move))
+                new_pos = old_pos + move
+                config = await self.get_config(game)
+                fields_nr = config.nr_of_fields
+                if new_pos > fields_nr:
+                    new_pos -= fields_nr
+                await self.set_player_position(player, new_pos)
                 await self.set_player_moved(player)
                 game_state = await self.get_state(game, "roll_dice", move)
             else:

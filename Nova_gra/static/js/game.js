@@ -49,15 +49,17 @@ function configGame() {
       function asignPlayers(state) {
         if (state.is_played === true) {
           const players = preparePlayers(players_state);
-          console.dir(players);
-          const currentPlayer = players.filter((value) => {
-            return value.name == playerName;
-          })[0];
-          console.log(currentPlayer);
           return players;
         } else {
           console.log("Players not asinged = game hasn't started yet");
         }
+      }
+
+      function getCurrentPlayer(players) {
+        const currentPlayer = players.filter((value) => {
+          return value.name == playerName;
+        })[0];
+        return currentPlayer;
       }
       //gdy gra nie rozpoczeta problem z players
       // wziac stan gry
@@ -75,8 +77,8 @@ function configGame() {
           playersReady(state);
           break;
         case "start_game":
-          asignPlayers(state);
           startGame(state);
+          asignPlayers(state);
           break;
         case "end_game":
           endGame(state);
@@ -87,6 +89,8 @@ function configGame() {
           notify(state.mess);
           break;
         case "roll_dice":
+          let players_move = asignPlayers(state);
+          let currentPlayer = getCurrentPlayer(players_move);
           makeMove(state, currentPlayer, state.mess);
           break;
         case "start_failure":
@@ -101,7 +105,7 @@ function configGame() {
   };
 
   function renderPosition(players) {
-    if (players !== false) {
+    if (players === false) {
       console.log("Position not rendered - game hasn't started yet!");
     } else {
       players.forEach((player) => {
