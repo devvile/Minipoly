@@ -48,28 +48,45 @@ class Player {
 
 function preparePlayers(...args) {
   args = args[0];
+  let players = [];
   let players_total = args.length;
-  if (players_total === 2) {
-    let player1data = args[0]["fields"];
-    let player2data = args[1]["fields"];
-    let player1 = new Player(
-      player1data.nick,
-      "red",
-      player1data.money,
-      player1data.position,
-      player1data.moved
-    );
-    let player2 = new Player(
-      player2data.nick,
-      "blue",
-      player2data.money,
-      player2data.position,
-      player2data.moved
-    );
-
-    let players = [player1, player2];
-    return players;
+  if (players_total === 1) {
+    const player1 = declarePlayer(args[0]["fields"], "red");
+    players.push(player1);
   }
+  if (players_total === 2) {
+    const player1 = declarePlayer(args[0]["fields"], "red");
+    const player2 = declarePlayer(args[1]["fields"], "blue");
+    players.push(player1, player2);
+  }
+
+  if (players_total === 3) {
+    const player1 = declarePlayer(args[0]["fields"], "red");
+    const player2 = declarePlayer(args[1]["fields"], "blue");
+    const player3 = declarePlayer(args[2]["fields"], "green");
+
+    players.push(player1, player2, player3);
+  }
+
+  if (players_total === 4) {
+    const player1 = declarePlayer(args[0]["fields"], "red");
+    const player2 = declarePlayer(args[1]["fields"], "blue");
+    const player3 = declarePlayer(args[2]["fields"], "green");
+    const player4 = declarePlayer(args[2]["fields"], "yellow");
+
+    players.push(player1, player2, player3, player4);
+  }
+  function declarePlayer(playerData, color) {
+    const player = new Player(
+      playerData.nick,
+      color,
+      playerData.money,
+      playerData.position,
+      playerData.moved
+    );
+    return player;
+  }
+  return players;
 }
 
 function makeVisible(game) {

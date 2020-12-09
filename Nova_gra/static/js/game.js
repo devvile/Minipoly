@@ -9,7 +9,7 @@ import {
   refreshGame,
 } from "./receiver.js";
 
-import { makeMove } from "./board.js";
+import { makeMove, rollDice } from "./board.js";
 import { preparePlayers, Game } from "./prepare.js";
 import { asignEvents, checkState, playerName } from "./buttons.js";
 
@@ -93,8 +93,9 @@ function configGame() {
           let currentPlayer = getCurrentPlayer(players_move);
           if (currentPlayer.moved === false) {
             if (state.turn_of_player === currentPlayer.name) {
-              makeMove(state, currentPlayer, state.mess);
-              notify(state.mess);
+              rollDice(state.mess);
+              setTimeout(makeMove, 1000, state, currentPlayer, state.mess);
+              notify(`You move ${state.mess} fields!`);
             } else {
               notify(state.mess);
             }

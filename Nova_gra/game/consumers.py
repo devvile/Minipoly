@@ -234,7 +234,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 new_pos = old_pos + move
                 config = await self.get_config(game)
                 fields_nr = config.nr_of_fields
-                if new_pos > fields_nr:
+                if new_pos >= fields_nr:
                     new_pos -= fields_nr
                 await self.set_player_position(player, new_pos)
                 await self.set_player_moved(player)

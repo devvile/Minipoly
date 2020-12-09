@@ -85,6 +85,9 @@
 
 .inner_board {
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   left: 200px;
   top: 120px;
   width: 400px;
@@ -92,6 +95,21 @@
   background-color: var(--main-color-alpha);
   border-radius: 20px;
   z-index: 100;
+}
+.actionField {
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  width: 150px;
+  border-radius: 8px;
+  background-color: var(--main-color-alpha);
+}
+
+.diceArea {
+  height: 60px;
+  width: 60px;
 }
 
 .game_section_sidebar {
