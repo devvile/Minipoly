@@ -91,10 +91,18 @@ function configGame() {
         case "roll_dice":
           let players_move = asignPlayers(state);
           let currentPlayer = getCurrentPlayer(players_move);
-          makeMove(state, currentPlayer, state.mess);
+          if (currentPlayer.moved === false) {
+            if (state.turn_of_player === currentPlayer.name) {
+              makeMove(state, currentPlayer, state.mess);
+              notify(state.mess);
+            } else {
+              notify(state.mess);
+            }
+          } else if (currentPlayer.moved === true) {
+            notify(state.mess);
+          }
           break;
         case "start_failure":
-          notify(state.mess);
       }
     };
   }

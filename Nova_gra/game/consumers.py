@@ -239,8 +239,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                 await self.set_player_position(player, new_pos)
                 await self.set_player_moved(player)
                 game_state = await self.get_state(game, "roll_dice", move)
+            elif player != game.turn_of_player:
+                game_state = await self.get_state(game, "roll_dice", "It's not your turn!")
             else:
-                print("nie twoja tura")
+                game_state = await self.get_state(game, "roll_dice", "You already moved! Please end your turn.")
 
 
         elif action == "leave_game":
