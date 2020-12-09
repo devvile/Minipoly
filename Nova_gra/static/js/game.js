@@ -46,23 +46,31 @@ function configGame() {
       let state = JSON.parse(dataJson.message);
       let players_state = JSON.parse(state.players_state);
 
-      const players = preparePlayers(players_state);
-      console.dir(players);
+      function asignPlayers(state) {
+        if (state.is_played === true) {
+          const players = preparePlayers(players_state);
+          return players;
+        } else {
+          console.log("Players not asinged = game hasn't started yet");
+        }
+      }
 
-      const currentPlayer = players.filter((value) => {
-        return value.name == playerName;
-      })[0];
-      console.log(currentPlayer);
-
+      function getCurrentPlayer(players) {
+        const currentPlayer = players.filter((value) => {
+          return value.name == playerName;
+        })[0];
+        return currentPlayer;
+      }
+      //gdy gra nie rozpoczeta problem z players
       // wziac stan gry
       // przypisac do obiektow player po stronie gracza
       // wyrenderowac
-
       refreshGame(dataJson);
 
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
+          let players = asignPlayers(state);
           renderPosition(players);
           break;
         case "player_ready":
@@ -70,6 +78,7 @@ function configGame() {
           break;
         case "start_game":
           startGame(state);
+          asignPlayers(state);
           break;
         case "end_game":
           endGame(state);
@@ -80,10 +89,20 @@ function configGame() {
           notify(state.mess);
           break;
         case "roll_dice":
-          makeMove(state, currentPlayer, state.mess);
+          let players_move = asignPlayers(state);
+          let currentPlayer = getCurrentPlayer(players_move);
+          if (currentPlayer.moved === false) {
+            if (state.turn_of_player === currentPlayer.name) {
+              makeMove(state, currentPlayer, state.mess);
+              notify(state.mess);
+            } else {
+              notify(state.mess);
+            }
+          } else if (currentPlayer.moved === true) {
+            notify(state.mess);
+          }
           break;
         case "start_failure":
-          notify(state.mess);
       }
     };
   }
@@ -94,15 +113,19 @@ function configGame() {
   };
 
   function renderPosition(players) {
-    players.forEach((player) => {
-      let position = document.getElementById(player.position);
-      const pawn = document.createElement("div");
-      pawn.setAttribute("id", player.name);
-      pawn.classList.add("pawn");
-      position.appendChild(pawn);
-      let color = player.color;
-      pawn.style.backgroundColor = color;
-    });
+    if (players === false) {
+      console.log("Position not rendered - game hasn't started yet!");
+    } else {
+      players.forEach((player) => {
+        let position = document.getElementById(player.position);
+        const pawn = document.createElement("div");
+        pawn.setAttribute("id", player.name);
+        pawn.classList.add("pawn");
+        position.appendChild(pawn);
+        let color = player.color;
+        pawn.style.backgroundColor = color;
+      });
+    }
   }
 
   openWebsocket();
