@@ -1,4 +1,4 @@
-export { prepareBoard, giveMoney, makeMove };
+export { prepareBoard, giveMoney, makeMove, rollDice };
 import { notify, game } from "./game.js";
 
 function prepareBoard(boardSize) {
@@ -48,4 +48,22 @@ function renderMove(player, old_poss) {
   let old_field = document.getElementById(old_poss);
   const pawn = document.getElementById(player.name);
   new_field.appendChild(pawn);
+}
+
+function rollDice(num) {
+  setTimeout(setDice, 100, randomize());
+  setTimeout(setDice, 300, randomize());
+  setTimeout(setDice, 500, randomize());
+  setTimeout(setDice, 750, randomize());
+  setTimeout(setDice, 1000, num);
+
+  function randomize() {
+    let nr = Math.ceil(Math.random() * 6);
+    return nr;
+  }
+
+  function setDice(nr) {
+    const dice = document.querySelector(".dice");
+    dice.src = `/static/img/dice${nr}.svg`;
+  }
 }
