@@ -46,29 +46,36 @@ function configGame() {
       let state = JSON.parse(dataJson.message);
       let players_state = JSON.parse(state.players_state);
 
-      const players = preparePlayers(players_state);
-      console.dir(players);
-
-      const currentPlayer = players.filter((value) => {
-        return value.name == playerName;
-      })[0];
-      console.log(currentPlayer);
-
+      function asignPlayers(state) {
+        if (state.is_played === true) {
+          const players = preparePlayers(players_state);
+          console.dir(players);
+          const currentPlayer = players.filter((value) => {
+            return value.name == playerName;
+          })[0];
+          console.log(currentPlayer);
+          return players;
+        } else {
+          console.log("Players not asinged = game hasn't started yet");
+        }
+      }
+      //gdy gra nie rozpoczeta problem z players
       // wziac stan gry
       // przypisac do obiektow player po stronie gracza
       // wyrenderowac
-
       refreshGame(dataJson);
 
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
+          let players = asignPlayers(state);
           renderPosition(players);
           break;
         case "player_ready":
           playersReady(state);
           break;
         case "start_game":
+          asignPlayers(state);
           startGame(state);
           break;
         case "end_game":
@@ -94,15 +101,19 @@ function configGame() {
   };
 
   function renderPosition(players) {
-    players.forEach((player) => {
-      let position = document.getElementById(player.position);
-      const pawn = document.createElement("div");
-      pawn.setAttribute("id", player.name);
-      pawn.classList.add("pawn");
-      position.appendChild(pawn);
-      let color = player.color;
-      pawn.style.backgroundColor = color;
-    });
+    if (players !== false) {
+      console.log("Position not rendered - game hasn't started yet!");
+    } else {
+      players.forEach((player) => {
+        let position = document.getElementById(player.position);
+        const pawn = document.createElement("div");
+        pawn.setAttribute("id", player.name);
+        pawn.classList.add("pawn");
+        position.appendChild(pawn);
+        let color = player.color;
+        pawn.style.backgroundColor = color;
+      });
+    }
   }
 
   openWebsocket();
