@@ -56,6 +56,7 @@ function configGame() {
       }
 
       function getCurrentPlayer(players) {
+        //ADD logic that checks if game started if yes: proceed, else asign player with name same as in field
         const currentPlayer = players.filter((value) => {
           return value.name == playerName;
         })[0];
@@ -70,11 +71,21 @@ function configGame() {
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
-          let players = asignPlayers(state);
+          let players = asignPlayers(state); //need to refactor players/players_move + currentPlayer/playerPlaying
+          let playerPlaying = getCurrentPlayer(players);
+          refreshMoney(playerPlaying);
           renderPosition(players);
           break;
         case "player_ready":
-          playersReady(state);
+          let players_ready = asignPlayers(state); //need to refactor players/players_move + currentPlayer/playerPlaying
+          let playerReady = getCurrentPlayer(players_ready);
+          if (playerReady.playing !== true) {
+            playersReady(state);
+          } else {
+            notify(
+              "You cannot join game because you are already playing in another one!"
+            );
+          }
           break;
         case "start_game":
           startGame(state);
@@ -96,6 +107,7 @@ function configGame() {
               rollDice(state.mess);
               setTimeout(makeMove, 1000, state, currentPlayer, state.mess);
               notify(`You move ${state.mess} fields!`);
+              refreshMoney(currentPlayer);
             } else {
               notify(state.mess);
             }
@@ -127,6 +139,11 @@ function configGame() {
         pawn.style.backgroundColor = color;
       });
     }
+  }
+
+  function refreshMoney(player) {
+    const moneyField = document.querySelector(".moneyField");
+    moneyField.textContent = `Money: ${player.money}`;
   }
 
   openWebsocket();
