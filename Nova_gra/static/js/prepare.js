@@ -49,6 +49,7 @@ class Player {
 function preparePlayers(...args) {
   args = args[0];
   let players = [];
+  console.log[args[0]];
   let players_total = args.length;
   if (players_total === 1) {
     const player1 = declarePlayer(args[0]["fields"], "red");
@@ -82,7 +83,9 @@ function preparePlayers(...args) {
       color,
       playerData.money,
       playerData.position,
-      playerData.moved
+      playerData.moved,
+      "estates here",
+      playerData.in_game
     );
     return player;
   }
