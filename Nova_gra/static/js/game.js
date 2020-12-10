@@ -55,12 +55,18 @@ function configGame() {
         }
       }
 
-      function getCurrentPlayer(players) {
-        //ADD logic that checks if game started if yes: proceed, else asign player with name same as in field
-        const currentPlayer = players.filter((value) => {
-          return value.name == playerName;
-        })[0];
-        return currentPlayer;
+      function getCurrentPlayer(players, state) {
+        //TO REFACTOR
+        if (state.is_played === true) {
+          const currentPlayer = players.filter((value) => {
+            return value.name == playerName;
+          })[0];
+          return currentPlayer;
+        } else {
+          const currentPlayer = document.querySelector(".playerName_header")
+            .textContent;
+          return currentPlayer;
+        }
       }
       //gdy gra nie rozpoczeta problem z players
       // wziac stan gry
@@ -72,13 +78,13 @@ function configGame() {
         case "initial_state":
           window.board = makeInitialState(state);
           let players = asignPlayers(state); //need to refactor players/players_move + currentPlayer/playerPlaying
-          let playerPlaying = getCurrentPlayer(players);
+          let playerPlaying = getCurrentPlayer(players, state); //REAFACTOR it!
           refreshMoney(playerPlaying);
-          renderPosition(players);
+          renderPosition(players, state);
           break;
         case "player_ready":
           let players_ready = asignPlayers(state); //need to refactor players/players_move + currentPlayer/playerPlaying
-          let playerReady = getCurrentPlayer(players_ready);
+          let playerReady = getCurrentPlayer(players_ready, state);
           if (playerReady.playing !== true) {
             playersReady(state);
           } else {
@@ -101,7 +107,7 @@ function configGame() {
           break;
         case "roll_dice":
           let players_move = asignPlayers(state);
-          let currentPlayer = getCurrentPlayer(players_move);
+          let currentPlayer = getCurrentPlayer(players_move, state);
           if (currentPlayer.moved === false) {
             if (state.turn_of_player === currentPlayer.name) {
               rollDice(state.mess);
@@ -125,8 +131,8 @@ function configGame() {
     console.log("Websocket Connection Terminated!");
   };
 
-  function renderPosition(players) {
-    if (players === false) {
+  function renderPosition(players, game) {
+    if (game.is_played === false) {
       console.log("Position not rendered - game hasn't started yet!");
     } else {
       players.forEach((player) => {
