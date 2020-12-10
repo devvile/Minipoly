@@ -70,7 +70,9 @@ function configGame() {
       switch (state.action) {
         case "initial_state":
           window.board = makeInitialState(state);
-          let players = asignPlayers(state);
+          let players = asignPlayers(state); //need to refactor players/players_move + currentPlayer/playerPlaying
+          let playerPlaying = getCurrentPlayer(players);
+          refreshMoney(playerPlaying);
           renderPosition(players);
           break;
         case "player_ready":
@@ -127,6 +129,11 @@ function configGame() {
         pawn.style.backgroundColor = color;
       });
     }
+  }
+
+  function refreshMoney(player) {
+    const moneyField = document.querySelector(".moneyField");
+    moneyField.textContent = `Money: ${player.money}`;
   }
 
   openWebsocket();
