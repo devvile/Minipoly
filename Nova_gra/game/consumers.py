@@ -46,6 +46,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         return game.is_played
 
     @database_sync_to_async
+    def get_player_game_name(self, player):
+        return player.in_game
+
+    @database_sync_to_async
     def get_player_in_game(self,player):
         return player.in_game
 
@@ -134,10 +138,6 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             game.who_is_ready.remove(i)
 
     @database_sync_to_async
-    def set_player_game_status_ready(self, player):
-        player.set_player_in_game()
-
-    @database_sync_to_async
     def set_player_position(self, player, position):
         player.position = position
 
@@ -154,8 +154,20 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         game.turn_of_player = game.first_player
 
     @database_sync_to_async
-    def set_player_game_status_off(self, player):
-        player.set_player_leave_game()
+    def set_player_game(self, game, player):
+        player.in_game = game.name
+
+    @database_sync_to_async
+    def set_player_game_to_none(self, player):
+        player.in_game = "none"
+
+    @database_sync_to_async
+    def set_player_ready(self, player):
+        player.set_ready()
+
+    @database_sync_to_async
+    def set_player_not_ready(self, player):
+        player.set_not_ready()
 
     @database_sync_to_async
     def set_game_played(self, game):
@@ -168,6 +180,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def set_next_turn(self, game):
         game.turn_of_player = game.next_player
+
+    @database_sync_to_async
+    def set_player_money(self, player, money):
+        player.money += money
 
 
     async def receive(self, text_data):
@@ -187,14 +203,22 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         game_state = "Game state not assigned!"
 
         if action == "ready":
-
-            if not game.is_played and not player.in_game and how_many_players_ready < max_players:
-                await self.add_player_to_game(player, game)
-                await self.set_player_game_status_ready(player)
-            elif not game.is_played and player.in_game:
+            if not game.is_played and how_many_players_ready < max_players and not player.ready:
+                if game.name != player.in_game:
+                    await self.add_player_to_game(player, game)
+                    await self.set_player_ready(player)
+                    await self.set_player_game(game,player)
+                    mess = "You're ready!"
+                else:
+                    mess = "Can't set status to 'ready', because you're playing in another game"
+            elif not game.is_played and player.ready and game.name == player.in_game:
                 await self.remove_player_from_ready_players(player, game)
-                await self.set_player_game_status_off(player)
-            game_state = await self.get_state(game, "player_ready", "You're ready!")
+                await self.set_player_not_ready(player)
+                await self.set_player_game_to_none(player)
+                mess = "You left the game!"
+            else:
+                mess = "Cannot join game, probably you're already in different game"
+            game_state = await self.get_state(game, "player_ready", mess)
 
 
         elif action == "start":
@@ -244,10 +268,14 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             else:
                 game_state = await self.get_state(game, "roll_dice", "You already moved! Please end your turn.")
 
+        elif action == "change_money":
+            money_change = message['amount']
+            await self.set_player_money(player, money_change)
 
         elif action == "leave_game":
             if player != host:
                 await self.remove_player_from_game(player, game)
+                await self.set_player_game_to_none(player)
                 game_state = await self.get_state(game, "leave_game", "You left game!")
             else:
                 game_state = await self.get_state(game, "leave_game", "Host Cannot leave game")
@@ -256,6 +284,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             if number_of_players_playing > 1 and host == player.nick:
                 await self.set_game_ended(game)
                 await self.remove_players_from_game(game)
+                await self.set_player_game_to_none(player)
                 game_state = await self.get_state(game, "end_game", "Game Ended!")
 
             elif player != host:
