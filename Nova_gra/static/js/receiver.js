@@ -9,7 +9,7 @@ export {
 };
 
 import { prepareBoard, makeMove } from "./board.js";
-import { game } from "./game.js";
+import { game, sendMess } from "./game.js";
 
 import {
   makeInvisible,
@@ -73,6 +73,7 @@ function startGame(dataJson) {
   game.is_played = true;
   refreshPlayers(dataJson);
   console.log("Game starting");
+  timer(15, dataJson.turn_of_player);
 }
 
 function endGame(dataJson) {
@@ -99,5 +100,23 @@ function refreshGame(dataJson) {
 }
 
 function endTurn(state) {
+  if (state.mess == "Turn Ended!") {
+    timer(15, state.turn_of_player);
+  }
   setTimeout(setState, 200, state);
+}
+
+function timer(time, playerName) {
+  let sec = time;
+  let timer = setInterval(function () {
+    document.querySelector(".timer").innerHTML = sec;
+    sec--;
+    if (sec < 0) {
+      sendMess({
+        player: playerName,
+        action: "end_turn_timeout",
+      });
+      clearInterval(timer);
+    }
+  }, 1000);
 }

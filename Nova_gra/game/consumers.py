@@ -245,11 +245,19 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         elif action == "end_turn":
             whose_turn = await self.get_player(await self.get_whose_turn(game))
             if game.player == whose_turn:
-                await self.set_next_turn(game)
-                await self.set_player_not_moved(player)
-                game_state = await self.get_state(game, "end_turn", "Turn Ended!")
+                if game.player.moved is True:
+                    await self.set_next_turn(game)
+                    await self.set_player_not_moved(player)
+                    game_state = await self.get_state(game, "end_turn", "Turn Ended!")
+                else:
+                    game_state = await self.get_state(game, "end_turn", "First roll a dice!")
             else:
                 game_state = await self.get_state(game, "end_turn", "It's not your turn!")
+
+        elif action == "end_turn_timeout":
+            await self.set_next_turn(game)
+            await self.set_player_not_moved(player)
+            game_state = await self.get_state(game, "end_turn", "Turn Ended!")
 
         elif action == "roll_dice":
             if player == game.turn_of_player and player.moved is False:
