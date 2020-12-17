@@ -191,17 +191,17 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         game_state = "Game state not assigned!"
 
         if action == "ready":
-            if not player.in_game:
-                if not game.is_played  and how_many_players_ready < max_players:
+            if not game.is_played and how_many_players_ready < max_players and not player.in_game:
+                if not player.in_game:
                     await self.add_player_to_game(player, game)
                     await self.set_player_game_status_ready(player)
                     mess = "You're ready!"
-                elif not game.is_played and player.in_game:
-                    await self.remove_player_from_ready_players(player, game)
-                    await self.set_player_game_status_off(player)
-                    mess = "You left the game!"
-            else:
-                mess = "Can't set status to 'ready', because you're playing in another game"
+                else:
+                    mess = "Can't set status to 'ready', because you're playing in another game"
+            elif not game.is_played and player.in_game:
+                await self.remove_player_from_ready_players(player, game)
+                await self.set_player_game_status_off(player)
+                mess = "You left the game!"
             game_state = await self.get_state(game, "player_ready", mess)
 
 

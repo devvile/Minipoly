@@ -99,5 +99,13 @@ function refreshGame(dataJson) {
 }
 
 function endTurn(state) {
+  timer(30);
   setTimeout(setState, 200, state);
+}
+
+function timer(time) {
+  let counter = time;
+  setInterval(() => {
+    console.log(counter--);
+  }, 1000);
 }

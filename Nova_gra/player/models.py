@@ -7,6 +7,7 @@ class Player(models.Model):
     parent = models.CharField(max_length =10)
     nick = models.CharField(max_length=10)
     in_game = models.BooleanField(default=False)
+    ready = models.BooleanField(default=False)
     moved = models.BooleanField(default=False, null=True, blank=True)
     money = models.IntegerField(default=150)
     position = models.IntegerField(default=0, null=True, blank=True)
