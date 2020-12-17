@@ -158,6 +158,10 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         player.set_player_leave_game()
 
     @database_sync_to_async
+    def set_player_game_status_on(self, player):
+        player.set_player_in_game()
+
+    @database_sync_to_async
     def set_game_played(self, game):
         game.is_played = True
 
@@ -187,14 +191,18 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         game_state = "Game state not assigned!"
 
         if action == "ready":
-
-            if not game.is_played and not player.in_game and how_many_players_ready < max_players:
-                await self.add_player_to_game(player, game)
-                await self.set_player_game_status_ready(player)
-            elif not game.is_played and player.in_game:
-                await self.remove_player_from_ready_players(player, game)
-                await self.set_player_game_status_off(player)
-            game_state = await self.get_state(game, "player_ready", "You're ready!")
+            if not player.in_game:
+                if not game.is_played  and how_many_players_ready < max_players:
+                    await self.add_player_to_game(player, game)
+                    await self.set_player_game_status_ready(player)
+                    mess = "You're ready!"
+                elif not game.is_played and player.in_game:
+                    await self.remove_player_from_ready_players(player, game)
+                    await self.set_player_game_status_off(player)
+                    mess = "You left the game!"
+            else:
+                mess = "Can't set status to 'ready', because you're playing in another game"
+            game_state = await self.get_state(game, "player_ready", mess)
 
 
         elif action == "start":
@@ -206,6 +214,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
                     await self.add_player_to_players_playing(i, game)
                     await self.set_player_position(i, 0)
                     await self.remove_player_from_ready_players(i, game)
+                    await self.set_player_game_status_on(i)
                 await self.set_first_player_turn(game)
                 game_state = await self.get_state(game, "start_game", "Game Started!")
 
@@ -248,6 +257,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
         elif action == "leave_game":
             if player != host:
                 await self.remove_player_from_game(player, game)
+                await self.set_player_game_status_off(player)
                 game_state = await self.get_state(game, "leave_game", "You left game!")
             else:
                 game_state = await self.get_state(game, "leave_game", "Host Cannot leave game")
@@ -256,6 +266,7 @@ class GameEventsConsumer(AsyncWebsocketConsumer):
             if number_of_players_playing > 1 and host == player.nick:
                 await self.set_game_ended(game)
                 await self.remove_players_from_game(game)
+                await self.set_player_game_status_off(player)
                 game_state = await self.get_state(game, "end_game", "Game Ended!")
 
             elif player != host:

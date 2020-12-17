@@ -87,6 +87,7 @@ function configGame() {
           let playerReady = getCurrentPlayer(players_ready, state);
           if (playerReady.playing !== true) {
             playersReady(state);
+            notify(state.mess);
           } else {
             notify(
               "You cannot join game because you are already playing in another one!"
