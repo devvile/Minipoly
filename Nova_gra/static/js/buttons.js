@@ -38,7 +38,6 @@ function asignEvents(game) {
     const roll_dice_btn = document.querySelector(".--roll_btn");
 
     end_turn_btn.addEventListener("click", () => {
-      timer(25);
       sendMess({
         player: playerName,
         action: "end_turn",
