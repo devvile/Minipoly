@@ -1,5 +1,5 @@
-export { prepareBoard, giveMoney, makeMove, rollDice };
-import { notify, game } from "./game.js";
+export { prepareBoard, changeMoney, makeMove, rollDice };
+import { notify, game, sendMess } from "./game.js";
 
 function prepareBoard(boardSize) {
   const board = document.querySelectorAll(".game_field");
@@ -14,9 +14,14 @@ function prepareBoard(boardSize) {
   });
 }
 
-function giveMoney(player, money) {
-  player.money += money;
-  console.log(`${money} granted to ${player.name}`);
+function changeMoney(playerCur, money) {
+  playerCur.money += money;
+  sendMess({
+    player: playerCur.name,
+    action: "change_money",
+    amount: money,
+  });
+  notify(`${money} granted to ${playerCur.name}`);
 }
 
 function makeMove(game, player, fileds_to_move) {
@@ -26,7 +31,7 @@ function makeMove(game, player, fileds_to_move) {
       let new_poss = player.position + fileds_to_move;
       if (new_poss >= 28) {
         new_poss -= 28;
-        giveMoney(player, 400);
+        changeMoney(player, 400);
       }
       player.position = new_poss;
 
