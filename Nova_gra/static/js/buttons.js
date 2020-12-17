@@ -67,10 +67,4 @@ function asignEvents(game) {
 
     console.log("Events Assigned!");
   }
-  function timer(time) {
-    let counter = time;
-    while (counter != 0) {
-      setTimeout(console.log, 1000, counter--);
-    }
-  }
 }
