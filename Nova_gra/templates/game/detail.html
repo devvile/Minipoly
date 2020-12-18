@@ -92,7 +92,7 @@ Mini Game: {{game.name}}
                         {% if user.username == game.host %}
                         <input type ="button" value="DELETE" class="__sidebar_item_action --delete_btn --vis">
                             {% endif %}
-                        <input type ="button" value="HOME" class="__sidebar_item_action --home_btn"> 
+                        <input type ="button" value="HOME" onclick="window.location.href='/player/home'"" class="__sidebar_item_action --home_btn"> 
                     </div>
             </article>
         <hr>
