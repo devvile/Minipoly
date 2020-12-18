@@ -6,6 +6,7 @@ export {
   Game,
   Player,
   Board,
+  showAll,
 };
 
 class Game {
@@ -123,4 +124,13 @@ function refreshPlayers(game) {
 
   playerTurnText.textContent = ` ${game.turn_of_player} turn!`;
   playersInGame.textContent = ` Players in game: ${game.who_is_playing}`;
+}
+
+function showAll() {
+  const allContent = document.querySelector(".content-container");
+  const preloader = document.querySelector(".preloader");
+  allContent.classList.remove("--hidden");
+  preloader.style.visibility = "hidden";
+
+  console.log("uncover");
 }

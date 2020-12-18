@@ -10,7 +10,7 @@ import {
 } from "./receiver.js";
 
 import { makeMove, rollDice } from "./board.js";
-import { preparePlayers, Game } from "./prepare.js";
+import { preparePlayers, Game, showAll } from "./prepare.js";
 import { asignEvents, checkState, playerName } from "./buttons.js";
 
 //FUNCTIONS TO EXPORT
@@ -156,6 +156,7 @@ function configGame() {
   openWebsocket();
   setWebsocket();
   setTimeout(asignEvents, 1000, game);
+  setTimeout(showAll, 1100);
 }
 
 function main() {
