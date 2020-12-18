@@ -48,7 +48,6 @@ Mini Game: {{game.name}}
             <div class="diceArea">
                 <img src="" alt="" class="dice">
             </div>
-            <div class="timer"></div>
         </div>
     </div>
 
@@ -64,8 +63,8 @@ Mini Game: {{game.name}}
         
                                 <p class = "moneyField"></p>
                                 <p class="estates">Estates:</p>
-                                <p class="estatesTotal">Estates total cost:</p>
                                 <p class="bonuses">Bonuses:</p>
+                                <div class="timer"></div>
         
                     </article>
                 </div>
@@ -106,7 +105,7 @@ Mini Game: {{game.name}}
             <hr>
             <div class = '--menu'>
               <p class="player_turn_text --invis"></p>
-                <p class = "players_ready_text --vis">Players ready:</p>
+                <p class = "players_ready_text --vis">Players ready:</p>         
                 <p class="max_players --vis">Max Players: {{game.max_players}}</p>
             </div>
             <hr>
@@ -114,7 +113,10 @@ Mini Game: {{game.name}}
             <p class="notification-board"> Let's play a game!<p>
         </div>
     </section>
-</div>
+    <section class="preloader --visible">
+        <div class="preloadBar"><h1 class="loaderHeading">Loading...</h1></div>
+    </section>
+    
 <script type="module" src="{% static 'js/receiver.js' %}"></script>
 <script type="module" src="{% static 'js/game.js' %}"></script>
 {% endblock %}

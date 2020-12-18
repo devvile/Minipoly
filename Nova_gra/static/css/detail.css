@@ -178,6 +178,24 @@
   background-color: var(--main-bars-color);
 }
 
+.preloader {
+  position: absolute;
+  left: 35vw;
+  top: 40vh;
+  height: 20vh;
+  width: 30vw;
+  border: 1px solid black;
+  border-radius: 20px;
+  z-index: 10;
+  background-color: var(--main-color-alpha);
+}
+.loaderHeading {
+  color: whitesmoke;
+  position: absolute;
+  left: 40%;
+  top: 40%;
+}
+
 .--menu {
   list-style: none;
 }
@@ -190,4 +208,12 @@
 }
 .--gray {
   color: gray;
+}
+
+.--hidden {
+  visibility: hidden;
+}
+
+.--visible {
+  visibility: visible;
 }
