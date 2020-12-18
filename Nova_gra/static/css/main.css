@@ -39,7 +39,7 @@ body {
   align-items: center;
   height: 100%;
   width: 100%;
-  border: 2px solid var(--main-gold-border);
+  border: 2px solid rgb(235, 205, 205);
   color: var(--font-color);
   text-decoration: none;
   margin: 6px;

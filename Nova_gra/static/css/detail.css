@@ -113,50 +113,33 @@
 }
 
 .game_section_sidebar {
-  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
   width: 450px;
 }
-.game_section_sidebar_top {
-  display: grid;
-  grid-template-areas:
-    "sidebar_header sidebar_header"
-    "player_info game_stats"
-    "player_info game_stats"
-    "player_info game_stats"
-    "player_info game_stats"
-    "game_actions global_actions"
-    "game_actions global_actions";
-  height: 70%;
-}
+
 .sidebar_top__sidebar_header {
   display: flex;
   align-items: center;
   justify-content: center;
   grid-area: sidebar_header;
   background-color: var(--main-bars-color);
-  border: 2px solid var(--main-gold-border);
+  border: 2px solid rgb(235, 205, 205);
   font-family: "Bebas Neue", cursive;
   font-size: 2em;
   color: var(--font-color);
   text-align: center;
 }
+
 .sidebar_top__player_info {
-  height: 30%;
-  grid-area: player_info;
-}
-.sidebar_top__game_stats {
-  height: 30%;
-  grid-area: game_stats;
+  display: flex;
+  padding: 20px;
+  justify-content: space-around;
 }
 
-.sidebar_top__game_actions {
-  height: 20%;
-  grid-area: game_actions;
-}
-
-.sidebar_top__global_actions {
-  height: 20%;
-  grid-area: global_actions;
+.userImage {
+  width: 100px;
+  height: 100px;
 }
 
 .__sidebar_item {
@@ -164,8 +147,12 @@
   border: 2px solid var(--main-bars-color);
   background-color: var(--main-color-alpha);
   color: var(--font-color);
+  margin: 5px;
 }
 
+.moneyMoney {
+  color: black;
+}
 .__sidebar_menu_column {
   display: flex;
   flex-direction: column;
@@ -173,8 +160,9 @@
 }
 
 .__sidebar_item_action {
-  border: 2px solid var(--main-gold-border);
+  border: 2px solid var(--main-bars-color);
   background-color: var(--main-color-alpha);
+  padding: 8px;
   width: 100%;
   text-align: center;
 }
