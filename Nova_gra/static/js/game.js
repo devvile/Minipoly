@@ -79,6 +79,8 @@ function configGame() {
           window.board = makeInitialState(state);
           let players = asignPlayers(state); //need to refactor players/players_move + currentPlayer/playerPlaying
           let playerPlaying = getCurrentPlayer(players, state); //REAFACTOR it!
+          asignEvents(state);
+          showAll();
           refreshMoney(playerPlaying);
           renderPosition(players, state);
           break;
@@ -155,8 +157,6 @@ function configGame() {
 
   openWebsocket();
   setWebsocket();
-  setTimeout(asignEvents, 1000, game);
-  setTimeout(showAll, 1100);
 }
 
 function main() {
