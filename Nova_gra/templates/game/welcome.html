@@ -1,16 +1,27 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% load static %} {% block title %} Welcome to
+Minipoly! Game! {% endblock %} {% block content %}
+<h1 class="welcome_header">Welcome to MiniPoly Game</h1>
 
-{% block title %}
-Welcome to Mini Game!
-{% endblock %}
-
-{% block content %}
-<h1>Welcome to Mini Game</h1>
-
-<div class = 'container'>
-    <p>
-        DASDSASDLAKSD SPAM SPAM SDASMDSAMDSAM  MSADMASMD MDASMDSAMDSA
+<section class="welcome">
+  <article class="welcome_text_area">
+    <p class="welcome_text">
+      MiniPoly Game is online multiplayer game based on fameous Monopoly for 2-4
+      players. Aim of the game is to be the last player on the board. Players
+      make moves in turns with dice tossing system, they can also spend money on
+      buying assets and paying fees for other players who already have assets we
+      are visiting on the board. Players can create rooms for their friends to
+      play together. Configuration of such rooms is chosen by the host. When
+      player is out of money he lose and leave game, however he can also end
+      game voluntary.
     </p>
-
-</div>
+    <p class="welcome_text">
+      Game is based on Django 3 backend with SQLite Database and Channels
+      framework. For sync and async issues game uses Websockets protocols where
+      state management is done with JSON based on data stored in DB. Async
+      operations are managed by Redis lightweight server. Frontend is made on
+      HTML/CSS/JS triad however it is not responsive. Have fun!
+    </p>
+  </article>
+  <img class="skyscraper" src="{%static 'img/skyscraper.png'%}" alt="" />
+</section>
 {% endblock %}

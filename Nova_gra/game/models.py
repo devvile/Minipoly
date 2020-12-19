@@ -6,7 +6,10 @@ class Config(models.Model):
     name = models.CharField(max_length=150)
     nr_of_fields = models.IntegerField(default=28)
     special = models.IntegerField(default=8)
+    money_for_round = models.IntegerField(default=300)
     start_money = models.IntegerField(default=1000)
+    first_level_cost = models.IntegerField(default=200)
+    upgrade_cost =  models.IntegerField(default=500)
 
     def __str__(self):
         return self.name
