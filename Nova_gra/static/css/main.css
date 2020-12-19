@@ -80,3 +80,24 @@ footer {
   background-color: var(--main-bars-color);
   text-align: center;
 }
+
+.welcome {
+  display: flex;
+  position: relative;
+  height: 70vh;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+.welcome_header {
+  text-align: center;
+}
+
+.welcome_text {
+  margin: 20px;
+}
+
+.skyscraper {
+  height: 80%;
+  margin: 30px;
+}
